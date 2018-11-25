@@ -1,0 +1,87 @@
+<html>
+<head>
+    <title>iisnode logs</title>
+    <style type="text/css">
+        body
+        {
+            font-family: "Trebuchet MS" , Arial, Helvetica, sans-serif;
+        }
+        table
+        {
+            border-collapse: collapse;
+        }
+        td, th
+        {
+            border: 1px solid lightgray;
+            padding: 3px 7px 2px 7px;
+        }
+        th
+        {
+            text-align: left;
+            padding-top: 5px;
+            padding-bottom: 4px;
+            background-color: Gray;
+            color: #ffffff;
+        }
+        td.stderr
+        {
+            color: Red;
+        }
+    </style>
+</head>
+<body>
+    <table id="logFilesTable">
+        <tr>
+            <th>
+                Computer name
+            </th>
+            <th>
+                PID
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Created
+            </th>
+            <th>
+                Link
+            </th>
+        </tr>
+    </table>
+    <p id="lastUpdated"></p>
+    <script type="text/javascript">
+
+        // this is replaced with actual data at runtime by code in interceptor.js
+        var logFiles = [{"file":"VPS-12682-5430-1428-stderr-1543121175446.txt","computername":"VPS-12682-5430","pid":1428,"type":"stderr","created":1543121175446},{"file":"VPS-12682-5430-1428-stdout-1543121175408.txt","computername":"VPS-12682-5430","pid":1428,"type":"stdout","created":1543121175408},{"file":"VPS-12682-5430-2328-stderr-1543115829389.txt","computername":"VPS-12682-5430","pid":2328,"type":"stderr","created":1543115829389},{"file":"VPS-12682-5430-2328-stdout-1543115829385.txt","computername":"VPS-12682-5430","pid":2328,"type":"stdout","created":1543115829385},{"file":"VPS-12682-5430-2552-stderr-1543038827987.txt","computername":"VPS-12682-5430","pid":2552,"type":"stderr","created":1543038827987},{"file":"VPS-12682-5430-2632-stderr-1543038776583.txt","computername":"VPS-12682-5430","pid":2632,"type":"stderr","created":1543038776583},{"file":"VPS-12682-5430-3308-stderr-1543038834532.txt","computername":"VPS-12682-5430","pid":3308,"type":"stderr","created":1543038834532},{"file":"VPS-12682-5430-3356-stderr-1543087670621.txt","computername":"VPS-12682-5430","pid":3356,"type":"stderr","created":1543087670621},{"file":"VPS-12682-5430-3356-stdout-1543087670616.txt","computername":"VPS-12682-5430","pid":3356,"type":"stdout","created":1543087670616},{"file":"VPS-12682-5430-452-stderr-1543042021187.txt","computername":"VPS-12682-5430","pid":452,"type":"stderr","created":1543042021187},{"file":"VPS-12682-5430-452-stdout-1543042021184.txt","computername":"VPS-12682-5430","pid":452,"type":"stdout","created":1543042021184},{"file":"VPS-12682-5430-4624-stderr-1543041898396.txt","computername":"VPS-12682-5430","pid":4624,"type":"stderr","created":1543041898396},{"file":"VPS-12682-5430-4668-stderr-1543039476053.txt","computername":"VPS-12682-5430","pid":4668,"type":"stderr","created":1543039476053},{"file":"VPS-12682-5430-4668-stdout-1543039476049.txt","computername":"VPS-12682-5430","pid":4668,"type":"stdout","created":1543039476049},{"file":"VPS-12682-5430-4904-stderr-1543041905566.txt","computername":"VPS-12682-5430","pid":4904,"type":"stderr","created":1543041905566},{"file":"VPS-12682-5430-5168-stderr-1543066951617.txt","computername":"VPS-12682-5430","pid":5168,"type":"stderr","created":1543066951617},{"file":"VPS-12682-5430-5168-stdout-1543066951613.txt","computername":"VPS-12682-5430","pid":5168,"type":"stdout","created":1543066951613},{"file":"VPS-12682-5430-5252-stderr-1543038870432.txt","computername":"VPS-12682-5430","pid":5252,"type":"stderr","created":1543038870432},{"file":"VPS-12682-5430-5252-stdout-1543038870428.txt","computername":"VPS-12682-5430","pid":5252,"type":"stdout","created":1543038870428},{"file":"VPS-12682-5430-5460-stderr-1543052628475.txt","computername":"VPS-12682-5430","pid":5460,"type":"stderr","created":1543052628475},{"file":"VPS-12682-5430-5460-stdout-1543052628471.txt","computername":"VPS-12682-5430","pid":5460,"type":"stdout","created":1543052628471},{"file":"VPS-12682-5430-6088-stderr-1543038919514.txt","computername":"VPS-12682-5430","pid":6088,"type":"stderr","created":1543038919514}];
+        var lastUpdated = 1543121176825;
+        var date = new Date();
+
+        date.setTime(lastUpdated);
+        document.getElementById('lastUpdated').innerHTML = 'Index was last updated ' + date;
+
+        logFiles.sort(function (a, b) {
+            return b.created - a.created;
+        });
+
+        var logFilesTable = document.getElementById("logFilesTable");
+        for (var i = 0; i < logFiles.length; i++) {
+            var logFile = logFiles[i];
+            date.setTime(logFile.created);
+            var row = logFilesTable.insertRow(-1);
+            var computerNameCell = row.insertCell(0);
+            var pidCell = row.insertCell(1);
+            var typeCell = row.insertCell(2);
+            var dateCell = row.insertCell(3);
+            var logCell = row.insertCell(4);
+            computerNameCell.innerHTML = logFile.computername;
+            pidCell.innerHTML = logFile.pid.toString();
+            typeCell.innerHTML = logFile.type;
+            typeCell.setAttribute('class', logFile.type);
+            dateCell.innerHTML = date.toString();
+            logCell.innerHTML = '<a href="' + logFile.file + '">log</a>';
+        };
+
+    </script>
+</body>
+</html>
