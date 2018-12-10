@@ -1,0 +1,14 @@
+{
+  "port": "8080",
+  "static-dir": "frontend/build",
+  "db-host": "mongodb://localhost:27017/CLIENTS",
+  "session": {
+    "secret": "MySecretWord",
+    "key": "NODESESSID",
+    "cookie": {
+      "path": "/",
+      "maxAge": null,
+      "httpOnly": true
+    }
+  }
+}

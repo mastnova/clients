@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import './App.css';
+
+import Index from './components/Index/Index';
+import Login from './components/Login/Login';
+import Root from './components/Root/Root';
+
 
 class App extends Component {
   state = {
@@ -19,7 +24,18 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="App">
+      <Router>
+        <div className="wtf">
+          <a
+            className="App-link"
+            href="#"
+            onClick={this.onLogin}
+          >boom</a>
+        <Route path="/" exact component={Index} />
+        <Route path="/login" exact component={Login} />
+        <Route path="/root" exact component={Root} />
+        </div>
+      {/* <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <input placeholder="Login"/><br/>
@@ -33,7 +49,8 @@ class App extends Component {
             Login
           </a>
         </header>
-      </div>
+      </div> */}
+      </Router>
     );
   }
 }
