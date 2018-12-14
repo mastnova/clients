@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Input from '../UI/Input';
 import API from '../../API'; 
+import { PAGE_URL } from '../../constants';
 
 class Root extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class Root extends Component {
   checkIfRootExist = async () => {
     const response = await API.hasRoot();
     if (response.hasRoot) {
-      this.props.history.push('/')
+      this.props.history.push(PAGE_URL.index);
     }
   }
 
@@ -36,11 +37,18 @@ class Root extends Component {
   }
 
   isFormValid = () => {
-    return this.state.loginIsValid && this.state.passwordIsValid && this.state.repeatPasswordIsValid
+    return this.state.loginIsValid && this.state.passwordIsValid && this.state.repeatPasswordIsValid;
   }
 
-  createAccount = () => {
-    API.createUser({login: this.state.login, password: this.state.password, role: 'root'});
+  createAccount = async () => {
+    const isCreated = await API.createUser({
+      role: 'root',
+      login: this.state.login,
+      password: this.state.password,
+    });
+    if (isCreated) {
+      this.props.history.push(PAGE_URL.login);
+    }
   }
 
   render() {

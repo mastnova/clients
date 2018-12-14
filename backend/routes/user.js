@@ -1,29 +1,30 @@
-// const User = require('../dbSchema/user');
-// import User from '../schemas/user';
+const User = require('../schemas/user');
+const Errors = require('../errors');
 
 module.exports = function (app) {
   app.post('/api/user', function (req, res, next) {
-  let login = req.body.login;
-  let password = req.body.password;
-  let role = req.body.role;
-  console.log('aaaaa')
-    console.log(req.body)
-    console.log('bbbb')
-    console.log(req)
-  res.send({login, password, role})
-  // let location;
-  // new User({ name: login, password: password, role })
-  //   .save(function (error, user) {
-  //     if (error) {
-  //       location = '/register';
-  //     }
-  //     else {
-  //       req.session.user = user._id;
-  //       location = '/';
-  //     }
-  //     res.status(302);
-  //     res.setHeader('Location', location);
-  //     res.end();
-  //   });
+    const login = req.body.login;
+    const password = req.body.password;
+    const role = req.body.role;
+    if (role === 'root') {
+      User.findOne({ role }, function (err, user) {
+        if (err) next(err);
+        if (user) {
+          res.status(403);
+          res.send(Errors.rootExist)
+        } else {
+          new User({  login, password, role })
+          .save(function (error, user) {
+            if (error) {
+              res.status(400);
+              res.send(error);
+            }
+            else {
+              res.send({status: 'ok'});
+            }
+          });
+        }
+      });
+    }
   });
 }

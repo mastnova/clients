@@ -2,26 +2,40 @@ const db = require('../db');
 const crypt = require('crypto');
 
 const schemaUser = new db.Schema({
-  name: {
+  login: {
     type: String,
     require: true,
-    unique: true
+    unique: true,
+    select: true,
+  },
+  role: {
+    type: String,
+    require: true,
+    select: true,
   },
   hash: {
     type: String,
     require: true,
+    // select: false,
   },
   salt: {
     type: String,
-    require: true
+    require: true,
+    // select: false,
   },
   iteration: {
     type: Number,
-    require: true
+    require: true,
+    // select: false,
   },
   created: {
     type: Date,
     default: Date.now()
+  },
+  token: {
+    type: String,
+    require: true,
+    select: false,
   }
 });
 
@@ -30,6 +44,7 @@ schemaUser.virtual('password')
     this.salt = String(Math.random());
     this.iteration = parseInt(Math.random() * 10 + 2);
     this.hash = this.getHash(data);
+    this.token = this.generateToken();
   })
   .get(function () {
     return this.hash;
@@ -43,7 +58,11 @@ schemaUser.methods.getHash = function (password) {
   return c.digest('hex');
 };
 
-schemaUser.methods.checkPassword = function (password) {
+schemaUser.methods.generateToken = function () {
+  return crypt.randomBytes(64).toString('hex');
+}
+
+schemaUser.methods.passwordIsValid = function (password) {
   return this.getHash(password) === this.hash;
 };
 
