@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import { PAGE_URL } from '../../constants';
 import API from '../../API';
+import user from '../../utils/user';
 
-class Index extends Component {
+class Index extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,13 +30,12 @@ class Index extends Component {
   }
 
   render() {
-    console.warn(this.state.users)
     return (
       <div>
-        <p>Index page</p>
+        <p>Index page <button onClick={user.logout}>logout</button></p>
         <ul>
         {
-          this.state.users.map(user => <li>{user.login} - {user.role} - {user.created}</li>)
+          this.state.users.map(user => <li key={user.id}>{user.login} - {user.role} - {user.created}</li>)
         }
         </ul>
       </div>

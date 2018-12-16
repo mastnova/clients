@@ -1,3 +1,5 @@
+import user from './utils/user';
+
 const API = {
   hasRoot: {
     method: 'GET',
@@ -16,59 +18,57 @@ const API = {
     url: '/api/users',
   }
 };
-async function hasRoot() {
-  const response = await fetch(API.hasRoot.url);
-  const body = await response.json();
-  if (response.status !== 200) console.error(body.message);
-  return body;
-}
 
-async function createUser(user) {
+async function request(url, method = 'GET', data) {
   const params = {
-    method: API.createUser.method,
+    method,
     headers: new Headers({
       'Content-Type': 'application/json'
     }),
-    body: JSON.stringify(user),
   };
-  const response = await fetch(API.createUser.url, params);
-  const body = await response.json();
-  if (response.status !== 200) {
-    console.error(body.message);
-    return false;
+  if (data) {
+    params.body = JSON.stringify(data);
   }
-    return true;
-}
-
-async function login(logPass) {
-  const params = {
-    method: API.login.method,
-    headers: new Headers({
-      'Content-Type': 'application/json'
-    }),
-    body: JSON.stringify(logPass),
-  };
-  const response = await fetch(API.login.url, params);
-  const body = await response.json();
-  if (response.status !== 200) {
-    console.error(body.message);
-    return false;
-  }
-    sessionStorage.setItem('userHasAuth', 'true');
-    return true;
-}
-
-async function getUsers() {
-  const response = await fetch(API.getUsers.url);
+  const response = await fetch(url, params);
   const body = await response.json();
   if (response.status !== 200) {
     console.error(body.message);
     if (body.code === 4) {
-      sessionStorage.setItem('userHasAuth', '');
+      user.logout();
     }
-    return null;
+    return { isOk: false, data: body };
   }
-  return body;
+  return { isOk: true, data: body };
+}
+
+async function hasRoot() {
+  const response = await request(API.hasRoot.url);
+  return response.data;
+}
+
+async function createUser(user) {
+  const response = await request(API.createUser.url, API.createUser.method, user);
+  if (response.isOk) {
+    return true;
+  }
+  return false;
+}
+
+async function login(logPass) {
+  const response = await request(API.login.url, API.login.method, logPass);
+  if (response.isOk) {
+    user.login();
+    return true;
+  }
+  return false;
+}
+
+async function getUsers() {
+  const response = await request(API.getUsers.url);
+  if (response.isOk) {
+    return response.data;
+  }
+  return null;
 }
 
 export default {

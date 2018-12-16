@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { isValid as isInputValid } from '../../utils/validation';
 
-class Input extends Component {
+class Input extends PureComponent {
   static defaultProps = {
     name: 'input',
     value: '',
@@ -16,6 +16,7 @@ class Input extends Component {
     super(props);
     this.state = {
       isValid: false,
+      isActivated: false,
     };
   }
 
@@ -33,17 +34,22 @@ class Input extends Component {
     })
   }
 
+  onBlur = () => {
+    this.setState({isActivated: true});
+  }
+
   render() {
     const cn = classNames(
       'input', 
-      {'input__error': !this.state.isValid},
-      {'input__success': this.state.isValid},
+      {'input__error': !this.state.isValid && this.state.isActivated},
+      { 'input__success': this.state.isValid && this.state.isActivated},
       );
     return (
       <input
         className={cn}
         name={this.props.name}
         onChange={this.onChange}
+        onBlur={this.onBlur}
         value={this.props.value}
         placeholder={this.props.placeholder}
       />

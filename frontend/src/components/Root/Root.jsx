@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import Input from '../UI/Input';
 import API from '../../API'; 
 import { PAGE_URL } from '../../constants';
 
-class Root extends Component {
+class Root extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

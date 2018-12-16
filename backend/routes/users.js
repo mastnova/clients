@@ -1,6 +1,12 @@
 const User = require('../schemas/user');
 const Errors = require('../errors');
 
+const usersProjection = {
+  login: true,
+  role: true,
+  created: true,
+};
+
 module.exports = function (app) {
   app.get('/api/users', function (req, res, next) {
     const token = req.cookies['token'];
@@ -8,7 +14,7 @@ module.exports = function (app) {
       if (err) next(err);
       if (user) {
         if (user.role === 'root') {
-          User.find({}, '-_id -__v', function (err, users) {
+          User.find({}, usersProjection, function (err, users) {
             if (err) next(err);
             res.send(users);
           })

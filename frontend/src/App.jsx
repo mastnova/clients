@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import './App.css';
+import './App.scss';
 
 import { PAGE_URL } from './constants';
 import Index from './components/Index/Index';

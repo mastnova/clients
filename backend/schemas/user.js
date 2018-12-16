@@ -6,27 +6,22 @@ const schemaUser = new db.Schema({
     type: String,
     require: true,
     unique: true,
-    select: true,
   },
   role: {
     type: String,
     require: true,
-    select: true,
   },
   hash: {
     type: String,
     require: true,
-    // select: false,
   },
   salt: {
     type: String,
     require: true,
-    // select: false,
   },
   iteration: {
     type: Number,
     require: true,
-    // select: false,
   },
   created: {
     type: Date,
@@ -35,7 +30,6 @@ const schemaUser = new db.Schema({
   token: {
     type: String,
     require: true,
-    select: false,
   }
 });
 
@@ -65,5 +59,11 @@ schemaUser.methods.generateToken = function () {
 schemaUser.methods.passwordIsValid = function (password) {
   return this.getHash(password) === this.hash;
 };
+
+schemaUser.set('toJSON', {
+  virtuals: true,
+  versionKey: false,
+  transform: function (doc, ret) { delete ret._id }
+});
 
 module.exports = db.model('User', schemaUser);

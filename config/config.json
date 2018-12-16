@@ -1,6 +1,5 @@
 {
   "port": "8080",
   "static-dir": "frontend/build",
-  "db-host": "mongodb://localhost:27017/CLIENTS",
-  }
+  "db-host": "mongodb://localhost:27017/CLIENTS"
 }

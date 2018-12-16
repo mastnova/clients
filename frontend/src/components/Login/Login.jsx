@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import './Login.scss';
 
 import Input from '../UI/Input';
 import API from '../../API'; 
 import { PAGE_URL } from '../../constants';
 
-class Login extends Component {
+class Login extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -46,8 +47,7 @@ class Login extends Component {
 
   render() {
     return (
-      <div>
-        <p>Login Page</p>
+      <div className="login-page">
         <Input
           name="login"
           placeholder="login"
