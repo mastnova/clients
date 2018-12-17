@@ -1,0 +1,19 @@
+.input {
+  box-sizing: border-box;
+  font-family: 'pn-regular';
+  width: 100%;
+  height: 36px;
+  border: 1px solid #344178;
+  color: #344178;
+  border-radius: 5px;
+  padding-left: 15px;
+  outline: none;
+
+  &.input__error {
+    border: 1px solid #d24b4b;
+  }
+
+  &.input__success {
+    border: 1px solid #35ad35;
+  }
+}

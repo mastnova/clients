@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import './Login.scss';
 
-import Input from '../UI/Input';
+import Input from '../UI/Input/Input';
 import API from '../../API'; 
 import { PAGE_URL } from '../../constants';
 
@@ -14,6 +14,7 @@ class Login extends PureComponent {
       loginIsValid: false,
       password: '',
       passwordIsValid: false,
+      errorMessage: '',
     };
   }
 
@@ -35,43 +36,61 @@ class Login extends PureComponent {
     return this.state.loginIsValid && this.state.passwordIsValid;
   }
 
-  login = async () => {
-    const hasAuth = await API.login({
+  login = async (e) => {
+    e.preventDefault();
+    const res = await API.login({
       login: this.state.login,
       password: this.state.password,
     });
-    if (hasAuth) {
+    if (res.isOk) {
       this.props.history.push(PAGE_URL.index);
+    } else {
+      const errorMessage = res.data.code === 3 ? 'Неверный логин или пароль' : 'Ошибка авторизации';
+      this.setState({ errorMessage });
     }
   }
 
   render() {
     return (
       <div className="login-page">
-        <Input
-          name="login"
-          placeholder="login"
-          validationType="login"
-          value={this.state.login}
-          onChange={this.onChangeInput}
-        />
-        <br />
-        <Input
-          name="password"
-          placeholder="Password"
-          validationType="password"
-          value={this.state.password}
-          onChange={this.onChangeInput}
-        />
-        <br />
-        <button onClick={this.login} disabled={!this.isFormValid()}>login</button>
+        <div className="login-wrapper">
+          <div className="login-block">
+            <form className="login-panel" onSubmit={this.login}>
+              <div className="header-block">
+                <div className="header-block__logo" />
+                <div className="header-block__title">SlotAdmin<span>Система учета клиентов</span></div>
+              </div>
+              <div className="login-panel__header">Вход в систему учета клиентов</div>
+              <label>
+                <div>Логин</div>
+                <Input
+                  name="login"
+                  placeholder="Введите логин"
+                  validationType="login"
+                  value={this.state.login}
+                  onChange={this.onChangeInput}
+                />
+              </label>
+              <label>
+                <div>Пароль</div>
+                <Input
+                  name="password"
+                  placeholder="Введите пароль"
+                  validationType="password"
+                  value={this.state.password}
+                  onChange={this.onChangeInput}
+                />
+              </label>
+              <div className={classNames('login-panel__error', { 'login-panel__error_show': this.state.errorMessage})}>
+                {this.state.errorMessage}
+              </div>
+              <button className="button" type="submit" disabled={!this.isFormValid()}>Вход</button>
+            </form>
+          </div>
+        </div>
       </div>
     );
   }
 }
-
-Login.propTypes = {
-  
-};
 
 export default Login;

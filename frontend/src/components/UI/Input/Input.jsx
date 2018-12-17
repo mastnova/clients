@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import './Input.scss';
 
-import { isValid as isInputValid } from '../../utils/validation';
+import { isValid as isInputValid } from '../../../utils/validation';
 
 class Input extends PureComponent {
   static defaultProps = {

@@ -1,9 +1,54 @@
-.input__error {
-  border: 1px solid red
+@font-face {
+  font-family: 'pn-bold';
+  src: url('./fonts/ProximaNova-Bold.woff');
 }
 
-.input__success {
-  border: 1px solid lightgreen;
+@font-face {
+  font-family: 'pn-semibold';
+  src: url('./fonts/ProximaNova-Semibold.woff');
+}
+
+@font-face {
+  font-family: 'pn-regular';
+  src: url('./fonts/ProximaNova-Regular.woff');
+}
+
+html, body, #root, .router {
+  height: 100%;
+}
+
+div, form {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f2f2f9;
+}
+
+.button {
+  font-family: 'pn-semibold';
+  background-color: #344178;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  outline: none;
+  transition: all .2s;
+}
+
+.button[disabled] {
+  background-color: #f2f2f8;
+  color: #344178;
+  cursor: not-allowed;
+}
+
+.button:not([disabled]):hover {
+  background-color: #475699;
+}
+
+.button:focus {
+  transition: none;
+  background-color: #2d3868;
 }
 
 .App {

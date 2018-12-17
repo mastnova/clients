@@ -1,3 +1,101 @@
 .login-page {
-  background: red;
+  display: table;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+
+  .login-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+
+    .login-block {
+      width: 803px;
+      margin: 0 auto;
+      background-image: url('../../images/bgs/login.png');
+      background-repeat: no-repeat;
+      background-position-y: 5px;
+    }
+
+    .login-panel {
+      position: relative;
+      width: 570px;
+      height: 380px;
+      background-color: #fff;
+      border: 1px solid #344178;
+      border-radius: 10px;
+      margin: 0 auto;
+      padding: 40px 100px;
+
+      .header-block {
+        position: absolute;
+        top: -110px;
+        left: 146px;
+
+        &__logo {
+          display: inline-block;
+          width: 56px;
+          height: 56px;
+          background-image: url('../../images/icons/logo.png');
+          background-repeat: no-repeat;
+        }
+
+        &__title {
+          display: inline-block;
+          vertical-align: top;
+          text-align: left;
+          margin-left: 25px;
+          font-size: 30px;
+          color: #344178;
+          font-family: 'pn-bold';
+          span {
+            font-family: 'pn-regular';
+            display: block;
+            font-size: 18px;
+          }
+        }
+      }
+
+      &__header {
+        font-family: 'pn-bold';
+        color: #344178;
+        font-size: 18px;
+        margin-bottom: 30px;
+      }
+
+      &__error {
+        background: #ffe3e3;
+        border-radius: 7px;
+        height: 30px;
+        padding: 7px;
+        font-family: 'pn-regular';
+        color: #b82222;
+        font-size: 15px;
+        margin-top: -10px;
+        margin-bottom: 10px;
+        opacity: 0;
+        transition: opacity .5s;
+
+        &_show {
+          opacity: 1;
+        }
+      }
+
+      label {
+        font-family: 'pn-semibold';
+        display: block;
+        color: #344178;
+        text-align: left;
+        margin-bottom: 20px;
+
+        div {
+          margin-bottom: 10px;
+        }
+      }
+
+      button {
+        width: 210px;
+        height: 40px;
+      }
+    }
+  }
 }

@@ -58,9 +58,8 @@ async function login(logPass) {
   const response = await request(API.login.url, API.login.method, logPass);
   if (response.isOk) {
     user.login();
-    return true;
   }
-  return false;
+  return response;
 }
 
 async function getUsers() {

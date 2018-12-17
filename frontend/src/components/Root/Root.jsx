@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import Input from '../UI/Input';
+import Input from '../UI/Input/Input';
 import API from '../../API'; 
 import { PAGE_URL } from '../../constants';
 
