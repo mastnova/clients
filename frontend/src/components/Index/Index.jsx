@@ -29,6 +29,10 @@ class Index extends PureComponent {
     }
   }
 
+  showPopup = () => {
+    this.props.openPopup('add-agent');
+  }
+
   render() {
     return (
       <div>
@@ -38,6 +42,7 @@ class Index extends PureComponent {
           this.state.users.map(user => <li key={user.id}>{user.login} - {user.role} - {user.created}</li>)
         }
         </ul>
+        <button onClick={this.showPopup}>add agent</button>
       </div>
     );
   }

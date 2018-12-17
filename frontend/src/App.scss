@@ -21,6 +21,10 @@ div, form {
   box-sizing: border-box;
 }
 
+ul, p {
+  margin: 0;
+}
+
 body {
   background-color: #f2f2f9;
 }
@@ -34,12 +38,24 @@ body {
   cursor: pointer;
   outline: none;
   transition: all .2s;
+
+  &_add {
+    padding-left: 30px;
+    background: url('./images/icons/add.png');
+    background-repeat: no-repeat;
+    background-position-y: center;
+    filter: brightness(10);
+  }
 }
 
 .button[disabled] {
   background-color: #f2f2f8;
   color: #344178;
   cursor: not-allowed;
+
+  .button_add {
+    filter: brightness(1);
+  }
 }
 
 .button:not([disabled]):hover {

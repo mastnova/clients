@@ -1,0 +1,87 @@
+.popup-wrapper {
+  display: table;
+  background:#0006;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  .popup-block {
+    vertical-align: middle;
+    display: table-cell;
+    text-align: center;
+
+    .content-wrapper {
+      position: relative;
+      display: inline-block;
+      background: #fff;
+      border-radius: 10px;
+      padding: 35px 100px 20px;
+
+      .close-btn {
+        width: 15px;
+        height: 15px;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        cursor: pointer;
+        background: url('../../images/icons/close.png');
+
+        &:hover {
+          opacity: .8;
+        }
+      }
+    }
+  }
+
+  &.showpopup-enter {
+    opacity: 0.01;
+  }
+
+  &.showpopup-enter.showpopup-enter-active {
+    opacity: 1;
+    transition: opacity 300ms ease-in;
+  }
+
+  &.showpopup-leave {
+    opacity: 1;
+  }
+
+  &.showpopup-leave.showpopup-leave-active {
+    opacity: 0.01;
+    transition: opacity 300ms ease-in;
+  }
+}
+
+.popup-content {
+  &__title {
+    font-family: 'pn-bold';
+    color: #344178;
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+
+  label {
+    font-family: 'pn-semibold';
+    display: block;
+    color: #344178;
+    text-align: left;
+    margin-bottom: 20px;
+
+    div {
+      margin-bottom: 10px;
+    }
+  }
+
+  button {
+    width: 210px;
+    height: 40px;
+    margin-top: 20px;
+  }
+} 
+
+.popup_add-agent {
+  width: 365px;
+  height: 380px;
+}

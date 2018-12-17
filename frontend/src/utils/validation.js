@@ -11,5 +11,5 @@ export function isValid (value, type) {
     }
     return false;
   }
-  throw ('Unknown validation type');
+  console.error('Unknown validation type');
 }
