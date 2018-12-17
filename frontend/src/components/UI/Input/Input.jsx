@@ -8,6 +8,7 @@ import { isValid as isInputValid } from '../../../utils/validation';
 class Input extends PureComponent {
   static defaultProps = {
     name: 'input',
+    type: 'text',
     value: '',
     placeholder: '',
     onChange: () => { },
@@ -21,16 +22,17 @@ class Input extends PureComponent {
     };
   }
 
-  onChange = ({target}) => {
+  onChange = () => {
+    const value = this.input.value;
     const comparingValue = this.props.compareWith;
-    let isValid = isInputValid(target.value, this.props.validationType);
+    let isValid = isInputValid(value, this.props.validationType);
     if (comparingValue) {
-      isValid = target.value === comparingValue ? isValid : false
+      isValid = value === comparingValue ? isValid : false
     }
     this.setState({isValid});
     this.props.onChange({
       name: this.props.name,
-      value: target.value,
+      value,
       isValid,
     })
   }
@@ -40,26 +42,33 @@ class Input extends PureComponent {
   }
 
   render() {
+    this.props.compareWith && this.onChange();
     const cn = classNames(
-      'input', 
+      'input',
       {'input__error': !this.state.isValid && this.state.isActivated},
       { 'input__success': this.state.isValid && this.state.isActivated},
-      );
+    );
     return (
+      <div className={this.props.icon ? `input-wrapper input-wrapper_${this.props.icon}`: null}>
       <input
         className={cn}
+        type={this.props.type}
         name={this.props.name}
         onChange={this.onChange}
         onBlur={this.onBlur}
         value={this.props.value}
         placeholder={this.props.placeholder}
+        ref={(el) => {this.input = el}}
       />
+      </div>
     );
   }
 }
 
 Input.propTypes = {
   name: PropTypes.string,
+  icon: PropTypes.string,
+  type: PropTypes.string,
   onChange: PropTypes.func,
   value: PropTypes.string,
   placeholder: PropTypes.string,

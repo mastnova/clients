@@ -17,3 +17,30 @@
     border: 1px solid #35ad35;
   }
 }
+
+.input-wrapper {
+  position: relative;
+
+  .input {
+    padding-left: 40px;
+  }
+
+  &_login:before {
+    background: url('../../../images/icons/login.png');
+  }
+
+  &_password:before {
+    background: url('../../../images/icons/password.png');
+  }
+
+  &:before {
+    position: absolute;
+    content: '';
+    left: 10px;
+    top: 10px;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}

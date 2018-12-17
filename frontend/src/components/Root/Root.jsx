@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import './Root.scss';
 
 import Input from '../UI/Input/Input';
 import API from '../../API'; 
@@ -40,7 +40,8 @@ class Root extends PureComponent {
     return this.state.loginIsValid && this.state.passwordIsValid && this.state.repeatPasswordIsValid;
   }
 
-  createAccount = async () => {
+  createAccount = async (e) => {
+    e.preventDefault();
     const isCreated = await API.createUser({
       role: 'root',
       login: this.state.login,
@@ -53,41 +54,51 @@ class Root extends PureComponent {
 
   render() {
     return (
-      <div>
-        <p>Create admin account</p>
-        <Input
-          name="login"
-          placeholder="login"
-          validationType="login"
-          value={this.state.login}
-          onChange={this.onChangeInput}
-        />
-        <br />
-        <Input 
-          name="password"
-          placeholder="Password"
-          validationType="password"
-          value={this.state.password}
-          onChange={this.onChangeInput}
-        />
-        <br />
-        <Input
-          name="repeatPassword"
-          placeholder="Password"
-          validationType="password"
-          value={this.state.repeatPassword}
-          compareWith={this.state.password}
-          onChange={this.onChangeInput}
-        />
-        <br />
-        <button onClick={this.createAccount} disabled={!this.isFormValid()}>create</button>
+      <div className="root-page">
+        <div className="root-wrapper">
+          <div className="root-block">
+            <form className="root-panel" onSubmit={this.createAccount}>
+              <div className="root-panel__header">Создание администратора системы</div>
+              <label>
+                <div>Логин</div>
+                <Input
+                  name="login"
+                  placeholder="Логин"
+                  validationType="login"
+                  value={this.state.login}
+                  onChange={this.onChangeInput}
+                />
+              </label>
+              <label>
+                <div>Пароль</div>
+                <Input
+                  type="password"
+                  name="password"
+                  placeholder="Пароль"
+                  validationType="password"
+                  value={this.state.password}
+                  onChange={this.onChangeInput}
+                />
+              </label>
+              <label>
+                <div>Повтор пароля</div>
+                <Input
+                  type="password"
+                  name="repeatPassword"
+                  placeholder="Пароль"
+                  validationType="password"
+                  value={this.state.repeatPassword}
+                  compareWith={this.state.password}
+                  onChange={this.onChangeInput}
+                />
+              </label>
+              <button className="button" type="submit" disabled={!this.isFormValid()}>create</button>
+            </form>
+          </div>
+        </div>
       </div>
     );
   }
 }
-
-Root.propTypes = {
-  
-};
 
 export default Root;

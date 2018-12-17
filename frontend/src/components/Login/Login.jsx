@@ -65,6 +65,7 @@ class Login extends PureComponent {
                 <div>Логин</div>
                 <Input
                   name="login"
+                  icon="login"
                   placeholder="Введите логин"
                   validationType="login"
                   value={this.state.login}
@@ -75,6 +76,8 @@ class Login extends PureComponent {
                 <div>Пароль</div>
                 <Input
                   name="password"
+                  icon="password"
+                  type="password"
                   placeholder="Введите пароль"
                   validationType="password"
                   value={this.state.password}

@@ -1,0 +1,51 @@
+.root-page {
+  display: table;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+
+  .root-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+
+    .root-block {
+      width: 803px;
+      margin: 0 auto;
+    }
+
+    .root-panel {
+      position: relative;
+      width: 570px;
+      height: 405px;
+      background-color: #fff;
+      border: 1px solid #344178;
+      border-radius: 10px;
+      margin: 0 auto;
+      padding: 40px 100px;
+
+      &__header {
+        font-family: 'pn-bold';
+        color: #344178;
+        font-size: 18px;
+        margin-bottom: 30px;
+      }
+
+      label {
+        font-family: 'pn-semibold';
+        display: block;
+        color: #344178;
+        text-align: left;
+        margin-bottom: 20px;
+
+        div {
+          margin-bottom: 10px;
+        }
+      }
+
+      button {
+        width: 210px;
+        height: 40px;
+      }
+    }
+  }
+}
