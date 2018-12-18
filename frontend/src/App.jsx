@@ -12,12 +12,14 @@ class App extends Component {
   state = {
     popupIsOpen: false,
     popupName: '',
+    popupData: null,
   }
 
-  openPopup = (popupName) => {
+  openPopup = (popupName, data) => {
     this.setState({
       popupIsOpen: true,
-      popupName
+      popupName,
+      popupData: data,
     });
   }
 
@@ -34,7 +36,13 @@ class App extends Component {
           <Route path={PAGE_URL.index} exact render={(props) => <Index {...props} openPopup={this.openPopup} />} />
           <Route path={PAGE_URL.login} exact component={Login} />
           <Route path={PAGE_URL.root} exact component={Root} />
-          <Popup isOpen={this.state.popupIsOpen} name={this.state.popupName} close={this.closePopup}/>
+          <Popup 
+            isOpen={this.state.popupIsOpen}
+            name={this.state.popupName}
+            data={this.state.popupData}
+            open={this.openPopup}
+            close={this.closePopup}
+          />
         </div>
       </Router>
     );

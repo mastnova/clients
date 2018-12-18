@@ -17,7 +17,7 @@
       display: inline-block;
       background: #fff;
       border-radius: 10px;
-      padding: 35px 100px 20px;
+      padding: 35px 50px 20px;
 
       .close-btn {
         width: 15px;
@@ -41,7 +41,7 @@
 
   &.showpopup-enter.showpopup-enter-active {
     opacity: 1;
-    transition: opacity 300ms ease-in;
+    transition: opacity 200ms ease-in;
   }
 
   &.showpopup-leave {
@@ -50,7 +50,7 @@
 
   &.showpopup-leave.showpopup-leave-active {
     opacity: 0.01;
-    transition: opacity 300ms ease-in;
+    transition: opacity 150ms ease-in;
   }
 }
 
@@ -84,4 +84,33 @@
 .popup_add-agent {
   width: 365px;
   height: 380px;
+}
+
+.popup_alert {
+  width: 460px;
+  height: 160px;
+
+  &__alert {
+    font-family: 'pn-regular';
+    min-height: 75px;
+    text-align: center;
+    color: #fff;
+    border-radius: 5px;
+    padding: 28px 20px;
+    margin-bottom: 10px;
+
+    &_success {
+      background-color: #36af47;
+    }
+
+    &_error {
+      background-color: #ea7711;
+    }
+  }
+
+  &__msg {
+    padding-left: 30px;
+    background: url('../../images/icons/info.png') no-repeat;
+    background-position-y: center;
+  }
 }

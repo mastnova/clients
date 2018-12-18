@@ -48,10 +48,7 @@ async function hasRoot() {
 
 async function createUser(user) {
   const response = await request(API.createUser.url, API.createUser.method, user);
-  if (response.isOk) {
-    return true;
-  }
-  return false;
+  return response;
 }
 
 async function login(logPass) {

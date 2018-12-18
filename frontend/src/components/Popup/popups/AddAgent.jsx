@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
+
 import Input from '../../UI/Input/Input';
+import API from '../../../API';
 
 class AddAgent extends PureComponent {
   constructor(props) {
@@ -25,13 +27,19 @@ class AddAgent extends PureComponent {
     return this.state.loginIsValid && this.state.passwordIsValid && this.state.repeatPasswordIsValid;
   }
 
-  addAgent = (e) => {
+  addAgent = async (e) => {
     e.preventDefault();
-    console.log('added')
-    // const res = await API.login({
-    //   login: this.state.login,
-    //   password: this.state.password,
-    // });
+    const response = await API.createUser({
+      role: 'agent',
+      login: this.state.login,
+      password: this.state.password,
+    });
+    if (response.isOk) {
+      this.props.openPopup('alert', {type: 'success', text: `Агент <b>${this.state.login}</b> успешно добавлен`});
+    } else {
+      const text = response.data.code === 6 ? 'Такой логин уже зарегистрирован' : 'Произошла ошибка';
+      this.props.openPopup('alert', { type: 'error', text });
+    }
   }
 
   render() {

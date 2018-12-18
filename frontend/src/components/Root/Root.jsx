@@ -42,12 +42,12 @@ class Root extends PureComponent {
 
   createAccount = async (e) => {
     e.preventDefault();
-    const isCreated = await API.createUser({
+    const response = await API.createUser({
       role: 'root',
       login: this.state.login,
       password: this.state.password,
     });
-    if (isCreated) {
+    if (response.isOk) {
       this.props.history.push(PAGE_URL.login);
     }
   }

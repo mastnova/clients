@@ -19,4 +19,14 @@ module.exports = {
     code: 4,
     message: 'Token is invalid',
   },
+  notAllowed: {
+    status: 'error',
+    code: 5,
+    message: "You don't have enough permissions",
+  },
+  userExist: {
+    status: 'error',
+    code: 6,
+    message: "User with this login is already exist",
+  },
 };
