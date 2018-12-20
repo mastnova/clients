@@ -10,6 +10,11 @@ export function isValid (value, type) {
       return true;
     }
     return false;
+  } else if (type === 'required') {
+    if (value.length) {
+      return true;
+    }
+    return false;
   }
   console.error('Unknown validation type');
 }

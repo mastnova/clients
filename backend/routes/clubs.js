@@ -1,27 +1,25 @@
 const User = require('../schemas/user');
+const Club = require('../schemas/club');
 const Errors = require('../errors');
 
-const usersProjection = {
-  login: true,
-  role: true,
+const clubsProjection = {
+  name: true,
+  address: true,
+  clientsCount: true,
   created: true,
   status: true,
 };
 
 module.exports = function (app) {
-  app.get('/api/users', function (req, res, next) {
+  app.get('/api/clubs', function (req, res, next) {
     const token = req.cookies['token'];
     User.findOne({ token }, function (err, user) {
       if (err) next(err);
       if (user) {
-        if (user.role === 'root') {
-          User.find({}, usersProjection, function (err, users) {
-            if (err) next(err);
-            res.send(users);
-          })
-        } else {
-          res.send([]);
-        }
+        Club.find({ owner: user.id }, clubsProjection, function (err, clubs) {
+          if (err) next(err);
+          res.send(clubs);
+        })
       } else {
         res.status(401);
         res.send(Errors.invalidToken);

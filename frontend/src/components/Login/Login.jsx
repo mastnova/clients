@@ -5,6 +5,7 @@ import './Login.scss';
 import Input from '../UI/Input/Input';
 import API from '../../API'; 
 import { PAGE_URL } from '../../constants';
+import user from '../../utils/user';
 
 class Login extends PureComponent {
   constructor(props) {
@@ -19,8 +20,7 @@ class Login extends PureComponent {
   }
 
   componentWillMount() {
-    const hasAuth = sessionStorage.getItem('userHasAuth');
-    if (hasAuth) {
+    if (user.hasAuth()) {
       this.props.history.push(PAGE_URL.index);
     }
   }

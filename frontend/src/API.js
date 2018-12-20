@@ -16,7 +16,31 @@ const API = {
   getUsers: {
     method: 'GET',
     url: '/api/users',
-  }
+  },
+  getClients: {
+    method: 'GET',
+    url: '/api/clients/',
+  },
+  getClient: {
+    method: 'GET',
+    url: '/api/client/',
+  },
+  createClub: {
+    method: 'POST',
+    url: '/api/club',
+  },
+  getClubs: {
+    method: 'GET',
+    url: '/api/clubs',
+  },
+  getClub: {
+    method: 'GET',
+    url: '/api/club/',
+  },
+  getOperators: {
+    method: 'GET',
+    url: '/api/operators/',
+  },
 };
 
 async function request(url, method = 'GET', data) {
@@ -55,6 +79,7 @@ async function login(logPass) {
   const response = await request(API.login.url, API.login.method, logPass);
   if (response.isOk) {
     user.login();
+    user.setRole(response.data.role);
   }
   return response;
 }
@@ -67,9 +92,60 @@ async function getUsers() {
   return null;
 }
 
+async function getClients(id) {
+  const response = await request(API.getClients.url + id);
+  if (response.isOk) {
+    return response.data;
+  }
+  return null;
+}
+
+async function getClient(id) {
+  const response = await request(API.getClient.url + id);
+  if (response.isOk) {
+    return response.data;
+  }
+  return null;
+}
+
+async function createClub(club) {
+  const response = await request(API.createClub.url, API.createClub.method, club);
+  return response;
+}
+
+async function getClubs() {
+  const response = await request(API.getClubs.url);
+  if (response.isOk) {
+    return response.data;
+  }
+  return null;
+}
+
+async function getClub(id) {
+  const response = await request(API.getClub.url + id);
+  if (response.isOk) {
+    return response.data;
+  }
+  return null;
+}
+
+async function getOperators(clubId) {
+  const response = await request(API.getOperators.url + clubId);
+  if (response.isOk) {
+    return response.data;
+  }
+  return null;
+}
+
 export default {
   hasRoot,
   createUser,
   login,
   getUsers,
+  getClients,
+  getClient,
+  createClub,
+  getClubs,
+  getClub,
+  getOperators,
 };

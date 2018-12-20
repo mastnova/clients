@@ -11,6 +11,11 @@ const schemaUser = new db.Schema({
     type: String,
     require: true,
   },
+  status: {
+    type: String,
+    require: true,
+    default: 'active',
+  },
   hash: {
     type: String,
     require: true,
