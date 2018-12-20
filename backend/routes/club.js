@@ -2,29 +2,20 @@ const User = require('../schemas/user');
 const Club = require('../schemas/club');
 const Errors = require('../errors');
 
-const clubProjection = {
-  name: true,
-  address: true,
-  clientsCount: true,
-  created: true,
-  status: true,
-  owner: true,
-};
-
 module.exports = function (app) {
   app.get('/api/club/:clubId', function (req, res, next) {
     const token = req.cookies['token'];
     const id = req.params.clubId;
-    User.findOne({ token }, function (err, agent) {
+    User.findOne({ token }, function (err, user) {
       if (err) next(err);
-      if (agent) {
-        Club.findById(id, clubProjection, function (err, club) {
+      if (user) {
+        Club.findById(id, function (err, club) {
           if (err) next(err);
           if (club) {
-            if (club.owner == agent.id) {
+            if (club.owner == user.id) {
               res.send(club)
-            } else {
-              res.send({})
+            } else if (club.operators.includes(user.id)) {
+              res.send({name: club.name, promotions: club.promotions})
             }
           } else {
             res.send({})
@@ -60,7 +51,14 @@ module.exports = function (app) {
                   res.send(error);
                 }
                 else {
-                  res.send({ status: 'ok', data: club, oper: operator, opid: operator.id });
+                  operator.clubId = club.id;
+                  operator.save(function (err, op) {
+                    if (err) {
+                      next(err);
+                    } else {
+                      res.send({ status: 'ok'});
+                    }
+                  });
                 }
               });
             }

@@ -41,6 +41,10 @@ const API = {
     method: 'GET',
     url: '/api/operators/',
   },
+  createPromotion: {
+    method: 'POST',
+    url: '/api/promotion/',
+  },
 };
 
 async function request(url, method = 'GET', data) {
@@ -80,6 +84,10 @@ async function login(logPass) {
   if (response.isOk) {
     user.login();
     user.setRole(response.data.role);
+    const clubId = response.data.clubId;
+    if (clubId) {
+      user.setData('clubId', clubId);
+    }
   }
   return response;
 }
@@ -137,6 +145,11 @@ async function getOperators(clubId) {
   return null;
 }
 
+async function createPromotion(clubId, promo) {
+  const response = await request(API.createPromotion.url + clubId, API.createPromotion.method, promo);
+  return response;
+}
+
 export default {
   hasRoot,
   createUser,
@@ -148,4 +161,5 @@ export default {
   getClubs,
   getClub,
   getOperators,
+  createPromotion,
 };

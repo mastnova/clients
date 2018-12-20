@@ -8,7 +8,7 @@ const usersProjection = {
 };
 
 module.exports = function (app) {
-  app.get('/api/clients/:userId', function (req, res, next) {
+  app.get('/api/clients/:clubId', function (req, res, next) {
     const token = req.cookies['token'];
     res.send([
       {id: 1, name: 'vasya', phone: '902-129-12-12'},

@@ -16,6 +16,9 @@ const schemaUser = new db.Schema({
     require: true,
     default: 'active',
   },
+  clubId: {
+    type: db.Schema.ObjectId,
+  },
   hash: {
     type: String,
     require: true,

@@ -5,6 +5,7 @@ import './Popup.scss';
 
 import AddAgent from './popups/AddAgent';
 import AddClub from './popups/AddClub';
+import AddPromo from './popups/AddPromo';
 import Alert from './popups/Alert';
 
 class Popup extends PureComponent {
@@ -39,6 +40,8 @@ class Popup extends PureComponent {
       content = <Alert data={this.props.data} close={this.props.close}/>
     } else if (this.props.name === 'add-club') {
       content = <AddClub openPopup={this.props.open} />
+    } else if(this.props.name === 'add-promo') {
+      content = <AddPromo data={this.props.data} openPopup={this.props.open} />
     }
 
     return (

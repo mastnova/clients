@@ -47,7 +47,7 @@ class AddAgent extends PureComponent {
       <div className="popup-content popup_add-agent">
         <div className="popup-content__title">Добавить агента</div>
         <form onSubmit={this.addAgent}>
-          <label>
+          <label className="label">
             <div>Логин</div>
             <Input
               name="login"
@@ -58,7 +58,7 @@ class AddAgent extends PureComponent {
               onChange={this.onChangeInput}
             />
           </label>
-          <label>
+          <label className="label">
             <div>Пароль</div>
             <Input
               name="password"
@@ -70,7 +70,7 @@ class AddAgent extends PureComponent {
               onChange={this.onChangeInput}
             />
           </label>
-          <label>
+          <label className="label">
             <div>Повтор пароля</div>
             <Input
               name="repeatPassword"

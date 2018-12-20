@@ -24,12 +24,17 @@ class Club extends PureComponent {
     }
   }
 
+  onAddPromo = () => {
+    this.props.openPopup('add-promo', { id: this.state.club.id});
+  }
+
   render() {
     const id = this.props.match.params.id;
     return (
       <div>
         <p>client - {this.state.club.name}</p>
-        {/* {this.state.client.actions && this.state.client.actions.map(a => <div>{a.name}</div>)} */}
+        <button onClick={this.onAddPromo}>Add promo</button>
+        {this.state.club.promotions && this.state.club.promotions.map(a => <div>{a.name} - {a.description}</div>)}
         <Link to={id + '/operators'}>operators</Link>
       </div>
     );

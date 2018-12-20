@@ -55,7 +55,7 @@ class AddClub extends PureComponent {
       <div className="popup-content popup_add-club">
         <div className="popup-content__title">Создать клуб</div>
         <form onSubmit={this.addClub}>
-          <label>
+          <label className="label">
             <div>Название клуба</div>
             <Input
               name="name"
@@ -66,7 +66,7 @@ class AddClub extends PureComponent {
               onChange={this.onChangeInput}
             />
           </label>
-          <label>
+          <label className="label">
             <div>Адрес</div>
             <Input
               name="address"
@@ -80,7 +80,7 @@ class AddClub extends PureComponent {
           <br/>
           <br/>
           <div className="popup-content__title">Создать оператора клуба</div>
-          <label>
+          <label className="label">
             <div>Логин</div>
             <Input
               name="login"
@@ -91,7 +91,7 @@ class AddClub extends PureComponent {
               onChange={this.onChangeInput}
             />
           </label>
-          <label>
+          <label className="label">
             <div>Пароль</div>
             <Input
               name="password"
@@ -103,7 +103,7 @@ class AddClub extends PureComponent {
               onChange={this.onChangeInput}
             />
           </label>
-          <label>
+          <label className="label">
             <div>Повтор пароля</div>
             <Input
               name="repeatPassword"

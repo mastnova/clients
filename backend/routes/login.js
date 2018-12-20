@@ -15,7 +15,11 @@ module.exports = function (app) {
           user.save(function (err, updatedUser) {
             if (err) next(err);
             res.cookie('token', token, { httpOnly: true, sameSite: true});
-            res.send({ status: 'ok', role });
+            if (role === 'operator') {
+              res.send({ status: 'ok', role, clubId: user.clubId });
+            } else {
+              res.send({ status: 'ok', role });
+            }
           })
         } else {
           res.status(403)

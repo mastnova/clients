@@ -61,7 +61,7 @@ class Login extends PureComponent {
                 <div className="header-block__title">SlotAdmin<span>Система учета клиентов</span></div>
               </div>
               <div className="login-panel__header">Вход в систему учета клиентов</div>
-              <label>
+              <label className="label">
                 <div>Логин</div>
                 <Input
                   name="login"
@@ -72,7 +72,7 @@ class Login extends PureComponent {
                   onChange={this.onChangeInput}
                 />
               </label>
-              <label>
+              <label className="label">
                 <div>Пароль</div>
                 <Input
                   name="password"

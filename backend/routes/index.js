@@ -7,6 +7,7 @@ const clients = require('./clients');
 const club = require('./club');
 const clubs = require('./clubs');
 const operators = require('./operators');
+const promotion = require('./promotion');
 const login = require('./login');
 
 module.exports = function (app) {
@@ -19,6 +20,7 @@ module.exports = function (app) {
   club(app);
   clubs(app);
   operators(app);
+  promotion(app);
 
   //catch 404
   app.use(function (req, res, next) {
