@@ -25,6 +25,10 @@ const API = {
     method: 'GET',
     url: '/api/client/',
   },
+  createClient: {
+    method: 'POST',
+    url: '/api/client',
+  },
   createClub: {
     method: 'POST',
     url: '/api/club',
@@ -58,7 +62,13 @@ async function request(url, method = 'GET', data) {
     params.body = JSON.stringify(data);
   }
   const response = await fetch(url, params);
-  const body = await response.json();
+  let body;
+  try {
+    body = await response.json();
+  } catch {
+    console.error('request has been finished with error');
+    return { isOk: false, data: {}};
+  }
   if (response.status !== 200) {
     console.error(body.message);
     if (body.code === 4) {
@@ -116,6 +126,11 @@ async function getClient(id) {
   return null;
 }
 
+async function createClient(client) {
+  const response = await request(API.createClient.url, API.createClient.method, client);
+  return response;
+}
+
 async function createClub(club) {
   const response = await request(API.createClub.url, API.createClub.method, club);
   return response;
@@ -157,6 +172,7 @@ export default {
   getUsers,
   getClients,
   getClient,
+  createClient,
   createClub,
   getClubs,
   getClub,

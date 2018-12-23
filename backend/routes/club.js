@@ -18,7 +18,8 @@ module.exports = function (app) {
               res.send({name: club.name, promotions: club.promotions})
             }
           } else {
-            res.send({})
+            res.status(404);
+            res.send(Errors.notFound);
           }
         })
       } else {

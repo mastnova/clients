@@ -23,6 +23,11 @@ class Operators extends PureComponent {
     }
   }
 
+  onAddOperator = () => {
+    const id = this.props.match.params.id;
+    this.props.openPopup('add-operator', { id });
+  }
+
   render() {
     return (
       <div>
@@ -30,6 +35,7 @@ class Operators extends PureComponent {
         {
           this.state.operators.map( op => <div>{op.login} - {op.created} - {op.status}</div>)
         }
+        <button onClick={this.onAddOperator}>Add operator</button>
         </div>
     );
   }

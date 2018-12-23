@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import './IndexOperator.scss';
 
@@ -12,6 +11,7 @@ class IndexOperator extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      promoId: '',
       club: {
         name: 'Клуб',
         promotions: [],
@@ -46,12 +46,25 @@ class IndexOperator extends PureComponent {
     }
   }
 
-  showPopup = () => {
-    this.props.openPopup('add-club');
+  onPromoSelect = ({target}) => {
+    this.setState({
+      promoId: target.value,
+      // promoName: xxx.options[xxx.selectedIndex].text,
+    })
   }
 
-  register = () => {
-
+  register = async () => {
+    const response = await API.createClient({
+      name: this.state.name,
+      phone: this.state.phone,
+      promotion: this.state.promoId,
+    });
+    if (response.isOk) {
+      this.props.openPopup('alert', { type: 'success', text: `Клиент <b>${this.state.name}</b> успешно добавлен` });
+    } else {
+      const text = response.data.code === 6 ? 'Такой логин уже зарегистрирован' : 'Произошла ошибка';
+      this.props.openPopup('alert', { type: 'error', text });
+    }
   }
 
   render() {
@@ -85,8 +98,8 @@ class IndexOperator extends PureComponent {
           </label>
           <label className="label">
             <div>Акция</div>
-            <select>
-              <option value="no">без акции</option>
+            <select onChange={this.onPromoSelect} value={this.state.promoId}>
+              <option value="">без акции</option>
               {
                 this.state.club.promotions.map( promo => <option key={promo.id} value={promo.id}>{promo.name}</option>)
               }
@@ -98,9 +111,5 @@ class IndexOperator extends PureComponent {
     );
   }
 }
-
-IndexOperator.propTypes = {
-
-};
 
 export default IndexOperator;

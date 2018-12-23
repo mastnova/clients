@@ -1,4 +1,5 @@
 const User = require('../schemas/user');
+const Client = require('../schemas/client');
 const Errors = require('../errors');
 
 const usersProjection = {
@@ -34,5 +35,63 @@ module.exports = function (app) {
     //     res.send(Errors.invalidToken);
     //   }
     // });
+  });
+
+  app.post('/api/client', function (req, res, next) {
+    const name = req.body.name;
+    const phone = req.body.phone;
+    const promotion = req.body.promotion;
+    const token = req.cookies['token'];
+
+    User.findOne({ token }, function (err, operator) {
+      if (err) next(err);
+      if (operator) {
+        Client.findOne({ club: operator.clubId, phone}, function (err, client) {
+          if (err) next(err);
+          if (client) {
+            if (!promotion) {
+              res.status(403);
+              res.send(Errors.clientExist);
+            } else {
+              if (client.hasPromotion(promotion)) {
+                res.status(403);
+                res.send(Errors.clientPromoted);
+              } else {
+                client.addPromotion(promotion);
+                client.save(function(error) {
+                  if (error) {
+                    res.status(400);
+                    res.send(error);
+                  } else {
+                    res.send({status: 'ok'});
+                  }
+                });
+              }
+            }
+          } else {
+            let promotions = [];
+            if (promotion) {
+              promotions.push({
+                id: promotion,
+                date: new Date().getTime(),
+              });
+            }
+            new Client({ name, phone, promotions, club: operator.clubId })
+            .save(function (error) {
+              if (error) {
+                res.status(400);
+                res.send(error);
+              }
+              else {
+                res.send({ status: 'ok' });
+              }
+            });
+          }
+        });
+      } else {
+        res.status(401);
+        res.send(Errors.invalidToken);
+      }
+    });
   });
 }

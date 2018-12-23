@@ -29,4 +29,14 @@ module.exports = {
     code: 6,
     message: "User with this login is already exist",
   },
+  clientExist: {
+    status: 'error',
+    code: 7,
+    message: "Client with this phone number is already registered",
+  },
+  clientPromoted: {
+    status: 'error',
+    code: 8,
+    message: "Client has this promotion already",
+  },
 };

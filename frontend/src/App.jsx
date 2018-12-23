@@ -60,7 +60,7 @@ class App extends Component {
           <Route path={`${PAGE_URL.clients}/:id`} exact component={Clients} />
           <Route path={`${PAGE_URL.client}/:id`} exact component={Client} />
           <Route path={`${PAGE_URL.club}/:id`} exact render={(props) => <Club {...props} openPopup={this.openPopup}/>} />
-          <Route path={`${PAGE_URL.club}/:id/operators`} exact component={Operators} />
+          <Route path={`${PAGE_URL.club}/:id/operators`} exact render={(props) => <Operators {...props} openPopup={this.openPopup} />} />
           <Popup 
             isOpen={this.state.popupIsOpen}
             name={this.state.popupName}
