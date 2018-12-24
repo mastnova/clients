@@ -5,7 +5,6 @@ import './Login.scss';
 import Input from '../UI/Input/Input';
 import API from '../../API'; 
 import { PAGE_URL } from '../../constants';
-import user from '../../utils/user';
 
 class Login extends PureComponent {
   constructor(props) {
@@ -20,7 +19,7 @@ class Login extends PureComponent {
   }
 
   componentWillMount() {
-    if (user.hasAuth()) {
+    if (this.props.hasAuth) {
       this.props.history.push(PAGE_URL.index);
     }
   }
@@ -43,6 +42,7 @@ class Login extends PureComponent {
       password: this.state.password,
     });
     if (res.isOk) {
+      this.props.onLogin(res.data);
       this.props.history.push(PAGE_URL.index);
     } else {
       const errorMessage = res.data.code === 3 ? 'Неверный логин или пароль' : 'Ошибка авторизации';

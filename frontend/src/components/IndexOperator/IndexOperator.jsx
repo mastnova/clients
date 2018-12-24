@@ -5,7 +5,6 @@ import './IndexOperator.scss';
 import Input from '../UI/Input/Input';
 import { PAGE_URL } from '../../constants';
 import API from '../../API';
-import user from '../../utils/user';
 
 class IndexOperator extends PureComponent {
   constructor(props) {
@@ -25,7 +24,7 @@ class IndexOperator extends PureComponent {
   }
 
   componentWillMount() {
-    if (!user.hasAuth()) {
+    if (!this.props.hasAuth) {
       this.props.history.push(PAGE_URL.login)
     } else {
       this.fetchClub();
@@ -40,7 +39,7 @@ class IndexOperator extends PureComponent {
   }
 
   fetchClub = async () => {
-    const id = user.getData('clubId');
+    const id = this.props.club;
     const club = await API.getClub(id);
     if (club) {
       this.setState({ club });
@@ -74,7 +73,7 @@ class IndexOperator extends PureComponent {
   render() {
     return (
       <div className="operator-index">
-        <p>Index Operator page <button onClick={user.logout}>logout</button></p>
+        <p>Index Operator page <button onClick={this.props.onLogout}>logout</button></p>
         <div className="pic" />
         <div className="inputs-wrapper">
           <label className="label">

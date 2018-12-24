@@ -1,4 +1,4 @@
-import user from './utils/user';
+import { PAGE_URL } from './constants';
 
 const API = {
   hasRoot: {
@@ -72,7 +72,8 @@ async function request(url, method = 'GET', data) {
   if (response.status !== 200) {
     console.error(body.message);
     if (body.code === 4) {
-      user.logout();
+      sessionStorage.clear();
+      document.location = PAGE_URL.login;
     }
     return { isOk: false, data: body };
   }
@@ -91,14 +92,6 @@ async function createUser(user) {
 
 async function login(logPass) {
   const response = await request(API.login.url, API.login.method, logPass);
-  if (response.isOk) {
-    user.login();
-    user.setRole(response.data.role);
-    const clubId = response.data.clubId;
-    if (clubId) {
-      user.setData('clubId', clubId);
-    }
-  }
   return response;
 }
 
