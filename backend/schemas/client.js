@@ -19,6 +19,10 @@ const schemaClient = new db.Schema({
     type: db.Schema.ObjectId,
     require: true,
   },
+  creator: {
+    type: db.Schema.ObjectId,
+    require: true,
+  },
   created: {
     type: Date,
     default: Date.now()
@@ -30,13 +34,13 @@ const schemaClient = new db.Schema({
   }
 });
 
-schemaClient.methods.addPromotion = function (id) {
-  this.promotions.push({ id, date: moment().toString()})
+schemaClient.methods.addPromotion = function (promotion) {
+  this.promotions.push({ ...promotion, date: moment().toString()})
 };
 
 schemaClient.methods.hasPromotion = function (id) {
   const currentDay = moment().format('DD.MM.YYYY');
-  const promotions = this.promotions.map(promo => ({id: promo.id, date: moment(promo.date).format('DD.MM.YYYY')}));
+  const promotions = this.promotions.map(promo => ({...promo, date: moment(promo.date).format('DD.MM.YYYY')}));
   const promo = promotions.filter(promo => promo.id === id && promo.date === currentDay)
   return !!promo.length
 };

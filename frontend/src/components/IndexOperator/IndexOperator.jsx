@@ -11,6 +11,7 @@ class IndexOperator extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      promoName: '',
       promoId: '',
       club: {
         name: 'Клуб',
@@ -49,7 +50,7 @@ class IndexOperator extends PureComponent {
   onPromoSelect = ({target}) => {
     this.setState({
       promoId: target.value,
-      // promoName: xxx.options[xxx.selectedIndex].text,
+      promoName: target.options[target.selectedIndex].text,
     })
   }
 
@@ -57,7 +58,10 @@ class IndexOperator extends PureComponent {
     const response = await API.createClient({
       name: this.state.name,
       phone: this.state.phone,
-      promotion: this.state.promoId,
+      promotion: {
+        id: this.state.promoId,
+        name: this.state.promoName,
+      },
     });
     if (response.isOk) {
       this.props.openPopup('alert', { type: 'success', text: `Клиент <b>${this.state.name}</b> успешно добавлен` });

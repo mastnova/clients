@@ -1,5 +1,6 @@
 const User = require('../schemas/user');
 const Client = require('../schemas/client');
+const Club = require('../schemas/club');
 const Errors = require('../errors');
 
 const usersProjection = {
@@ -12,29 +13,36 @@ module.exports = function (app) {
   app.get('/api/client/:clientId', function (req, res, next) {
     const token = req.cookies['token'];
     const id = req.params.clientId;
-    if (id === '1') {
-      res.send({ id: 1, name: 'vasya', phone: '902-129-12-12', actions: [{ name: 'super' }, { name: 'puper' }] })
-    } else if (id === '2') {
-      res.send({ id: 2, name: 'sanya', phone: '922-972-42-11', actions: [{ name: 'superistick' }, { name: 'puperistick' }] })
-    } else {
-      res.send({})
-    }
-    // User.findOne({ token }, function (err, user) {
-    //   if (err) next(err);
-    //   if (user) {
-    //     if (user.role === 'root') {
-    //       User.find({}, usersProjection, function (err, users) {
-    //         if (err) next(err);
-    //         res.send(users);
-    //       })
-    //     } else {
-    //       res.send([]);
-    //     }
-    //   } else {
-    //     res.status(401);
-    //     res.send(Errors.invalidToken);
-    //   }
-    // });
+    User.findOne({token}, function (err, user) {
+      if (err) next(err);
+      if (user) {
+        Client.findById(id, function(err, client) {
+          if (err) next(err);
+          if (client) {
+            Club.findById(client.club, function (err, club) {
+              if (err) next(err);
+              if (club) {
+                if (club.owner == user.id || user.role === 'root') {
+                  res.send(client);
+                } else {
+                  res.status(403);
+                  res.send(Errors.notAllowed);
+                }
+              } else {
+                res.status(404);
+                res.send(Errors.notFound);
+              }
+            })
+          } else {
+            res.status(404);
+            res.send(Errors.notFound);
+          }
+        })
+      } else {
+        res.status(401);
+        res.send(Errors.invalidToken);
+      }
+    });
   });
 
   app.post('/api/client', function (req, res, next) {
@@ -49,11 +57,11 @@ module.exports = function (app) {
         Client.findOne({ club: operator.clubId, phone}, function (err, client) {
           if (err) next(err);
           if (client) {
-            if (!promotion) {
+            if (!promotion.id) {
               res.status(403);
               res.send(Errors.clientExist);
             } else {
-              if (client.hasPromotion(promotion)) {
+              if (client.hasPromotion(promotion.id)) {
                 res.status(403);
                 res.send(Errors.clientPromoted);
               } else {
@@ -70,13 +78,13 @@ module.exports = function (app) {
             }
           } else {
             let promotions = [];
-            if (promotion) {
+            if (promotion.id) {
               promotions.push({
-                id: promotion,
+                ...promotion,
                 date: new Date().getTime(),
               });
             }
-            new Client({ name, phone, promotions, club: operator.clubId })
+            new Client({ name, phone, promotions, club: operator.clubId, creator: operator.id })
             .save(function (error) {
               if (error) {
                 res.status(400);
