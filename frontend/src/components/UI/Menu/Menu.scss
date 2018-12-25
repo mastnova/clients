@@ -1,0 +1,17 @@
+.menu {
+  height: 110px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 25px 85px;
+  margin-top: -45px;
+  margin-bottom: 70px;
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f2f2f8;
+    border-radius: 10px;
+    height: 60px;
+  }
+}

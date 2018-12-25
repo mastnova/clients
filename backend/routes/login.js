@@ -9,6 +9,7 @@ module.exports = function (app) {
       if (err) next(err);
       if (user) {
         if (user.passwordIsValid(password)) {
+          const login = user.login;
           const role = user.role;
           const token = user.generateToken();
           user.token = token;
@@ -16,9 +17,9 @@ module.exports = function (app) {
             if (err) next(err);
             res.cookie('token', token, { httpOnly: true, sameSite: true});
             if (role === 'operator') {
-              res.send({ status: 'ok', role, clubId: user.clubId });
+              res.send({ status: 'ok', role, login, clubId: user.clubId });
             } else {
-              res.send({ status: 'ok', role });
+              res.send({ status: 'ok', role, login });
             }
           })
         } else {

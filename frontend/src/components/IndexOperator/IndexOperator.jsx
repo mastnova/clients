@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './IndexOperator.scss';
 
 import Input from '../UI/Input/Input';
+import MenuOperator from '../MenuOperator/MenuOperator';
 import { PAGE_URL } from '../../constants';
 import API from '../../API';
 
@@ -53,6 +54,10 @@ class IndexOperator extends PureComponent {
     })
   }
 
+  isFormValid = () => {
+    return this.state.nameIsValid && this.state.phoneIsValid;
+  }
+
   register = async () => {
     const response = await API.createClient({
       name: this.state.name,
@@ -73,43 +78,46 @@ class IndexOperator extends PureComponent {
   render() {
     return (
       <div className="operator-index">
-        <p>Index Operator page <button onClick={this.props.onLogout}>logout</button></p>
-        <div className="pic" />
-        <div className="inputs-wrapper">
-          <label className="label">
-            <div>Имя</div>
-            <Input
-              name="name"
-              icon="login"
-              type="name"
-              placeholder="Введите имя"
-              validationType="required"
-              value={this.state.name}
-              onChange={this.onChangeInput}
-            />
-          </label>
-          <label className="label">
-            <div>Телефон</div>
-            <Input
-              name="phone"
-              icon="phone"
-              placeholder="Введите телефон"
-              validationType="required"
-              value={this.state.phone}
-              onChange={this.onChangeInput}
-            />
-          </label>
-          <label className="label">
-            <div>Акция</div>
-            <select onChange={this.onPromoSelect} value={this.state.promoId}>
-              <option value="">без акции</option>
-              {
-                this.state.club.promotions.map( promo => <option key={promo.id} value={promo.id}>{promo.name}</option>)
-              }
-            </select>
-          </label>
+        <MenuOperator />
+        <div className="operator-index__content">
+          <div className="pic" />
+          <div className="inputs-wrapper">
+            <div className="operator-index__title">Заполните данные клиента</div>
+            <label className="label">
+              <div>Имя</div>
+              <Input
+                name="name"
+                icon="login"
+                type="name"
+                placeholder="Введите имя"
+                validationType="required"
+                value={this.state.name}
+                onChange={this.onChangeInput}
+              />
+            </label>
+            <label className="label">
+              <div>Телефон</div>
+              <Input
+                name="phone"
+                icon="phone"
+                placeholder="Введите телефон"
+                validationType="required"
+                value={this.state.phone}
+                onChange={this.onChangeInput}
+              />
+            </label>
+            <label className="label">
+              <div>Акция</div>
+              <select onChange={this.onPromoSelect} value={this.state.promoId}>
+                <option value="">без акции</option>
+                {
+                  this.state.club.promotions.map( promo => <option key={promo.id} value={promo.id}>{promo.name}</option>)
+                }
+              </select>
+            </label>
+            <button className="button" onClick={this.register} disabled={!this.isFormValid()}>Отправить</button>
+          </div>
         </div>
-        <button className="button" onClick={this.register}>Отправить</button>
       </div>
     );
   }

@@ -1,4 +1,79 @@
 .header {
-  background: red;
-  height: 180px; 
+  background-image: url('../../images/bgs/header.jpg');
+  background-repeat: repeat-y;
+  background-size: contain;
+  height: 180px;
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    width: 1170px;
+    margin: 0 auto;
+    padding-top: 40px;
+  }
+
+  &__pic {
+    display: inline-block;
+    width: 56px;
+    height: 56px;
+    background-image: url('../../images/icons/logo-white.png');
+    background-repeat: no-repeat;
+  }
+
+  &__title {
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    margin-left: 25px;
+    font-size: 30px;
+    color: #fff;
+    font-family: 'pn-bold';
+    span {
+      font-family: 'pn-regular';
+      display: block;
+      font-size: 18px;
+    }
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+  }
+
+  &__username {
+    font-family: 'pn-regular';
+    color: #fff;
+    font-size: 18px;
+  }
+
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    margin-left: 25px;
+
+    &_operator {
+      background: url('../../images/icons/operator.png');
+    }
+    &_agent {
+      background: url('../../images/icons/agent.png');
+    }
+    &_admin {
+      background: url('../../images/icons/admin.png');
+    }
+  }
+
+  &__exit {
+    width: 40px;
+    height: 40px;
+    background: url('../../images/icons/exit.png') no-repeat center;
+    background-color: #487ea5;
+    border-radius: 10px;
+    transition: all .2s;
+    margin-left: 15px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #3b6686;
+    }
+  }
 }

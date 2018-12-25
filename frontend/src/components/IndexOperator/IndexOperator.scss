@@ -1,14 +1,41 @@
 .operator-index {
   max-width: 1170px;
-  background-color: #fff;
   margin: 0 auto;
+
+  &__title {
+    font-family: 'pn-bold';
+    color: #344178;
+    font-size: 18px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  &__content {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+
+    .pic {
+      display: inline-block;
+      width: 249px;
+      height: 388px;
+      margin-left: 160px;
+      margin-right: 130px;
+      background: url('../../images/bgs/operator.png') no-repeat;
+    }
+  }
   
   .inputs-wrapper {
-    width: 370px;
+    display: inline-block;
+    width: 365px;
+    vertical-align: top;
+    padding-top: 10px;
 
     .button {
       width: 210px;
       height: 40px;
+      margin: 0 auto;
+      display: block;
     }
   }
 }

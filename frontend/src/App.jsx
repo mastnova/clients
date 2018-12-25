@@ -60,7 +60,7 @@ class App extends Component {
 
   onLogin = (user) => {
     this.setState({
-      userName: user.name,
+      userName: user.login,
       userRole: user.role,
       userClub: user.clubId,
       hasAuth: true,
@@ -83,21 +83,21 @@ class App extends Component {
     let specialRoutes;
     if (this.state.userRole === 'operator') {
       specialRoutes = <>
-        <Route path={PAGE_URL.index} exact render={(props) => <IndexOperator {...props} openPopup={this.openPopup} hasAuth={this.state.hasAuth} onLogout={this.onLogout} club={this.state.userClub} />} />
+        <Route path={PAGE_URL.index} exact render={(props) => <IndexOperator {...props} openPopup={this.openPopup} hasAuth={this.state.hasAuth} club={this.state.userClub} />} />
       </>;
     } else if (this.state.userRole === 'agent') {
       specialRoutes = <>
-        <Route path={PAGE_URL.index} exact render={(props) => <IndexAgent {...props} openPopup={this.openPopup} hasAuth={this.state.hasAuth} onLogout={this.onLogout} />} />
+        <Route path={PAGE_URL.index} exact render={(props) => <IndexAgent {...props} openPopup={this.openPopup} hasAuth={this.state.hasAuth} />} />
       </>;
     } else {
       specialRoutes = <>
-        <Route path={PAGE_URL.index} exact render={(props) => <Index {...props} openPopup={this.openPopup}  hasAuth={this.state.hasAuth} onLogout={this.onLogout} />} />
+        <Route path={PAGE_URL.index} exact render={(props) => <Index {...props} openPopup={this.openPopup}  hasAuth={this.state.hasAuth} />} />
       </>;
     }
     return (
       <Router>
         <div className="router">
-          <Route path={PAGE_URL.login} children={ ({ match }) => match ? '' : <Header/> }/>
+          <Route path={PAGE_URL.login} children={({ match }) => match ? '' : <Header role={this.state.userRole} name={this.state.userName} onLogout={this.onLogout}/> }/>
           {specialRoutes}
           <Route path={PAGE_URL.login} exact render={(props) => <Login {...props} onLogin={this.onLogin} hasAuth={this.state.hasAuth} />} />
           <Route path={PAGE_URL.root} exact component={Root} />
