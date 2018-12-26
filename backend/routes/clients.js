@@ -19,7 +19,7 @@ module.exports = function (app) {
         Club.findById(clubId, function (err, club) {
           if (err) next(err);
           if (club) {
-            if (club.owner === user.id || user.role === 'root') {
+            if (club.owner == user.id || user.role === 'root') {
               Client.find({club: clubId}, function(err, clients) {
                 if (err) next(err);
                 res.send(clients);

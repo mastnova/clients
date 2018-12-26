@@ -89,9 +89,24 @@ module.exports = function (app) {
               if (error) {
                 res.status(400);
                 res.send(error);
-              }
-              else {
-                res.send({ status: 'ok' });
+              } else {
+                Club.findById(operator.clubId, function(err, club) {
+                  if (err) next(err);
+                  if (club) {
+                    club.increaseClientsCounter();
+                    club.save(function(error) {
+                      if (error) {
+                        res.status(400);
+                        res.send(error);
+                      } else {
+                        res.send({ status: 'ok' });
+                      }
+                    });
+                  } else {
+                    res.status(404);
+                    res.send(Errors.notFound);
+                  }
+                });
               }
             });
           }

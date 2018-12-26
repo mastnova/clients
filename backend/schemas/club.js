@@ -47,6 +47,10 @@ schemaClub.methods.removeOperator = function (opId) {
   this.operators = this.operators.filter(id !== opId);
 };
 
+schemaClub.methods.increaseClientsCounter = function () {
+  this.clientsCount = this.clientsCount + 1;
+};
+
 schemaClub.set('toJSON', {
   virtuals: true,
   versionKey: false,
