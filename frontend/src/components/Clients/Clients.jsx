@@ -18,8 +18,8 @@ class Clients extends Component {
   }
 
   fetchClients = async () => {
-    const id = this.props.match.params.id;
-    const clients = await API.getClients(id);
+    const clubId = this.props.match.params.id;
+    const clients = await API.getClients(clubId);
     if (clients) {
       this.setState({clients});
     }
@@ -30,7 +30,7 @@ class Clients extends Component {
 
     return (
       <div>clients
-        {this.state.clients.map(c => <div><Link to={`${PAGE_URL.client}/${c.id}`}>{c.name}</Link> - {c.phone}</div>)}
+        {this.state.clients.map(c => <div><Link to={`${PAGE_URL.club}/${this.props.match.params.id}${PAGE_URL.clients}/${c.id}`}>{c.name}</Link> - {c.phone}</div>)}
       </div>
     );
   }

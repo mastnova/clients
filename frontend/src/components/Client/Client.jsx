@@ -16,7 +16,7 @@ class Client extends Component {
   }
 
   fetchClient = async () => {
-    const id = this.props.match.params.id;
+    const id = this.props.match.params.clientId;
     const client = await API.getClient(id);
     if (client) {
       this.setState({ client });

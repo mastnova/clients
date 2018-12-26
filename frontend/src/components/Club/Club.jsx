@@ -35,7 +35,6 @@ class Club extends PureComponent {
         <p>client - {this.state.club.name}</p>
         <button onClick={this.onAddPromo}>Add promo</button>
         {this.state.club.promotions && this.state.club.promotions.map(a => <div>{a.name} - {a.description}</div>)}
-        <Link to={id + '/operators'}>operators</Link>
       </div>
     );
   }
