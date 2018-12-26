@@ -1,0 +1,9 @@
+.breadcrumbs {
+  .breadcrumb {
+    margin-right: 10px;
+    &_active {
+      color: red;
+      cursor:  default;
+    }
+  }
+}

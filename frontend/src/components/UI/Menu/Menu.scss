@@ -14,4 +14,55 @@
     border-radius: 10px;
     height: 60px;
   }
+
+  .menu-tab {
+    font-family: 'pn-semibold';
+    color: #344178;
+    font-size: 16px;
+    height: 42px;
+    line-height: 42px;
+    text-align:center;
+    width: 280px;
+    margin: 0 12px;
+    background-color: #fff;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all .2s;
+    cursor: pointer;
+
+    &:hover {
+      border: 2px solid #334077;
+    }
+
+    span {
+      padding-left: 30px;
+    }
+
+    &_icon-club span {
+      background: url('../../../images/icons/club.png') no-repeat left center;
+    }
+
+    &_icon-ops span {
+      background: url('../../../images/icons/ops.png') no-repeat left center;
+    }
+
+    &_disabled {
+      background-color: transparent;
+      cursor: not-allowed;
+
+      &:hover {
+        border: 2px solid transparent;
+      }
+    }
+
+    &_active {
+      border: 2px solid #334077;
+      background-color: #fff;
+      cursor: default;
+      &:hover {
+        border: 2px solid #334077;
+      }
+    }
+  }
 }
