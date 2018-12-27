@@ -43,13 +43,13 @@ class AgentRoutes extends PureComponent {
   setClubName = () => {
     const club = this.state.clubs.find(club => club.id === this.state.selectedClubId) || {};
     this.setState({
-      selectedClubName: club.name || '',
+      selectedClubName: club.name ? `(${club.name})` : '',
     });
   }
 
   render() {
     return (
-      <div>
+      <div className="page-container">
         <Route path={[`${PAGE_URL.club}/:id`, PAGE_URL.index]} component={MenuAgent} />
         <Route render={(props) => <Breadcrumbs {...props} setClubId={this.setClubId} clubName={this.state.selectedClubName}/>}/>
         <Route path={PAGE_URL.index} exact render={(props) => <IndexAgent {...props} openPopup={this.props.openPopup} clubs={this.state.clubs} />} />

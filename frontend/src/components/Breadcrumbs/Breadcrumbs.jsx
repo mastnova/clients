@@ -7,6 +7,8 @@ const schemas = {
   Agent: [
     { name: 'index', regexp: /^\/$/ },
     { name: 'club', regexp: /^\/club\/.{24}$/ },
+    { name: 'clubs', regexp: /^\/clubs\/.{24}$/ },
+    { name: 'clubsAll', regexp: /^\/clubs\/all$/ },
     { name: 'clients', regexp: /^\/club\/.{24}\/clients$/ },
     { name: 'client', regexp: /^\/club\/.{24}\/clients\/.{24}$/ },
     { name: 'operators', regexp: /^\/club\/.{24}\/operators$/ },
@@ -29,26 +31,35 @@ class Breadcrumbs extends PureComponent {
     const clubName = this.props.clubName;
     const links = {
       index: { text: 'Главная', url: '/' },
-      club: (id) => ({ text: `Клуб (${clubName})`, url: `/club/${id}` }),
+      club: (id) => ({ text: `Клуб ${clubName}`, url: `/club/${id}/clients` }),
+      clubs: { text: `Клубы агента`, url },
+      clubsAll: { text: `Клубы`, url },
       operators: (id) => ({ text: 'Управление операторами', url }),
       clients: (id) => ({ text: 'Управление клиентами', url: `/club/${id}/clients` }),
       client: (id) => ({ text: 'Клиент', url }),
+      promo: { text: `Акции клуба`, url },
     };
 
     if (page === 'index') {
       return [links.index];
     }
-    if (page ==='club') {
-      return [links.index, links.club(clubId)];
+    if (page === 'clubsAll') {
+      return [links.index, links.clubsAll];
+    }
+    if (page ==='clubs') {
+      return [links.index, links.clubs];
+    }
+    if (page === 'club') {
+      return [links.index, links.club(clubId), links.promo];
     }
     if (page === 'operators') {
       return [links.index, links.club(clubId), links.operators(clubId)];
     }
     if (page === 'clients') {
-      return [links.index, links.club(clubId), links.clients(clubId)];
+      return [links.index, links.club(clubId)];
     }
     if (page === 'client') {
-      return [links.index, links.club(clubId), links.clients(clubId), links.client(clubId)];
+      return [links.index, links.club(clubId), links.client(clubId)];
     }
     return [];
   }

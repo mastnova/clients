@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
-import MenuAgent from './components/MenuAgent/MenuAgent';
+import MenuAdmin from './components/MenuAdmin/MenuAdmin';
 import Index from './components/Index/Index';
 import Club from './components/Club/Club';
+import Clubs from './components/Clubs/Clubs';
 import Operators from './components/Operators/Operators';
 import Clients from './components/Clients/Clients';
 import Client from './components/Client/Client';
@@ -11,11 +12,14 @@ import Breadcrumbs from './components/Breadcrumbs/Breadcrumbs';
 import { PAGE_URL } from './constants';
 import API from './API';
 
-class AgentRoutes extends PureComponent {
+class AdminRoutes extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       users: [],
+      clubs: [],
+      selectedClubId: null,
+      clubName: '',
     };
   }
 
@@ -24,6 +28,7 @@ class AgentRoutes extends PureComponent {
       this.props.history.push(PAGE_URL.login)
     } else {
       this.fetchUsers();
+      this.fetchClubs();
     }
   }
 
@@ -34,23 +39,39 @@ class AgentRoutes extends PureComponent {
     }
   }
 
+  fetchClubs = async (id = 'all') => {
+    if (this.state.lastFetchedId === id) {
+      return;
+    }
+    const clubs = await API.getClubs(id);
+    if (clubs) {
+      this.setState({ clubs }, () => {
+        if (this.state.selectedClubId) {
+          this.setClubName();
+        }
+      });
+    }
+  }
+
   setClubId = (id) => {
     this.setState({ selectedClubId: id }, this.setClubName);
   }
 
   setClubName = () => {
     const club = this.state.clubs.find(club => club.id === this.state.selectedClubId) || {};
-    this.setState({
-      selectedClubName: club.name || '',
-    });
+    this.setState({ clubName: club.name ? `(${club.name})` : ''});
   }
 
   render() {
     return (
-      <div>
-        {/* <Route path={[`${PAGE_URL.club}/:id`, PAGE_URL.index]} component={MenuAgent} /> */}
-        {/* <Route render={(props) => <Breadcrumbs {...props} setClubId={this.setClubId} clubName={this.state.selectedClubName} />} /> */}
+      <div className="page-container">
+        <Route path={[`${PAGE_URL.club}/:id`, PAGE_URL.index]} component={MenuAdmin} />
+        <Route render={(props) => <Breadcrumbs {...props} setClubId={this.setClubId} clubName={this.state.clubName} />} />
         <Route path={PAGE_URL.index} exact render={(props) => <Index {...props} openPopup={this.props.openPopup} users={this.state.users} />} />
+        <Switch>
+          <Route path={`${PAGE_URL.clubs}/all`} exact render={(props) => <Clubs {...props} openPopup={this.openPopup} clubs={this.state.clubs}/>} />
+          <Route path={`${PAGE_URL.clubs}/:agentId`} exact render={(props) => <Clubs {...props} openPopup={this.openPopup} clubs={this.state.clubs}/>} />
+        </Switch>
         <Route path={`${PAGE_URL.club}/:id`} exact render={(props) => <Club {...props} openPopup={this.openPopup} />} />
         <Route path={`${PAGE_URL.club}/:id${PAGE_URL.operators}`} exact render={(props) => <Operators {...props} openPopup={this.openPopup} />} />
         <Route path={`${PAGE_URL.club}/:id${PAGE_URL.clients}`} exact render={(props) => <Clients {...props} openPopup={this.openPopup} />} />
@@ -60,8 +81,8 @@ class AgentRoutes extends PureComponent {
   }
 }
 
-AgentRoutes.propTypes = {
+AdminRoutes.propTypes = {
 
 };
 
-export default AgentRoutes;
+export default AdminRoutes;

@@ -8,6 +8,7 @@ const clubsProjection = {
   clientsCount: true,
   created: true,
   status: true,
+  owner: true,
 };
 
 module.exports = function (app) {
@@ -20,6 +21,29 @@ module.exports = function (app) {
           if (err) next(err);
           res.send(clubs);
         })
+      } else {
+        res.status(401);
+        res.send(Errors.invalidToken);
+      }
+    });
+  });
+
+  app.get('/api/clubs/:agentId', function (req, res, next) {
+    const token = req.cookies['token'];
+    const agentId = req.params.agentId;
+    User.findOne({ token }, function (err, user) {
+      if (err) next(err);
+      if (user) {
+        if(user.role === 'root') {
+          const search = agentId === 'all' ? {} : { owner: agentId };
+          Club.find(search, clubsProjection, function (err, clubs) {
+            if (err) next(err);
+            res.send(clubs);
+          })
+        } else {
+          res.status(403);
+          res.send(Errors.notAllowed);
+        }
       } else {
         res.status(401);
         res.send(Errors.invalidToken);

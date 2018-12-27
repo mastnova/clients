@@ -35,7 +35,7 @@ const API = {
   },
   getClubs: {
     method: 'GET',
-    url: '/api/clubs',
+    url: '/api/clubs/',
   },
   getClub: {
     method: 'GET',
@@ -129,8 +129,8 @@ async function createClub(club) {
   return response;
 }
 
-async function getClubs() {
-  const response = await request(API.getClubs.url);
+async function getClubs(id = '') {
+  const response = await request(API.getClubs.url + id);
   if (response.isOk) {
     return response.data;
   }

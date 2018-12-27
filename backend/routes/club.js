@@ -12,10 +12,13 @@ module.exports = function (app) {
         Club.findById(id, function (err, club) {
           if (err) next(err);
           if (club) {
-            if (club.owner == user.id) {
+            if (club.owner == user.id || user.role === 'root') {
               res.send(club)
             } else if (club.operators.includes(user.id)) {
               res.send({name: club.name, promotions: club.promotions})
+            } else {
+              res.status(403);
+              res.send(Errors.notAllowed);
             }
           } else {
             res.status(404);

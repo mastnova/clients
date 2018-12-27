@@ -13,13 +13,13 @@ module.exports = function (app) {
   app.get('/api/operators/:clubId', function (req, res, next) {
     const token = req.cookies['token'];
     const id = req.params.clubId;
-    User.findOne({ token }, function (err, agent) {
+    User.findOne({ token }, function (err, user) {
       if (err) next(err);
-      if (agent) {
+      if (user) {
         Club.findById(id, function (err, club) {
           if (err) next(err);
           if (club) {
-            if (club.owner == agent.id) {
+            if (club.owner == user.id || user.role === 'root') {
               User.find({'_id': {$in: club.operators}}, usersProjection, function (err, ops) {
                 if (err) next(err);
                 if (ops) {

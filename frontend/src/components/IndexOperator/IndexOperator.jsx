@@ -77,7 +77,7 @@ class IndexOperator extends PureComponent {
 
   render() {
     return (
-      <div className="operator-index">
+      <div className="page-container operator-index">
         <MenuOperator />
         <div className="operator-index__content">
           <div className="pic" />

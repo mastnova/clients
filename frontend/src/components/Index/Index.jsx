@@ -22,7 +22,7 @@ class Index extends PureComponent {
         <p>Index page <button onClick={this.props.onLogout}>logout</button></p>
         <ul>
         {
-            this.props.users.map(user => <li key={user.id}><Link to={`${PAGE_URL.clients}/${user.id}`}>{user.login}</Link> - {user.role} - {user.created}</li>)
+            this.props.users.map(user => <li key={user.id}><Link to={`${PAGE_URL.clubs}/${user.id}`}>{user.login}</Link> - {user.role} - {user.created}</li>)
         }
         </ul>
         <button onClick={this.showPopup}>add agent</button>

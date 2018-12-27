@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { PAGE_URL } from '../../constants';
+
 class IndexAgent extends PureComponent {
   constructor(props) {
     super(props);
@@ -20,7 +21,7 @@ class IndexAgent extends PureComponent {
         
         <ul>
           {
-            this.props.clubs.map(club => <li key={club.id}><Link to={`${PAGE_URL.club}/${club.id}`}>{club.name}</Link> - {club.clientsCount} - {club.created}</li>)
+            this.props.clubs.map(club => <li key={club.id}><Link to={`${PAGE_URL.club}/${club.id}${PAGE_URL.clients}`}>{club.name}</Link> - {club.clientsCount} - {club.created}</li>)
           }
         </ul>
         <button onClick={this.showPopup}>add club</button>
