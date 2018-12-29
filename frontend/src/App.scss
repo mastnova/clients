@@ -25,6 +25,15 @@ ul, p {
   margin: 0;
 }
 
+a {
+  color: #467bdd;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 body {
   background-color: #f2f2f9;
 }

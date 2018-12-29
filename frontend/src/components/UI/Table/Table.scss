@@ -1,0 +1,38 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  
+  &__header {
+    height: 60px;
+    box-shadow: inset 0px 35px 65px -35px rgba(0,0,0,0.1);
+
+    th {
+      font-family: 'pn-bold';
+      font-size: 14px;
+      color: #b3b9d2;
+      border-bottom: 2px solid #f7f2f8;
+      text-align: left;
+      box-sizing: border-box;
+    }
+  }
+
+  &__row {
+    height: 50px;
+    color: #7f8fa4;
+    transition: all .2s;
+    td {
+      font-family: 'pn-semibold';
+      font-size: 14px;
+      box-sizing: border-box;
+      border-bottom: 1px solid #f7f2f8;
+    }
+
+    &:last-child td {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background-color: #f7f7fa;
+    }
+  }
+}

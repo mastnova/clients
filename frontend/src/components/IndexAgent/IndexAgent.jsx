@@ -1,8 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import '../Clubs/Clubs.scss';
 
+import Table from '../UI/Table/Table';
 import { PAGE_URL } from '../../constants';
+
+const header = ['#', 'Клуб', 'Количество клиентов', 'Дата регистрации', ''];
 
 class IndexAgent extends PureComponent {
   constructor(props) {
@@ -17,13 +21,23 @@ class IndexAgent extends PureComponent {
 
   render() {
     return (
-      <div className="operator-index">
-        
-        <ul>
+      <div className="page-clubs">
+        <Table className="clubs">
+          <Table.Header>{header}</Table.Header>
           {
-            this.props.clubs.map(club => <li key={club.id}><Link to={`${PAGE_URL.club}/${club.id}${PAGE_URL.clients}`}>{club.name}</Link> - {club.clientsCount} - {club.created}</li>)
+            this.props.clubs.map((club, i) => (
+              <Table.Row>
+              {[
+                i + 1,
+                <Link to={`${PAGE_URL.club}/${club.id}${PAGE_URL.clients}`}>{club.name}</Link>,
+                club.clientsCount,
+                club.created,
+                <button>d</button>
+              ]}
+              </Table.Row> 
+            ))
           }
-        </ul>
+        </Table>
         <button onClick={this.showPopup}>add club</button>
       </div>
     );
