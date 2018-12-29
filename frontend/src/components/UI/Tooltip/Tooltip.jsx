@@ -4,7 +4,7 @@ import './Tooltip.scss';
 
 class Tooltip extends PureComponent {
   static defaultProps = {
-    leftOffset: '-6px'
+    leftOffset: '-5px'
   }
 
   constructor(props) {

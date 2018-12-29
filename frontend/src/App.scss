@@ -46,6 +46,8 @@ body {
 .button {
   font-family: 'pn-semibold';
   background-color: #344178;
+  width: 210px;
+  height: 40px;
   color: #fff;
   border: none;
   border-radius: 10px;
@@ -82,6 +84,7 @@ body {
 }
 
 .button-remove {
+  margin: 0 1px;
   width: 30px;
   height: 30px;
   border-radius: 5px;
@@ -93,4 +96,54 @@ body {
     background-image: url('./images/icons/basket-hover.png');
     background-color: #ffdede;
   }
+}
+
+.button-lock {
+  margin: 0 1px;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  background: url('./images/icons/lock.png') no-repeat center;
+  cursor: pointer;
+  transition: all .2s;
+
+  &:hover {
+    background-image: url('./images/icons/lock-hover.png');
+    background-color: #dee3ff;
+  }
+
+  &_active {
+    background-image: url('./images/icons/lock-active.png');
+    &:hover {
+      background-image: url('./images/icons/lock-active.png');
+    }
+  }
+}
+
+.search-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px 30px;
+
+  &__title {
+    font-family: 'pn-semibold';
+    font-size: 18px;
+    color: #344178;
+  }
+
+  &__input {
+    width: 600px;
+    input.input {
+      border: 1px solid #344178;
+    }
+  }
+}
+
+.empty-table {
+  text-align: center;
+  font-family: 'pn-semibold';
+  padding: 50px;
+  color: #344178;
+  
 }

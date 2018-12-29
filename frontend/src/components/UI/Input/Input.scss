@@ -45,6 +45,12 @@
     background: url('../../../images/icons/password.png');
   }
 
+  &_search:before {
+    background: url('../../../images/icons/search.png');
+    width: 17px !important;
+    height: 17px !important;
+  }
+
   &:before {
     position: absolute;
     content: '';
