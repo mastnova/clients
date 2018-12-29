@@ -84,7 +84,7 @@ module.exports = function (app) {
                 date: new Date().getTime(),
               });
             }
-            new Client({ name, phone, promotions, club: operator.clubId, creator: operator.id })
+            new Client({ name, phone, promotions, club: operator.clubId, creator: operator.name })
             .save(function (error) {
               if (error) {
                 res.status(400);

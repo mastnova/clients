@@ -34,7 +34,7 @@ class IndexAgent extends PureComponent {
   render() {
     const filteredClubs = this.filterBySearch(this.props.clubs);
     return (
-      <div className="page-clubs">
+      <div className="page page_clubs">
         <div className="search-block">
           <div className="search-block__title">Управление клубами</div>
           <div className="search-block__input">

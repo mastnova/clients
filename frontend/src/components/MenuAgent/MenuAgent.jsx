@@ -13,17 +13,17 @@ class MenuAgent extends PureComponent {
         {
           this.props.match.params.id
             ? <NavLink exact to={`${PAGE_URL.club}/${this.props.match.params.id}${PAGE_URL.clients}`} activeClassName="menu-tab_active" className="menu-tab menu-tab_icon-ops"><span>Клиенты</span></NavLink>
-            : <div className="menu-tab menu-tab_icon-ops menu-tab_disabled"><span>Клиенты</span></div>
+            : <a className="menu-tab menu-tab_icon-ops menu-tab_disabled"><span>Клиенты</span></a>
         }
         {
           this.props.match.params.id
             ? <NavLink exact to={`${PAGE_URL.club}/${this.props.match.params.id}${PAGE_URL.operators}`} activeClassName="menu-tab_active" className="menu-tab menu-tab_icon-ops"><span>Операторы</span></NavLink>
-            : <div className="menu-tab menu-tab_icon-ops menu-tab_disabled"><span>Операторы</span></div>
+            : <a className="menu-tab menu-tab_icon-ops menu-tab_disabled"><span>Операторы</span></a>
         }
         {
           this.props.match.params.id
             ? <NavLink exact to={`${PAGE_URL.club}/${this.props.match.params.id}`} activeClassName="menu-tab_active" className="menu-tab menu-tab_icon-ops"><span>Акции</span></NavLink>
-            : <div className="menu-tab menu-tab_icon-ops menu-tab_disabled"><span>Акции</span></div>
+            : <a className="menu-tab menu-tab_icon-ops menu-tab_disabled"><span>Акции</span></a>
         }
       </Menu>
     );
