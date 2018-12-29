@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import '../Clubs/Clubs.scss';
 
 import Table from '../UI/Table/Table';
+import Tooltip from '../UI/Tooltip/Tooltip';
 import { PAGE_URL } from '../../constants';
 
 const header = ['#', 'Клуб', 'Количество клиентов', 'Дата регистрации', ''];
@@ -32,7 +33,9 @@ class IndexAgent extends PureComponent {
                 <Link to={`${PAGE_URL.club}/${club.id}${PAGE_URL.clients}`}>{club.name}</Link>,
                 club.clientsCount,
                 club.created,
-                <button>d</button>
+                <Tooltip text='Удалить'>
+                  <div className="button-remove"/>
+                </Tooltip>
               ]}
               </Table.Row> 
             ))
