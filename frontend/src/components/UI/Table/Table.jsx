@@ -8,18 +8,18 @@ const TableHeader = ({ children }) => {
     <thead>
       <tr className="table__header">
         {
-          children.map(cell => <th>{cell}</th>)
+          children.map((cell, i) => <th key={i}>{cell}</th>)
         }
       </tr>
     </thead>
   );
 }
 
-const TableRow = ({ children }) => {
+const TableRow = ({ children, key }) => {
   return (
     <tr className="table__row">
       {
-        children.map(cell => <td>{cell}</td>)
+        children.map(cell => <td key={key}>{cell}</td>)
       }
     </tr>
   );

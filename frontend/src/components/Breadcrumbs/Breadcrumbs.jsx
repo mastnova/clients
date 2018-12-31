@@ -70,7 +70,7 @@ class Breadcrumbs extends PureComponent {
     return (
       <div className="breadcrumbs">
         {
-          links.map(link => <NavLink exact to={link.url} className="breadcrumb" activeClassName="breadcrumb_active">{link.text}</NavLink>)
+          links.map((link, i) => <NavLink exact to={link.url} key={i} className="breadcrumb" activeClassName="breadcrumb_active">{link.text}</NavLink>)
         }
       </div>
     );

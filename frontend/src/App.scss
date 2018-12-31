@@ -103,6 +103,16 @@ body {
     background-image: url('./images/icons/basket-hover.png');
     background-color: #ffdede;
   }
+
+  &_big {
+    width: 50px;
+    height: 50px;
+    background-image: url('./images/icons/basket-big.png');
+
+    &:hover {
+      background-image: url('./images/icons/basket-big-hover.png');
+    }
+  }
 }
 
 .button-lock {
@@ -154,5 +164,20 @@ body {
   font-family: 'pn-semibold';
   padding: 50px;
   color: #344178;
-  
+}
+
+.unit-header {
+  position: relative;
+  font-family: 'pn-semibold';
+  color: #344178;
+  height: 100px;
+  background: url('./images/icons/unit-client.png') no-repeat left;
+  line-height: 100px;
+  padding-left: 140px;
+
+  &__remove {
+    position: absolute;
+    right: 30px;
+    top: 25px;
+  }
 }

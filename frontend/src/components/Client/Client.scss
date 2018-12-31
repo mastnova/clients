@@ -1,0 +1,45 @@
+.page_client {
+  padding-top: 0;
+
+  .unit-info {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 45px;
+    box-shadow: inset 0px 35px 65px -35px rgba(0, 0, 0, 0.1);
+    padding-bottom: 30px;
+
+    &__label {
+      padding: 50px 0 0 30px;
+      width: 270px;
+      height: 147px;
+      color: #fff;
+      
+      &_username {
+        background: url('../../images/bgs/label-username.png') no-repeat;
+      }
+
+      &_phone {
+        background: url('../../images/bgs/label-phone.png') no-repeat;
+      }
+
+      &_creator {
+        background: url('../../images/bgs/label-creator.png') no-repeat;
+      }
+
+      &_created {
+        background: url('../../images/bgs/label-created.png') no-repeat;
+      }
+    }
+
+    &__name {
+      font-family: 'pn-semibold';
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    &__text {
+      font-family: 'pn-bold';
+      font-size: 20px;
+    }
+  }
+}

@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
+import './Client.scss';
 
+import Table from '../UI/Table/Table';
+import Tooltip from '../UI/Tooltip/Tooltip';
 import API from '../../API';
+
+const header = ['#', 'Акция', 'Добавил', 'Дата'];
 
 class Client extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      client: {},
+      client: {
+        promotions: []
+      },
     };
   }
 
@@ -25,9 +33,51 @@ class Client extends Component {
 
   render() {
     return (
-      <div>
-        <p>client - {this.state.client.name}</p>
-        {this.state.client.actions && this.state.client.actions.map(a => <div>{a.name}</div>)}
+      <div className="page page_client">
+        <div className="unit-header unit-header_client">
+          Клиент - {this.state.client.name}
+          <div className="unit-header__remove">
+            <Tooltip text='Удалить' leftOffset='12px'>
+              <div className="button-remove button-remove_big" />
+            </Tooltip>
+          </div>
+        </div>
+        <div className="unit-info">
+          <div className="unit-info__label unit-info__label_username">
+            <div className="unit-info__name">Имя</div>
+            <div className="unit-info__text">{this.state.client.name}</div>
+          </div>
+          <div className="unit-info__label unit-info__label_phone">
+            <div className="unit-info__name">Телефон</div>
+            <div className="unit-info__text">{this.state.client.phone}</div>
+          </div>
+          <div className="unit-info__label unit-info__label_creator">
+            <div className="unit-info__name">Добавил</div>
+            <div className="unit-info__text">{this.state.client.creator}</div>
+          </div>
+          <div className="unit-info__label unit-info__label_created">
+            <div className="unit-info__name">Дата регистрации</div>
+            <div className="unit-info__text">{moment(this.state.client.created).format('DD.MM.YYYY')}</div>
+          </div>
+        </div>
+        
+        {Boolean(this.state.client.promotions.length) &&
+          <Table className="clubs">
+            <Table.Header>{header}</Table.Header>
+            {
+              this.state.client.promotions.map((promo, i) => (
+                <Table.Row key={promo.id}>
+                  {[
+                    i + 1,
+                    promo.name,
+                    promo.creator,
+                    moment(promo.date).format('DD.MM.YYYY')
+                  ]}
+                </Table.Row>
+              ))
+            }
+          </Table>
+        }
       </div>
     );
   }
