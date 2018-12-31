@@ -65,7 +65,7 @@ module.exports = function (app) {
                 res.status(403);
                 res.send(Errors.clientPromoted);
               } else {
-                client.addPromotion(promotion);
+                client.addPromotion({...promotion, creator: operator.login});
                 client.save(function(error) {
                   if (error) {
                     res.status(400);
@@ -81,10 +81,11 @@ module.exports = function (app) {
             if (promotion.id) {
               promotions.push({
                 ...promotion,
+                creator: operator.login,
                 date: new Date().getTime(),
               });
             }
-            new Client({ name, phone, promotions, club: operator.clubId, creator: operator.name })
+            new Client({ name, phone, promotions, club: operator.clubId, creator: operator.login })
             .save(function (error) {
               if (error) {
                 res.status(400);
