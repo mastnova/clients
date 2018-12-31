@@ -42,7 +42,7 @@ class AddPromo extends PureComponent {
   render() {
     return (
       <div className="popup-content popup_add-agent">
-        <div className="popup-content__title">Добавить агента</div>
+        <div className="popup-content__title">Добавить акцию</div>
         <form onSubmit={this.addPromo}>
           <label className="label">
             <div>name</div>

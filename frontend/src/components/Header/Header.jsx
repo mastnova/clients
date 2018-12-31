@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import cn from 'classnames';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './Header.scss';
 
@@ -26,10 +27,10 @@ class Header extends PureComponent {
     return (
       <div className="header">
         <div className="header__content">
-          <div className="header__logo">
+          <Link to={'/'} className="header__logo">
             <div className="header__pic" />
             <div className="header__title">SlotAdmin<span>Система учета клиентов</span></div>
-          </div>
+          </Link>
           <div className="header__user">
             <span className="header__username">{this.props.name}</span>
             <div className={avaClass}/>

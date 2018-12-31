@@ -30,8 +30,10 @@ class Popup extends PureComponent {
   render() {
     if (!this.props.isOpen) {
       document.removeEventListener('keydown', this.onPressEsc);
+      document.getElementsByTagName('html')[0].style.overflow = 'auto';
     } else {
       document.addEventListener('keydown', this.onPressEsc);
+      document.getElementsByTagName('html')[0].style.overflow = 'hidden';
     }
 
     let content;

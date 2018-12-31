@@ -9,10 +9,6 @@ import AgentRoutes from './AgentRoutes';
 import IndexOperator from './components/IndexOperator/IndexOperator';
 import Login from './components/Login/Login';
 import Root from './components/Root/Root';
-import Clients from './components/Clients/Clients';
-import Client from './components/Client/Client';
-import Club from './components/Club/Club';
-import Operators from './components/Operators/Operators';
 import Popup from './components/Popup/Popup';
 
 class App extends Component {
