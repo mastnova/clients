@@ -16,7 +16,7 @@ class AdminRoutes extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      users: [],
+      agents: [],
       clubs: [],
       selectedClubId: null,
       clubName: '',
@@ -27,15 +27,20 @@ class AdminRoutes extends PureComponent {
     if (!this.props.hasAuth) {
       this.props.history.push(PAGE_URL.login)
     } else {
-      this.fetchUsers();
       this.fetchClubs();
+      this.fetchAgents();
     }
   }
 
-  fetchUsers = async () => {
-    const users = await API.getUsers();
-    if (users) {
-      this.setState({ users });
+  fetchAgents = async () => {
+    const agents = await API.getAgents();
+    if (agents) {
+      const counters = {};
+      this.state.clubs.forEach( club => {
+        counters[club.owner] = counters[club.owner] ? counters[club.owner] + club.clientsCount : club.clientsCount;
+      });
+      const updatedAgents = agents.map(agent => ({ ...agent, clientsCount: counters[agent.id]}));
+      this.setState({ agents: updatedAgents });
     }
   }
 
@@ -67,13 +72,13 @@ class AdminRoutes extends PureComponent {
       <div className="page-container">
         <Route path={[`${PAGE_URL.club}/:id`, PAGE_URL.index]} component={MenuAdmin} />
         <Route render={(props) => <Breadcrumbs {...props} setClubId={this.setClubId} clubName={this.state.clubName} />} />
-        <Route path={PAGE_URL.index} exact render={(props) => <Index {...props} openPopup={this.props.openPopup} users={this.state.users} />} />
+        <Route path={PAGE_URL.index} exact render={(props) => <Index {...props} openPopup={this.props.openPopup} users={this.state.agents} />} />
         <Switch>
           <Route path={`${PAGE_URL.clubs}/all`} exact render={(props) => <Clubs {...props} openPopup={this.openPopup} clubs={this.state.clubs}/>} />
           <Route path={`${PAGE_URL.clubs}/:agentId`} exact render={(props) => <Clubs {...props} openPopup={this.openPopup} clubs={this.state.clubs}/>} />
         </Switch>
         <Route path={`${PAGE_URL.club}/:id`} exact render={(props) => <Club {...props} openPopup={this.openPopup} />} />
-        <Route path={`${PAGE_URL.club}/:id${PAGE_URL.operators}`} exact render={(props) => <Operators {...props} openPopup={this.openPopup} />} />
+        <Route path={`${PAGE_URL.club}/:id${PAGE_URL.operators}`} exact render={(props) => <Operators {...props}  openPopup={this.openPopup} />} />
         <Route path={`${PAGE_URL.club}/:id${PAGE_URL.clients}`} exact render={(props) => <Clients {...props} openPopup={this.openPopup} />} />
         <Route path={`${PAGE_URL.club}/:id${PAGE_URL.clients}/:clientId`} exact render={(props) => <Client {...props} openPopup={this.openPopup} />} />
       </div>

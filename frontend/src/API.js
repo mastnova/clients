@@ -13,9 +13,9 @@ const API = {
     method: 'POST',
     url: '/api/login',
   },
-  getUsers: {
+  getAgents: {
     method: 'GET',
-    url: '/api/users',
+    url: '/api/agents',
   },
   getClients: {
     method: 'GET',
@@ -95,8 +95,8 @@ async function login(logPass) {
   return response;
 }
 
-async function getUsers() {
-  const response = await request(API.getUsers.url);
+async function getAgents() {
+  const response = await request(API.getAgents.url);
   if (response.isOk) {
     return response.data;
   }
@@ -162,7 +162,7 @@ export default {
   hasRoot,
   createUser,
   login,
-  getUsers,
+  getAgents,
   getClients,
   getClient,
   createClient,

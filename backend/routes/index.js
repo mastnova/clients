@@ -1,7 +1,7 @@
 const Errors = require('../errors');
 const root = require('./root');
 const user = require('./user');
-const users = require('./users');
+const agents = require('./agents');
 const client = require('./client');
 const clients = require('./clients');
 const club = require('./club');
@@ -13,7 +13,7 @@ const login = require('./login');
 module.exports = function (app) {
   root(app);
   user(app);
-  users(app);
+  agents(app);
   client(app);
   clients(app);
   login(app);
