@@ -17,3 +17,30 @@
     width: 255px;
   }
 }
+
+.table.clubsall {
+  th:first-child,
+  td:first-child {
+    padding-left: 30px;
+    width: 225px;
+  }
+  th:nth-child(2),
+  td:nth-child(2) {
+    width: 240px;
+  }
+  th:nth-child(3),
+  td:nth-child(3) {
+    width: 170px;
+  }
+  th:nth-child(4),
+  td:nth-child(4) {
+    width: 200px;
+  }
+  th:nth-child(4) {
+    text-align: center;
+  }
+  th:nth-child(4),
+  td:nth-child(4) {
+    width: 240px;
+  }
+}

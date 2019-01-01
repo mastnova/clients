@@ -27,35 +27,40 @@ class AdminRoutes extends PureComponent {
     if (!this.props.hasAuth) {
       this.props.history.push(PAGE_URL.login)
     } else {
-      this.fetchClubs();
-      this.fetchAgents();
+      this.fetchData();
     }
+  }
+
+  fetchData = () => {
+    Promise.all([this.fetchClubs(), this.fetchAgents()]).then((responses) => {
+      const clubs = responses[0];
+      const agents = responses[1];
+      const counters = {};
+      clubs.forEach(club => {
+        counters[club.owner] = counters[club.owner] ? counters[club.owner] + club.clientsCount : club.clientsCount;
+      });
+      const updatedAgents = agents.map(agent => ({ ...agent, clientsCount: counters[agent.id] }));
+      const agentsNames = {};
+      agents.forEach(agent => {
+        agentsNames[agent.id] = agent.login;
+      });
+      const updatedClubs = clubs.map(club => ({...club, ownerName: agentsNames[club.owner]}));
+      this.setState({ agents: updatedAgents, clubs: updatedClubs }, () => {
+        if (this.state.selectedClubId) {
+          this.setClubName()
+        }
+      });
+    });
   }
 
   fetchAgents = async () => {
     const agents = await API.getAgents();
-    if (agents) {
-      const counters = {};
-      this.state.clubs.forEach( club => {
-        counters[club.owner] = counters[club.owner] ? counters[club.owner] + club.clientsCount : club.clientsCount;
-      });
-      const updatedAgents = agents.map(agent => ({ ...agent, clientsCount: counters[agent.id]}));
-      this.setState({ agents: updatedAgents });
-    }
+    return agents;
   }
 
   fetchClubs = async (id = 'all') => {
-    if (this.state.lastFetchedId === id) {
-      return;
-    }
     const clubs = await API.getClubs(id);
-    if (clubs) {
-      this.setState({ clubs }, () => {
-        if (this.state.selectedClubId) {
-          this.setClubName();
-        }
-      });
-    }
+    return clubs;
   }
 
   setClubId = (id) => {
@@ -74,13 +79,13 @@ class AdminRoutes extends PureComponent {
         <Route render={(props) => <Breadcrumbs {...props} setClubId={this.setClubId} clubName={this.state.clubName} />} />
         <Route path={PAGE_URL.index} exact render={(props) => <Index {...props} openPopup={this.props.openPopup} users={this.state.agents} />} />
         <Switch>
-          <Route path={`${PAGE_URL.clubs}/all`} exact render={(props) => <Clubs {...props} openPopup={this.openPopup} clubs={this.state.clubs}/>} />
-          <Route path={`${PAGE_URL.clubs}/:agentId`} exact render={(props) => <Clubs {...props} openPopup={this.openPopup} clubs={this.state.clubs}/>} />
+          <Route path={`${PAGE_URL.clubs}/all`} exact render={(props) => <Clubs {...props} openPopup={this.props.openPopup} clubs={this.state.clubs}/>} />
+          <Route path={`${PAGE_URL.clubs}/:agentId`} exact render={(props) => <Clubs {...props} openPopup={this.props.openPopup} clubs={this.state.clubs}/>} />
         </Switch>
-        <Route path={`${PAGE_URL.club}/:id`} exact render={(props) => <Club {...props} openPopup={this.openPopup} />} />
-        <Route path={`${PAGE_URL.club}/:id${PAGE_URL.operators}`} exact render={(props) => <Operators {...props}  openPopup={this.openPopup} />} />
-        <Route path={`${PAGE_URL.club}/:id${PAGE_URL.clients}`} exact render={(props) => <Clients {...props} openPopup={this.openPopup} />} />
-        <Route path={`${PAGE_URL.club}/:id${PAGE_URL.clients}/:clientId`} exact render={(props) => <Client {...props} openPopup={this.openPopup} />} />
+        <Route path={`${PAGE_URL.club}/:id`} exact render={(props) => <Club {...props} openPopup={this.props.openPopup} />} />
+        <Route path={`${PAGE_URL.club}/:id${PAGE_URL.operators}`} exact render={(props) => <Operators {...props} openPopup={this.props.openPopup} />} />
+        <Route path={`${PAGE_URL.club}/:id${PAGE_URL.clients}`} exact render={(props) => <Clients {...props} openPopup={this.props.openPopup} />} />
+        <Route path={`${PAGE_URL.club}/:id${PAGE_URL.clients}/:clientId`} exact render={(props) => <Client {...props} openPopup={this.props.openPopup} />} />
       </div>
     );
   }
