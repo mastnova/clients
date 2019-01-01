@@ -17,7 +17,7 @@ module.exports = function (app) {
         Club.findById(clubId, function (err, club) {
           if (err) next(err);
           if (club) {
-            if (club.owner == user.id) {
+            if (club.owner == user.id || user.role === 'root') {
               club.promotions.push({id, name, description, created});
               club.save(function(err){
                 if (err) next(err);

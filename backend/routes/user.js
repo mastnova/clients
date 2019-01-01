@@ -112,7 +112,7 @@ module.exports = function (app) {
         User.findById(id, usersProjection, function (err, targetedUser) {
           if (err) next(err);
           if (targetedUser) {
-            if (user.id == targetedUser.parent) {
+            if (user.id == targetedUser.parent || user.role === 'root') {
               targetedUser.changeStatus(status);
               targetedUser.token = targetedUser.generateToken();
               targetedUser.save(function (err, tu) {
