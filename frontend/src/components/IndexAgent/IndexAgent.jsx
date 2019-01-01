@@ -8,6 +8,7 @@ import Table from '../UI/Table/Table';
 import Tooltip from '../UI/Tooltip/Tooltip';
 import Input from '../UI/Input/Input';
 import { PAGE_URL } from '../../constants';
+import API from '../../API';
 
 const header = ['#', 'Клуб', 'Количество клиентов', 'Дата регистрации', ''];
 
@@ -29,6 +30,16 @@ class IndexAgent extends PureComponent {
 
   filterBySearch = (clubs) => {
     return clubs.filter( club => club.name.includes(this.state.search) );
+  }
+
+  toggleLock = (id, status) => async () => {
+    let club;
+    if (status === 'active') {
+      club = await API.blockClub(id);
+    } else {
+      club = await API.activateClub(id);
+    }
+    this.props.updateClubs(club);
   }
 
   render() {
@@ -61,8 +72,8 @@ class IndexAgent extends PureComponent {
                     club.clientsCount,
                     moment(club.created).format('DD.MM.YYYY'),
                     <div>
-                      <Tooltip text='Заблокировать' leftOffset="-29px">
-                        <div className="button-lock button-lock_active"/>
+                      <Tooltip text={club.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
+                        <div onClick={this.toggleLock(club.id, club.status)} className={`button-lock ${club.status === 'blocked' ? 'button-lock_active' : ''}`}/>
                       </Tooltip>
                       <Tooltip text='Удалить'>
                         <div className="button-remove"/>

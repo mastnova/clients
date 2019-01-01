@@ -20,7 +20,7 @@ const schemaClient = new db.Schema({
     require: true,
   },
   creator: {
-    type: db.Schema.ObjectId,
+    type: String,
     require: true,
   },
   created: {

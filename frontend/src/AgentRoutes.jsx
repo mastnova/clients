@@ -47,12 +47,18 @@ class AgentRoutes extends PureComponent {
     });
   }
 
+  updateClubs = (newClub) => {
+    if (!newClub) return;
+    const updatedClubs = this.state.clubs.map( club => club.id === newClub.id ? newClub : club);
+    this.setState({clubs: updatedClubs});
+  }
+
   render() {
     return (
       <div className="page-container">
         <Route path={[`${PAGE_URL.club}/:id`, PAGE_URL.index]} component={MenuAgent} />
         <Route render={(props) => <Breadcrumbs {...props} setClubId={this.setClubId} clubName={this.state.selectedClubName}/>}/>
-        <Route path={PAGE_URL.index} exact render={(props) => <IndexAgent {...props} openPopup={this.props.openPopup} clubs={this.state.clubs} />} />
+        <Route path={PAGE_URL.index} exact render={(props) => <IndexAgent {...props} openPopup={this.props.openPopup} clubs={this.state.clubs} updateClubs={this.updateClubs}/>} />
         <Route path={`${PAGE_URL.club}/:id`} exact render={(props) => <Club {...props} openPopup={this.props.openPopup}/>} />
         <Route path={`${PAGE_URL.club}/:id${PAGE_URL.operators}`} exact render={(props) => <Operators {...props} openPopup={this.props.openPopup}/>} />
         <Route path={`${PAGE_URL.club}/:id${PAGE_URL.clients}`} exact render={(props) => <Clients {...props} openPopup={this.props.openPopup}/>} />

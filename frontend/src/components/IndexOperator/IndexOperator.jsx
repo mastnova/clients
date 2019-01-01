@@ -16,6 +16,7 @@ class IndexOperator extends PureComponent {
       club: {
         name: 'Клуб',
         promotions: [],
+        status: '',
       },
       name: '',
       nameIsValid: '',
@@ -76,6 +77,23 @@ class IndexOperator extends PureComponent {
   }
 
   render() {
+    if (!this.state.club.status) {
+      return (
+        <div className="page-container operator-index">
+          <MenuOperator />
+        </div>
+      );
+    }
+    if (this.state.club.status === 'blocked') {
+      return (
+        <div className="page-container operator-index">
+          <MenuOperator />
+          <div className="operator-index__content">
+            <div className="block-alert">Клуб заблокирован!</div>
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="page-container operator-index">
         <MenuOperator />

@@ -43,6 +43,19 @@ class Operators extends PureComponent {
     return ops.filter(op => op.login.includes(this.state.search));
   }
 
+  toggleLock = (id, status) => async () => {
+    let operator;
+    if (status === 'active') {
+      operator = await API.blockUser(id);
+    } else {
+      operator = await API.activateUser(id);
+    }
+    if (operator) {
+      const updatedOps = this.state.operators.map(op => op.id === operator.id ? operator : op);
+      this.setState({ operators: updatedOps });
+    }
+  }
+
   render() {
     const filteredOperators = this.filterBySearch(this.state.operators);
     return (
@@ -66,14 +79,14 @@ class Operators extends PureComponent {
               <Table.Header>{header}</Table.Header>
               {
                 filteredOperators.map((operator, i) => (
-                  <Table.Row>
+                  <Table.Row key={operator.id}>
                     {[
                       i + 1,
                       operator.login,
                       moment(operator.created).format('DD.MM.YYYY'),
                       <div>
-                        <Tooltip text='Заблокировать' leftOffset="-29px">
-                          <div className="button-lock button-lock_active" />
+                        <Tooltip text={operator.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
+                          <div onClick={this.toggleLock(operator.id, operator.status)} className={`button-lock ${operator.status === 'blocked' ? 'button-lock_active' : ''}`} />
                         </Tooltip>
                         <Tooltip text='Удалить'>
                           <div className="button-remove" />

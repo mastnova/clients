@@ -39,4 +39,9 @@ module.exports = {
     code: 8,
     message: "Client has this promotion already",
   },
+  accountBlocked: {
+    status: 'error',
+    code: 9,
+    message: "This account has been blocked",
+  },
 };

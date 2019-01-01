@@ -45,7 +45,12 @@ class Login extends PureComponent {
       this.props.onLogin(res.data);
       this.props.history.push(PAGE_URL.index);
     } else {
-      const errorMessage = res.data.code === 3 ? 'Неверный логин или пароль' : 'Ошибка авторизации';
+      let errorMessage = 'Ошибка авторизации';
+      if (res.data.code === 3) {
+        errorMessage = 'Неверный логин или пароль';
+      } else if (res.data.code === 9) {
+        errorMessage = 'Аккаунт заблокирован';
+      }
       this.setState({ errorMessage });
     }
   }

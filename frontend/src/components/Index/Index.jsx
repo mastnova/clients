@@ -8,6 +8,7 @@ import Table from '../UI/Table/Table';
 import Tooltip from '../UI/Tooltip/Tooltip';
 import Input from '../UI/Input/Input';
 import { PAGE_URL } from '../../constants';
+import API from '../../API';
 
 const header = ['#', 'Агент', 'Количество клиентов', 'Дата создания', ''];
 
@@ -29,6 +30,16 @@ class Index extends PureComponent {
 
   filterBySearch = (users) => {
     return users.filter(user => user.login.includes(this.state.search));
+  }
+
+  toggleLock = (id, status) => async () => {
+    let agent;
+    if (status === 'active') {
+      agent = await API.blockUser(id);
+    } else {
+      agent = await API.activateUser(id);
+    }
+    this.props.updateAgents(agent);
   }
 
   render() {
@@ -61,8 +72,8 @@ class Index extends PureComponent {
                     agent.clientsCount,
                     moment(agent.created).format('DD.MM.YYYY'),
                     <div>
-                      <Tooltip text='Заблокировать' leftOffset="-29px">
-                        <div className="button-lock button-lock_active" />
+                      <Tooltip text={agent.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
+                        <div onClick={this.toggleLock(agent.id, agent.status)} className={`button-lock ${agent.status === 'blocked' ? 'button-lock_active' : ''}`} />
                       </Tooltip>
                       <Tooltip text='Удалить'>
                         <div className="button-remove" />

@@ -15,7 +15,7 @@ module.exports = function (app) {
             if (club.owner == user.id || user.role === 'root') {
               res.send(club)
             } else if (club.operators.includes(user.id)) {
-              res.send({name: club.name, promotions: club.promotions})
+              res.send({name: club.name, promotions: club.promotions, status: club.status})
             } else {
               res.status(403);
               res.send(Errors.notAllowed);
@@ -42,7 +42,7 @@ module.exports = function (app) {
       if (err) next(err);
       if (agent) {
         if (agent.role === 'agent') {
-          new User({ login, password, role: 'operator' })
+          new User({ login, password, role: 'operator', parent: agent.id })
           .save(function (error, operator) {
             if (error) {
               res.status(400);
@@ -68,6 +68,44 @@ module.exports = function (app) {
             }
           });
         }
+      } else {
+        res.status(401);
+        res.send(Errors.invalidToken);
+      }
+    })
+  });
+
+  app.put('/api/club', function (req, res, next) {
+    const id = req.body.id;
+    const status = req.body.status;
+    const token = req.cookies['token'];
+    User.findOne({ token }, function (err, user) {
+      if (err) next(err);
+      if (user) {
+        Club.findById(id, function(err, club) {
+          if (err) next(err);
+          if (club) {
+            if (club.owner == user.id || user.role === 'root') {
+              club.changeStatus(status);
+              club.save(function(err, club) {
+                if (err) {
+                  next(err);
+                } else {
+                  res.send(club);
+                }
+              });
+            } else {
+              res.status(403);
+              res.send(Errors.notAllowed);
+            }
+          } else {
+            res.status(404);
+            res.send(Errors.notFound);
+          }
+        });
+      } else {
+        res.status(401);
+        res.send(Errors.invalidToken);
       }
     })
   });

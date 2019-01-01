@@ -36,4 +36,15 @@
       display: block;
     }
   }
+
+  .block-alert {
+    font-family: 'pn-regular';
+    min-height: 75px;
+    text-align: center;
+    color: #fff;
+    border-radius: 5px;
+    padding: 28px 20px;
+    margin-bottom: 10px;
+    background-color: #ea7711;
+  }
 }

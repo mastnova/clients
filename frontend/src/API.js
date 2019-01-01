@@ -13,6 +13,10 @@ const API = {
     method: 'POST',
     url: '/api/login',
   },
+  changeUserStatus: {
+    method: 'PUT',
+    url: '/api/user',
+  },
   getAgents: {
     method: 'GET',
     url: '/api/agents',
@@ -40,6 +44,10 @@ const API = {
   getClub: {
     method: 'GET',
     url: '/api/club/',
+  },
+  changeClubStatus: {
+    method: 'PUT',
+    url: '/api/club',
   },
   getOperators: {
     method: 'GET',
@@ -145,6 +153,60 @@ async function getClub(id) {
   return null;
 }
 
+async function blockClub(id) {
+  const params = { id, status: 'blocked' };
+  const response = await request(API.changeClubStatus.url, API.changeClubStatus.method, params);
+  if (response.isOk) {
+    return response.data;
+  }
+  return null;
+}
+
+async function removeClub(id) {
+  const params = { id, status: 'removed' };
+  const response = await request(API.changeClubStatus.url, API.changeClubStatus.method, params);
+  if (response.isOk) {
+    return response.data;
+  }
+  return null;
+}
+
+async function activateClub(id) {
+  const params = { id, status: 'active' };
+  const response = await request(API.changeClubStatus.url, API.changeClubStatus.method, params);
+  if (response.isOk) {
+    return response.data;
+  }
+  return null;
+}
+
+async function blockUser(id) {
+  const params = { id, status: 'blocked' };
+  const response = await request(API.changeUserStatus.url, API.changeUserStatus.method, params);
+  if (response.isOk) {
+    return response.data;
+  }
+  return null;
+}
+
+async function removeUser(id) {
+  const params = { id, status: 'removed' };
+  const response = await request(API.changeUserStatus.url, API.changeUserStatus.method, params);
+  if (response.isOk) {
+    return response.data;
+  }
+  return null;
+}
+
+async function activateUser(id) {
+  const params = { id, status: 'active' };
+  const response = await request(API.changeUserStatus.url, API.changeUserStatus.method, params);
+  if (response.isOk) {
+    return response.data;
+  }
+  return null;
+}
+
 async function getOperators(clubId) {
   const response = await request(API.getOperators.url + clubId);
   if (response.isOk) {
@@ -169,6 +231,12 @@ export default {
   createClub,
   getClubs,
   getClub,
+  blockClub,
+  removeClub,
+  activateClub,
+  blockUser,
+  removeUser,
+  activateUser,
   getOperators,
   createPromotion,
 };

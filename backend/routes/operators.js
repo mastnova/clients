@@ -7,6 +7,7 @@ const usersProjection = {
   role: true,
   created: true,
   status: true,
+  parent: true,
 };
 
 module.exports = function (app) {

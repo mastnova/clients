@@ -9,19 +9,24 @@ module.exports = function (app) {
       if (err) next(err);
       if (user) {
         if (user.passwordIsValid(password)) {
-          const login = user.login;
-          const role = user.role;
-          const token = user.generateToken();
-          user.token = token;
-          user.save(function (err, updatedUser) {
-            if (err) next(err);
-            res.cookie('token', token, { httpOnly: true, sameSite: true});
-            if (role === 'operator') {
-              res.send({ status: 'ok', role, login, clubId: user.clubId });
-            } else {
-              res.send({ status: 'ok', role, login });
-            }
-          })
+          if (user.status !== 'active') {
+            res.status(403)
+            res.send(Errors.accountBlocked);
+          } else {
+            const login = user.login;
+            const role = user.role;
+            const token = user.generateToken();
+            user.token = token;
+            user.save(function (err, updatedUser) {
+              if (err) next(err);
+              res.cookie('token', token, { httpOnly: true, sameSite: true });
+              if (role === 'operator') {
+                res.send({ status: 'ok', role, login, clubId: user.clubId });
+              } else {
+                res.send({ status: 'ok', role, login });
+              }
+            })
+          }
         } else {
           res.status(403)
           res.send(Errors.authFailed);

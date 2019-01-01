@@ -54,62 +54,67 @@ module.exports = function (app) {
     User.findOne({ token }, function (err, operator) {
       if (err) next(err);
       if (operator) {
-        Client.findOne({ club: operator.clubId, phone}, function (err, client) {
+        Club.findById(operator.clubId, function (err, club) {
           if (err) next(err);
-          if (client) {
-            if (!promotion.id) {
+          if (club) {
+            if (club.status !== 'active') {
               res.status(403);
-              res.send(Errors.clientExist);
+              res.send(Errors.notAllowed);
             } else {
-              if (client.hasPromotion(promotion.id)) {
-                res.status(403);
-                res.send(Errors.clientPromoted);
-              } else {
-                client.addPromotion({...promotion, creator: operator.login});
-                client.save(function(error) {
-                  if (error) {
-                    res.status(400);
-                    res.send(error);
+              Client.findOne({ club: operator.clubId, phone }, function (err, client) {
+                if (err) next(err);
+                if (client) {
+                  if (!promotion.id) {
+                    res.status(403);
+                    res.send(Errors.clientExist);
                   } else {
-                    res.send({status: 'ok'});
+                    if (client.hasPromotion(promotion.id)) {
+                      res.status(403);
+                      res.send(Errors.clientPromoted);
+                    } else {
+                      client.addPromotion({ ...promotion, creator: operator.login });
+                      client.save(function (error) {
+                        if (error) {
+                          res.status(400);
+                          res.send(error);
+                        } else {
+                          res.send({ status: 'ok' });
+                        }
+                      });
+                    }
                   }
-                });
-              }
-            }
-          } else {
-            let promotions = [];
-            if (promotion.id) {
-              promotions.push({
-                ...promotion,
-                creator: operator.login,
-                date: new Date().getTime(),
+                } else {
+                  let promotions = [];
+                  if (promotion.id) {
+                    promotions.push({
+                      ...promotion,
+                      creator: operator.login,
+                      date: new Date().getTime(),
+                    });
+                  }
+                  new Client({ name, phone, promotions, club: operator.clubId, creator: operator.login })
+                  .save(function (error) {
+                    if (error) {
+                      res.status(400);
+                      res.send(error);
+                    } else {
+                      club.increaseClientsCounter();
+                      club.save(function (error) {
+                        if (error) {
+                          res.status(400);
+                          res.send(error);
+                        } else {
+                          res.send({ status: 'ok' });
+                        }
+                      });
+                    }
+                  });
+                }
               });
             }
-            new Client({ name, phone, promotions, club: operator.clubId, creator: operator.login })
-            .save(function (error) {
-              if (error) {
-                res.status(400);
-                res.send(error);
-              } else {
-                Club.findById(operator.clubId, function(err, club) {
-                  if (err) next(err);
-                  if (club) {
-                    club.increaseClientsCounter();
-                    club.save(function(error) {
-                      if (error) {
-                        res.status(400);
-                        res.send(error);
-                      } else {
-                        res.send({ status: 'ok' });
-                      }
-                    });
-                  } else {
-                    res.status(404);
-                    res.send(Errors.notFound);
-                  }
-                });
-              }
-            });
+          } else {
+            res.status(404);
+            res.send(Errors.notFound);
           }
         });
       } else {

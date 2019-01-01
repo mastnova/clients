@@ -72,15 +72,36 @@ class AdminRoutes extends PureComponent {
     this.setState({ clubName: club.name ? `(${club.name})` : ''});
   }
 
+  updateClubs = (newClub) => {
+    if (!newClub) return;
+    const updatedClubs = this.state.clubs.map(club => (
+      {
+        ...club,
+        status: club.id === newClub.id ? newClub.status : club.status,
+    }));
+    this.setState({ clubs: updatedClubs });
+  }
+
+  updateAgents = (newAgent) => {
+    this.fetchData();
+    // if (!newAgent) return;
+    // const updatedAgents = this.state.agents.map(agent => (
+    //   {
+    //     ...agent,
+    //     status: agent.id === newAgent.id ? newAgent.status : agent.status,
+    //   }));
+    // this.setState({ agents: updatedAgents });
+  }
+
   render() {
     return (
       <div className="page-container">
         <Route path={[`${PAGE_URL.club}/:id`, PAGE_URL.index]} component={MenuAdmin} />
         <Route render={(props) => <Breadcrumbs {...props} setClubId={this.setClubId} clubName={this.state.clubName} />} />
-        <Route path={PAGE_URL.index} exact render={(props) => <Index {...props} openPopup={this.props.openPopup} users={this.state.agents} />} />
+        <Route path={PAGE_URL.index} exact render={(props) => <Index {...props} openPopup={this.props.openPopup} users={this.state.agents} updateAgents={this.updateAgents}/>} />
         <Switch>
-          <Route path={`${PAGE_URL.clubs}/all`} exact render={(props) => <Clubs {...props} openPopup={this.props.openPopup} clubs={this.state.clubs}/>} />
-          <Route path={`${PAGE_URL.clubs}/:agentId`} exact render={(props) => <Clubs {...props} openPopup={this.props.openPopup} clubs={this.state.clubs}/>} />
+          <Route path={`${PAGE_URL.clubs}/all`} exact render={(props) => <Clubs {...props} openPopup={this.props.openPopup} clubs={this.state.clubs} updateClubs={this.updateClubs}/>} />
+          <Route path={`${PAGE_URL.clubs}/:agentId`} exact render={(props) => <Clubs {...props} openPopup={this.props.openPopup} clubs={this.state.clubs} updateClubs={this.updateClubs}/>} />
         </Switch>
         <Route path={`${PAGE_URL.club}/:id`} exact render={(props) => <Club {...props} openPopup={this.props.openPopup} />} />
         <Route path={`${PAGE_URL.club}/:id${PAGE_URL.operators}`} exact render={(props) => <Operators {...props} openPopup={this.props.openPopup} />} />

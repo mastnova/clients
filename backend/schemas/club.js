@@ -51,6 +51,13 @@ schemaClub.methods.increaseClientsCounter = function () {
   this.clientsCount = this.clientsCount + 1;
 };
 
+schemaClub.methods.changeStatus = function (status) {
+  const states = ['active', 'blocked', 'removed'];
+  if (states.includes(status)) {
+    this.status = status;
+  }
+};
+
 schemaClub.set('toJSON', {
   virtuals: true,
   versionKey: false,

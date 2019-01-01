@@ -19,6 +19,9 @@ const schemaUser = new db.Schema({
   clubId: {
     type: db.Schema.ObjectId,
   },
+  parent: {
+    type: db.Schema.ObjectId,
+  },
   hash: {
     type: String,
     require: true,
@@ -66,6 +69,13 @@ schemaUser.methods.generateToken = function () {
 
 schemaUser.methods.passwordIsValid = function (password) {
   return this.getHash(password) === this.hash;
+};
+
+schemaUser.methods.changeStatus = function (status) {
+  const states = ['active', 'blocked', 'removed'];
+  if (states.includes(status)) {
+    this.status = status;
+  }
 };
 
 schemaUser.set('toJSON', {
