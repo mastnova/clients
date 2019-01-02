@@ -75,7 +75,7 @@ class Clubs extends PureComponent {
                           <div onClick={this.toggleLock(club.id, club.status)} className={`button-lock ${club.status === 'blocked' ? 'button-lock_active' : ''}`} />
                         </Tooltip>
                         <Tooltip text='Удалить'>
-                          <div className="button-remove" />
+                          <div onClick={this.props.removeClub(club.id)} className="button-remove" />
                         </Tooltip>
                       </div>
                     ]}

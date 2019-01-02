@@ -40,6 +40,14 @@ class Clients extends Component {
     return clients.filter(client => client.name.includes(this.state.search) || client.phone.includes(this.state.search) || client.creator.includes(this.state.search));
   }
 
+  removeClient = (id) => async () => {
+    const isRemoved = await API.removeClient(id);
+    if (isRemoved) {
+      const updatedClients = this.state.clients.filter( client => client.id !== id);
+      this.setState({clients: updatedClients});
+    }
+  }
+
   render() {
     const filteredClients = this.filterBySearch(this.state.clients);
     return (
@@ -71,7 +79,7 @@ class Clients extends Component {
                       moment(client.created).format('DD.MM.YYYY'),
                       <div>
                         <Tooltip text='Удалить'>
-                          <div className="button-remove" />
+                          <div onClick={this.removeClient(client.id)} className="button-remove" />
                         </Tooltip>
                       </div>
                     ]}

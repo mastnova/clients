@@ -21,6 +21,10 @@ const API = {
     method: 'GET',
     url: '/api/agents',
   },
+  removeAgent: {
+    method: 'DELETE',
+    url: '/api/agent/',
+  },
   getClients: {
     method: 'GET',
     url: '/api/clients/',
@@ -31,6 +35,10 @@ const API = {
   },
   createClient: {
     method: 'POST',
+    url: '/api/client',
+  },
+  removeClient: {
+    method: 'PUT',
     url: '/api/client',
   },
   createClub: {
@@ -45,6 +53,10 @@ const API = {
     method: 'GET',
     url: '/api/club/',
   },
+  removeClub: {
+    method: 'DELETE',
+    url: '/api/club/',
+  },
   changeClubStatus: {
     method: 'PUT',
     url: '/api/club',
@@ -52,6 +64,10 @@ const API = {
   getOperators: {
     method: 'GET',
     url: '/api/operators/',
+  },
+  removeOperator: {
+    method: 'DELETE',
+    url: '/api/operator/',
   },
   createPromotion: {
     method: 'POST',
@@ -111,6 +127,14 @@ async function getAgents() {
   return null;
 }
 
+async function removeAgent(id) {
+  const response = await request(API.removeAgent.url + id, API.removeAgent.method);
+  if (response.isOk) {
+    return true;
+  }
+  return false;
+}
+
 async function getClients(id) {
   const response = await request(API.getClients.url + id);
   if (response.isOk) {
@@ -130,6 +154,15 @@ async function getClient(id) {
 async function createClient(client) {
   const response = await request(API.createClient.url, API.createClient.method, client);
   return response;
+}
+
+async function removeClient(id) {
+  const params = { id, status: 'removed' };
+  const response = await request(API.removeClient.url, API.removeClient.method, params);
+  if (response.isOk) {
+    return true;
+  }
+  return false;
 }
 
 async function createClub(club) {
@@ -163,12 +196,11 @@ async function blockClub(id) {
 }
 
 async function removeClub(id) {
-  const params = { id, status: 'removed' };
-  const response = await request(API.changeClubStatus.url, API.changeClubStatus.method, params);
+  const response = await request(API.removeClub.url + id, API.removeClub.method);
   if (response.isOk) {
-    return response.data;
+    return true;
   }
-  return null;
+  return false;
 }
 
 async function activateClub(id) {
@@ -215,6 +247,14 @@ async function getOperators(clubId) {
   return null;
 }
 
+async function removeOperator(id) {
+  const response = await request(API.removeOperator.url + id, API.removeOperator.method);
+  if (response.isOk) {
+    return true;
+  }
+  return false;
+}
+
 async function createPromotion(clubId, promo) {
   const response = await request(API.createPromotion.url + clubId, API.createPromotion.method, promo);
   return response;
@@ -225,9 +265,11 @@ export default {
   createUser,
   login,
   getAgents,
+  removeAgent,
   getClients,
   getClient,
   createClient,
+  removeClient,
   createClub,
   getClubs,
   getClub,
@@ -238,5 +280,6 @@ export default {
   removeUser,
   activateUser,
   getOperators,
+  removeOperator,
   createPromotion,
 };

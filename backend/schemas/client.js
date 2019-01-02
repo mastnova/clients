@@ -45,6 +45,13 @@ schemaClient.methods.hasPromotion = function (id) {
   return !!promo.length
 };
 
+schemaClient.methods.changeStatus = function (status) {
+  const states = ['active', 'removed'];
+  if (states.includes(status)) {
+    this.status = status;
+  }
+};
+
 schemaClient.set('toJSON', {
   virtuals: true,
   versionKey: false,

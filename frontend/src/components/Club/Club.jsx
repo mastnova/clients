@@ -36,6 +36,11 @@ class Club extends PureComponent {
     this.props.openPopup('add-promo', { id: this.state.club.id});
   }
 
+  removeClub = (id) => () => {
+    this.props.removeClub(id)();
+    this.props.history.push('/');
+  }
+
   render() {
     const id = this.props.match.params.id;
     return (
@@ -44,7 +49,7 @@ class Club extends PureComponent {
           Клуб - {this.state.club.name}
           <div className="unit-header__remove">
             <Tooltip text='Удалить' leftOffset='12px'>
-              <div className="button-remove button-remove_big" />
+              <div onClick={this.removeClub(this.state.club.id)} className="button-remove button-remove_big" />
             </Tooltip>
           </div>
         </div>

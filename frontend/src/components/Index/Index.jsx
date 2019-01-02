@@ -76,7 +76,7 @@ class Index extends PureComponent {
                         <div onClick={this.toggleLock(agent.id, agent.status)} className={`button-lock ${agent.status === 'blocked' ? 'button-lock_active' : ''}`} />
                       </Tooltip>
                       <Tooltip text='Удалить'>
-                        <div className="button-remove" />
+                        <div onClick={this.props.removeAgent(agent.id)} className="button-remove" />
                       </Tooltip>
                     </div>
                   ]}

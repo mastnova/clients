@@ -6,6 +6,7 @@ import './Client.scss';
 import Table from '../UI/Table/Table';
 import Tooltip from '../UI/Tooltip/Tooltip';
 import API from '../../API';
+import { PAGE_URL } from '../../constants';
 
 const header = ['#', 'Акция', 'Добавил', 'Дата'];
 
@@ -31,6 +32,13 @@ class Client extends Component {
     }
   }
 
+  removeClient = (id) => async () => {
+    const isRemoved = await API.removeClient(id);
+    if (isRemoved) {
+      this.props.history.goBack();
+    }
+  }
+
   render() {
     return (
       <div className="page page_client">
@@ -38,7 +46,7 @@ class Client extends Component {
           Клиент - {this.state.client.name}
           <div className="unit-header__remove">
             <Tooltip text='Удалить' leftOffset='12px'>
-              <div className="button-remove button-remove_big" />
+              <div onClick={this.removeClient(this.state.client.id)} className="button-remove button-remove_big" />
             </Tooltip>
           </div>
         </div>

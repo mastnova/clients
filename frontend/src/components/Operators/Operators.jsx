@@ -56,6 +56,14 @@ class Operators extends PureComponent {
     }
   }
 
+  removeOperator = (id) => async () => {
+    const isRemoved = API.removeOperator(id);
+    if (isRemoved) {
+      const updatedList = this.state.operators.filter( op => op.id !== id);
+      this.setState({operators: updatedList});
+    }
+  }
+
   render() {
     const filteredOperators = this.filterBySearch(this.state.operators);
     return (
@@ -89,7 +97,7 @@ class Operators extends PureComponent {
                           <div onClick={this.toggleLock(operator.id, operator.status)} className={`button-lock ${operator.status === 'blocked' ? 'button-lock_active' : ''}`} />
                         </Tooltip>
                         <Tooltip text='Удалить'>
-                          <div className="button-remove" />
+                          <div onClick={this.removeOperator(operator.id)} className="button-remove" />
                         </Tooltip>
                       </div>
                     ]}
