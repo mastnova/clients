@@ -71,7 +71,12 @@ class IndexOperator extends PureComponent {
     if (response.isOk) {
       this.props.openPopup('alert', { type: 'success', text: `Клиент <b>${this.state.name}</b> успешно добавлен` });
     } else {
-      const text = response.data.code === 6 ? 'Такой логин уже зарегистрирован' : 'Произошла ошибка';
+      let text = 'Произошла ошибка';
+      if (response.data.code === 7) {
+        text = 'Такой пользователь уже зарегистрирован';
+      } else if (response.data.code === 8) {
+        text = 'Пользователь уже участвует в акции';
+      }
       this.props.openPopup('alert', { type: 'error', text });
     }
   }

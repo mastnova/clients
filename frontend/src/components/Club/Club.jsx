@@ -33,7 +33,7 @@ class Club extends PureComponent {
   }
 
   onAddPromo = () => {
-    this.props.openPopup('add-promo', { id: this.state.club.id});
+    this.props.openPopup('add-promo', { id: this.state.club.id, callback: this.fetchClub});
   }
 
   removeClub = (id) => () => {

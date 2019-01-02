@@ -32,7 +32,7 @@ class Operators extends PureComponent {
 
   onAddOperator = () => {
     const id = this.props.match.params.id;
-    this.props.openPopup('add-operator', { id });
+    this.props.openPopup('add-operator', { id, callback: this.fetchOps });
   }
 
   onChangeInput = ({ value }) => {

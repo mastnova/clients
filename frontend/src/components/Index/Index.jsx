@@ -21,7 +21,7 @@ class Index extends PureComponent {
   }
 
   showPopup = () => {
-    this.props.openPopup('add-agent');
+    this.props.openPopup('add-agent', { callback: this.props.updateAgents});
   }
 
   onChangeInput = ({ value }) => {
@@ -39,7 +39,7 @@ class Index extends PureComponent {
     } else {
       agent = await API.activateUser(id);
     }
-    this.props.updateAgents(agent);
+    this.props.updateAgents();
   }
 
   render() {

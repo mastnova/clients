@@ -20,6 +20,7 @@ module.exports = function (app) {
             user.save(function (err, updatedUser) {
               if (err) next(err);
               res.cookie('token', token, { httpOnly: true, sameSite: true });
+              console.log(user)
               if (role === 'operator') {
                 res.send({ status: 'ok', role, login, clubId: user.clubId });
               } else {

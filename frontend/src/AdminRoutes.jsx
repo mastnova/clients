@@ -39,7 +39,7 @@ class AdminRoutes extends PureComponent {
       clubs.forEach(club => {
         counters[club.owner] = counters[club.owner] ? counters[club.owner] + club.clientsCount : club.clientsCount;
       });
-      const updatedAgents = agents.map(agent => ({ ...agent, clientsCount: counters[agent.id] }));
+      const updatedAgents = agents.map(agent => ({ ...agent, clientsCount: counters[agent.id] || 0 }));
       const agentsNames = {};
       agents.forEach(agent => {
         agentsNames[agent.id] = agent.login;
@@ -82,7 +82,7 @@ class AdminRoutes extends PureComponent {
     this.setState({ clubs: updatedClubs });
   }
 
-  updateAgents = (newAgent) => {
+  updateAgents = () => {
     this.fetchData();
   }
 

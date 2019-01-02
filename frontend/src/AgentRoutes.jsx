@@ -48,7 +48,10 @@ class AgentRoutes extends PureComponent {
   }
 
   updateClubs = (newClub) => {
-    if (!newClub) return;
+    if (!newClub) {
+      this.fetchClubs();
+      return;
+    };
     const updatedClubs = this.state.clubs.map( club => club.id === newClub.id ? newClub : club);
     this.setState({clubs: updatedClubs});
   }

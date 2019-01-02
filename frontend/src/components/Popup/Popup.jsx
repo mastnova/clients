@@ -38,11 +38,11 @@ class Popup extends PureComponent {
 
     let content;
     if (this.props.name === 'add-agent') {
-      content = <AddAgent openPopup={this.props.open}/>
+      content = <AddAgent data={this.props.data} openPopup={this.props.open}/>
     } else if (this.props.name === 'alert') {
       content = <Alert data={this.props.data} close={this.props.close}/>
     } else if (this.props.name === 'add-club') {
-      content = <AddClub openPopup={this.props.open} />
+      content = <AddClub data={this.props.data} openPopup={this.props.open} />
     } else if(this.props.name === 'add-promo') {
       content = <AddPromo data={this.props.data} openPopup={this.props.open} />
     } else if (this.props.name === 'add-operator') {

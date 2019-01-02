@@ -21,7 +21,7 @@ class IndexAgent extends PureComponent {
   }
 
   showPopup = () => {
-    this.props.openPopup('add-club');
+    this.props.openPopup('add-club', {callback: this.props.updateClubs});
   }
 
   onChangeInput = ({value}) => {
