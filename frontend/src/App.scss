@@ -38,6 +38,20 @@ body {
   background-color: #f2f2f9;
 }
 
+.textarea {
+  font-family: 'pn-regular';
+  height: 140px;
+  width: 100%;
+  resize: none;
+  border: 1px solid #344178;
+  color: #344178;
+  border-radius: 5px;
+  padding-left: 40px;
+  box-sizing: border-box;
+  padding-top: 10px;
+  outline: none;
+}
+
 .page-container {
   width: 1170px;
   margin: 0 auto;

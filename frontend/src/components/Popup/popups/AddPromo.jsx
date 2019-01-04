@@ -10,7 +10,6 @@ class AddPromo extends PureComponent {
       name: '',
       nameIsValid: false,
       desc: '',
-      descIsValid: false,
     };
   }
 
@@ -21,8 +20,12 @@ class AddPromo extends PureComponent {
     });
   }
 
+  onChangeTextarea = ({ target }) => {
+    this.setState({desc: target.value});
+  }
+
   isFormValid = () => {
-    return this.state.descIsValid && this.state.nameIsValid;
+    return this.state.nameIsValid;
   }
 
   addPromo = async (e) => {
@@ -43,27 +46,28 @@ class AddPromo extends PureComponent {
   render() {
     return (
       <div className="popup-content popup_add-agent">
-        <div className="popup-content__title">Добавить акцию</div>
+        <div className="popup-content__title">Создать акцию</div>
         <form onSubmit={this.addPromo}>
           <label className="label">
-            <div>name</div>
+            <div>Название</div>
             <Input
               name="name"
               icon="login"
-              placeholder="Введите name"
+              placeholder="Введите название"
               validationType="required"
               value={this.state.name}
               onChange={this.onChangeInput}
             />
           </label>
           <label className="label">
-            <div>desc</div>
-            <Input
+            <div>Описание</div>
+            <textarea
+              className="textarea"
               name="desc"
               icon="desc"
-              placeholder=""
+              placeholder="Введите описание"
               value={this.state.desc}
-              onChange={this.onChangeInput}
+              onChange={this.onChangeTextarea}
             />
           </label>
           <button className="button" type="submit" disabled={!this.isFormValid()}>
