@@ -69,6 +69,16 @@ body {
     background-position-y: center;
     filter: brightness(10);
   }
+
+  &_gray {
+    background-color: #e4e4f4;
+    color: #344178;
+    transition: all .2s;
+
+    &:hover {
+      background-color: #f2f2f8 !important;
+    }
+  }
 }
 
 .button[disabled] {

@@ -56,12 +56,18 @@ class Operators extends PureComponent {
     }
   }
 
-  removeOperator = (id) => async () => {
-    const isRemoved = API.removeOperator(id);
-    if (isRemoved) {
-      const updatedList = this.state.operators.filter( op => op.id !== id);
-      this.setState({operators: updatedList});
-    }
+  removeOperator = (id, name) => () => {
+    this.props.openPopup('remove-confirm', {
+      title: 'Удаление оператора',
+      content: `<div>Вы действительно хотите удалить оператора? <br/><b>${name}</b></div>`,
+      callback: async () => {
+        const isRemoved = await API.removeOperator(id);
+        if (isRemoved) {
+          const updatedList = this.state.operators.filter(op => op.id !== id);
+          this.setState({ operators: updatedList });
+        }
+      }
+    });
   }
 
   render() {
@@ -97,7 +103,7 @@ class Operators extends PureComponent {
                           <div onClick={this.toggleLock(operator.id, operator.status)} className={`button-lock ${operator.status === 'blocked' ? 'button-lock_active' : ''}`} />
                         </Tooltip>
                         <Tooltip text='Удалить'>
-                          <div onClick={this.removeOperator(operator.id)} className="button-remove" />
+                          <div onClick={this.removeOperator(operator.id, operator.login)} className="button-remove" />
                         </Tooltip>
                       </div>
                     ]}

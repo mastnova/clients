@@ -47,7 +47,7 @@ class AdminRoutes extends PureComponent {
       const updatedClubs = clubs.map(club => ({...club, ownerName: agentsNames[club.owner]}));
       this.setState({ agents: updatedAgents, clubs: updatedClubs }, () => {
         if (this.state.selectedClubId) {
-          this.setClubName()
+          this.setClubName();
         }
       });
     });
@@ -86,20 +86,32 @@ class AdminRoutes extends PureComponent {
     this.fetchData();
   }
 
-  removeClub = (id) => async () => {
-    const isRemoved = await API.removeClub(id);
-    if (isRemoved) {
-      const updatedClubs = this.state.clubs.filter(club => club.id !== id);
-      this.setState({ clubs: updatedClubs });
-    }
+  removeClub = (id, name) => async () => {
+    this.props.openPopup('remove-confirm', {
+      title: 'Удаление клуба',
+      content: `<div>Вы действительно хотите удалить клуб? <br/><b>${name}</b></div>`,
+      callback: async () => {
+        const isRemoved = await API.removeClub(id);
+        if (isRemoved) {
+          const updatedClubs = this.state.clubs.filter(club => club.id !== id);
+          this.setState({ clubs: updatedClubs });
+        }
+      }
+    });
   }
 
-  removeAgent = (id) => async () => {
-    const isRemoved = await API.removeAgent(id);
-    if (isRemoved) {
-      const updatedAgents = this.state.agents.filter(agent => agent.id !== id);
-      this.setState({ agents: updatedAgents });
-    }
+  removeAgent = (id, name) => () => {
+    this.props.openPopup('remove-confirm', {
+      title: 'Удаление агента',
+      content: `<div>Вы действительно хотите удалить агента? <br/><b>${name}</b></div>`,
+      callback: async () => {
+        const isRemoved = await API.removeAgent(id);
+        if (isRemoved) {
+          const updatedAgents = this.state.agents.filter(agent => agent.id !== id);
+          this.setState({ agents: updatedAgents });
+        }
+      }
+    });
   }
 
   render() {

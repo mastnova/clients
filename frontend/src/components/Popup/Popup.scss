@@ -67,7 +67,23 @@
     height: 40px;
     margin-top: 20px;
   }
-} 
+}
+
+.popup_confirm {
+  width: 460px;
+  &__remove-content {
+    line-height: 24px;
+  }
+
+  .popup_alert__alert {
+    padding: 20px;
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+}
 
 .popup_add-agent {
   width: 365px;
@@ -91,6 +107,7 @@
     border-radius: 5px;
     padding: 28px 20px;
     margin-bottom: 10px;
+    background-color: #1991eb;
 
     &_success {
       background-color: #36af47;

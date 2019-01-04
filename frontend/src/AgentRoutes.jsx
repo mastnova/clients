@@ -56,12 +56,18 @@ class AgentRoutes extends PureComponent {
     this.setState({clubs: updatedClubs});
   }
 
-  removeClub = (id) => async () => {
-    const isRemoved = await API.removeClub(id);
-    if (isRemoved) {
-      const updatedClubs = this.state.clubs.filter(club => club.id !== id);
-      this.setState({ clubs: updatedClubs });
-    }
+  removeClub = (id, name) => () => {
+    this.props.openPopup('remove-confirm', {
+      title: 'Удаление клуба',
+      content: `<div>Вы действительно хотите удалить клуб? <br/><b>${name}</b></div>`,
+      callback: async () => {
+        const isRemoved = await API.removeClub(id);
+        if (isRemoved) {
+          const updatedClubs = this.state.clubs.filter(club => club.id !== id);
+          this.setState({ clubs: updatedClubs });
+        }
+      }
+    });
   }
 
   render() {
