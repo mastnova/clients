@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import './Clients.scss';
 
 import Table from '../UI/Table/Table';
 import Tooltip from '../UI/Tooltip/Tooltip';
@@ -71,7 +72,7 @@ class Clients extends Component {
         </div>
         {
           this.state.clients.length
-            ? <Table className="clubs">
+            ? <Table className="clients">
               <Table.Header>{header}</Table.Header>
               {
                 filteredClients.map((client, i) => (
