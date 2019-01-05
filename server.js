@@ -17,7 +17,7 @@ app.use(function (req, res, next) {
 });
 
 
-const port = process.env.PORT || config.get('port');
+const port = config.get('port');
 app.listen(port, () => {
 	console.log(`listening on ${port}...`)
 })

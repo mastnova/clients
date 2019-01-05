@@ -75,13 +75,35 @@
     line-height: 24px;
   }
 
-  .popup_alert__alert {
+  &__content {
     padding: 20px;
+    font-family: 'pn-regular';
+    color: #344178;
+  }
+
+  &__code {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'pn-bold';
+
+    .input {
+      width: 70px;
+      margin-left: 20px;
+      font-family: 'pn-bold';
+    }
   }
 
   &__buttons {
     display: flex;
     justify-content: space-between;
+  }
+
+  &__phone {
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 30px;
   }
 }
 

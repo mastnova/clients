@@ -8,6 +8,7 @@ import AddClub from './popups/AddClub';
 import AddPromo from './popups/AddPromo';
 import AddOperator from './popups/AddOperator';
 import RemoveConfirm from './popups/RemoveConfirm';
+import SmsConfirm from './popups/SmsConfirm';
 import Alert from './popups/Alert';
 
 class Popup extends PureComponent {
@@ -50,8 +51,11 @@ class Popup extends PureComponent {
       content = <AddOperator data={this.props.data} openPopup={this.props.open} />
     } else if (this.props.name === 'remove-confirm') {
       content = <RemoveConfirm data={this.props.data} close={this.props.close}/>
+    } else if (this.props.name === 'sms-confirm') {
+      content = <SmsConfirm data={this.props.data} close={this.props.close} />
     }
 
+    const cantClose = this.props.name === 'alert' || this.props.name === 'sms-confirm';
     return (
       <ReactCSSTransitionGroup
         transitionName="showpopup"
@@ -59,10 +63,10 @@ class Popup extends PureComponent {
         transitionLeaveTimeout={150}>
         {
           this.props.isOpen && 
-          <div className="popup-wrapper" onClick={this.props.name === 'alert' ? null : this.props.close}>
+          <div className="popup-wrapper" onClick={cantClose ? null : this.props.close}>
             <div className="popup-block">
               <div className="content-wrapper" onClick={this.preventClosing}>
-                { this.props.name !== 'alert' && <div className="close-btn" onClick={this.props.close} />}
+                {!cantClose && <div className="close-btn" onClick={this.props.close} />}
                 {content}
               </div>
             </div>

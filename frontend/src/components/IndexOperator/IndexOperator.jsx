@@ -59,7 +59,21 @@ class IndexOperator extends PureComponent {
     return this.state.nameIsValid && this.state.phoneIsValid;
   }
 
-  register = async () => {
+  onSubmit = async () => {
+    const isExist = await API.clientIsExist({ phone: this.state.phone });
+    if (isExist) {
+      this.register();
+    } else {
+      this.sendCode();
+    }
+    
+  }
+
+  sendCode = () => {
+    this.props.openPopup('sms-confirm', { phone: this.state.phone, callback: this.register });
+  }
+
+  register = async (code) => {
     const response = await API.createClient({
       name: this.state.name,
       phone: this.state.phone,
@@ -67,15 +81,16 @@ class IndexOperator extends PureComponent {
         id: this.state.promoId,
         name: this.state.promoName,
       },
+      code,
     });
     if (response.isOk) {
       this.props.openPopup('alert', { type: 'success', text: `Клиент <b>${this.state.name}</b> успешно добавлен` });
     } else {
       let text = 'Произошла ошибка';
       if (response.data.code === 7) {
-        text = 'Такой пользователь уже зарегистрирован';
+        text = 'Такой клиент уже зарегистрирован';
       } else if (response.data.code === 8) {
-        text = 'Пользователь уже участвует в акции';
+        text = 'Клиент уже участвует в акции';
       }
       this.props.openPopup('alert', { type: 'error', text });
     }
@@ -138,7 +153,7 @@ class IndexOperator extends PureComponent {
                 }
               </select>
             </label>
-            <button className="button" onClick={this.register} disabled={!this.isFormValid()}>Отправить</button>
+            <button className="button" onClick={this.onSubmit} disabled={!this.isFormValid()}>Отправить</button>
           </div>
         </div>
       </div>

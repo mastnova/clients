@@ -41,6 +41,10 @@ const API = {
     method: 'PUT',
     url: '/api/client',
   },
+  clientIsExist: {
+    method: 'POST',
+    url: '/api/client/is_exist',
+  },
   createClub: {
     method: 'POST',
     url: '/api/club',
@@ -165,6 +169,11 @@ async function removeClient(id) {
   return false;
 }
 
+async function clientIsExist(client) {
+  const response = await request(API.clientIsExist.url, API.clientIsExist.method, client);
+  return response.data.is_exist;
+}
+
 async function createClub(club) {
   const response = await request(API.createClub.url, API.createClub.method, club);
   return response;
@@ -270,6 +279,7 @@ export default {
   getClient,
   createClient,
   removeClient,
+  clientIsExist,
   createClub,
   getClubs,
   getClub,

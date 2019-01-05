@@ -49,6 +49,7 @@ module.exports = function (app) {
     const name = req.body.name;
     const phone = req.body.phone;
     const promotion = req.body.promotion;
+    const code = req.body.code;
     const token = req.cookies['token'];
 
     User.findOne({ token }, function (err, operator) {
@@ -84,6 +85,11 @@ module.exports = function (app) {
                     }
                   }
                 } else {
+                  if (code !== '3951') {
+                    res.status(400);
+                    res.send({status: 'error'});
+                    return;
+                  }
                   let promotions = [];
                   if (promotion.id) {
                     promotions.push({
@@ -171,5 +177,26 @@ module.exports = function (app) {
         res.send(Errors.invalidToken);
       }
     })
+  });
+
+  app.post('/api/client/is_exist', function (req, res, next) {
+    const phone = req.body.phone;
+    const token = req.cookies['token'];
+    User.findOne({ token }, function (err, operator) {
+      if (err) next(err);
+      if (operator) {
+        Client.findOne({ club: operator.clubId, phone }, function (err, client) {
+          if (err) next(err);
+          if (client && client.status === 'active') {
+            res.send({ is_exist: true });
+          } else {
+            res.send({ is_exist: false });
+          }
+        });
+      } else {
+        res.status(401);
+        res.send(Errors.invalidToken);
+      }
+    });
   });
 }
