@@ -25,10 +25,4 @@ module.exports = function (app) {
   operator(app);
   operators(app);
   promotion(app);
-
-  //catch 404
-  app.use(function (req, res, next) {
-    res.status(404)
-    res.send(Errors.notFound);
-  });
 }
