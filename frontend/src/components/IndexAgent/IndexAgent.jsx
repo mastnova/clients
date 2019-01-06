@@ -20,6 +20,10 @@ class IndexAgent extends PureComponent {
     };
   }
 
+  componentWillMount() {
+    this.props.updateClubs();
+  }
+
   showPopup = () => {
     this.props.openPopup('add-club', {callback: this.props.updateClubs});
   }

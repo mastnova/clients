@@ -26,8 +26,6 @@ class AdminRoutes extends PureComponent {
   componentWillMount() {
     if (!this.props.hasAuth) {
       this.props.history.push(PAGE_URL.login)
-    } else {
-      this.fetchData();
     }
   }
 
@@ -73,7 +71,10 @@ class AdminRoutes extends PureComponent {
   }
 
   updateClubs = (newClub) => {
-    if (!newClub) return;
+    if (!newClub) {
+      this.fetchData();
+      return;
+    };
     const updatedClubs = this.state.clubs.map(club => (
       {
         ...club,

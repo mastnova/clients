@@ -20,6 +20,10 @@ class Index extends PureComponent {
     };
   }
 
+  componentWillMount() {
+    this.props.updateAgents();
+  }
+
   showPopup = () => {
     this.props.openPopup('add-agent', { callback: this.props.updateAgents});
   }

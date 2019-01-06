@@ -19,6 +19,10 @@ class Clubs extends PureComponent {
     };
   }
 
+  componentWillMount() {
+    this.props.updateClubs();
+  }
+
   getClubs() {
     const id = this.props.match.params.agentId;
     if (!id) {
