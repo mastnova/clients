@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import './Clients.scss';
 
-import Table from '../UI/Table/Table';
+import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
 import Tooltip from '../UI/Tooltip/Tooltip';
 import Input from '../UI/Input/Input';
 import { PAGE_URL } from '../../constants';
@@ -55,6 +55,20 @@ class Clients extends Component {
     });
   }
 
+  mappingFn = (client, i) => [
+    i + 1,
+    <Link to={`${PAGE_URL.club}/${this.props.match.params.id}${PAGE_URL.clients}/${client.id}`}>{client.name}</Link>,
+    client.phone,
+    client.promotions.length,
+    client.creator,
+    moment(client.created).format('DD.MM.YYYY'),
+    <div>
+      <Tooltip text='Удалить'>
+        <div onClick={this.removeClient(client.id, client.name)} className="button-remove" />
+      </Tooltip>
+    </div>
+  ]
+
   render() {
     const filteredClients = this.filterBySearch(this.state.clients);
     return (
@@ -72,28 +86,12 @@ class Clients extends Component {
         </div>
         {
           this.state.clients.length
-            ? <Table className="clients">
-              <Table.Header>{header}</Table.Header>
-              {
-                filteredClients.map((client, i) => (
-                  <Table.Row>
-                    {[
-                      i + 1,
-                      <Link to={`${PAGE_URL.club}/${this.props.match.params.id}${PAGE_URL.clients}/${client.id}`}>{client.name}</Link>,
-                      client.phone,
-                      client.promotions.length,
-                      client.creator,
-                      moment(client.created).format('DD.MM.YYYY'),
-                      <div>
-                        <Tooltip text='Удалить'>
-                          <div onClick={this.removeClient(client.id, client.name)} className="button-remove" />
-                        </Tooltip>
-                      </div>
-                    ]}
-                  </Table.Row>
-                ))
-              }
-            </Table>
+            ? <TableWithPagination
+                className="clients"
+                header={header}
+                mappingFn={this.mappingFn}
+                data={filteredClients}
+              />
             : <div className="empty-table">В клубе нет клиентов</div>
         }
       </div>

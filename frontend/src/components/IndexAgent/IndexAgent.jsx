@@ -4,11 +4,10 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import '../Clubs/Clubs.scss';
 
-import Table from '../UI/Table/Table';
 import Tooltip from '../UI/Tooltip/Tooltip';
 import Input from '../UI/Input/Input';
 import { PAGE_URL } from '../../constants';
-import Pagination from '../UI/Pagination/Pagination';
+import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
 import API from '../../API';
 
 const header = ['#', 'Клуб', 'Количество клиентов', 'Дата регистрации', ''];
@@ -47,6 +46,21 @@ class IndexAgent extends PureComponent {
     this.props.updateClubs(club);
   }
 
+  mappingFn = (club, i) => [
+    i + 1,
+    <Link to={`${PAGE_URL.club}/${club.id}${PAGE_URL.clients}`}>{club.name}</Link>,
+    club.clientsCount,
+    moment(club.created).format('DD.MM.YYYY'),
+    <div>
+      <Tooltip text={club.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
+        <div onClick={this.toggleLock(club.id, club.status)} className={`button-lock ${club.status === 'blocked' ? 'button-lock_active' : ''}`} />
+      </Tooltip>
+      <Tooltip text='Удалить'>
+        <div onClick={this.props.removeClub(club.id, club.name)} className="button-remove" />
+      </Tooltip>
+    </div>
+  ]
+
   render() {
     const filteredClubs = this.filterBySearch(this.props.clubs);
     return (
@@ -66,32 +80,14 @@ class IndexAgent extends PureComponent {
         </div>
         {
           this.props.clubs.length
-          ? <Table className="clubs">
-              <Table.Header>{header}</Table.Header>
-              {
-                filteredClubs.map((club, i) => (
-                  <Table.Row>
-                  {[
-                    i + 1,
-                    <Link to={`${PAGE_URL.club}/${club.id}${PAGE_URL.clients}`}>{club.name}</Link>,
-                    club.clientsCount,
-                    moment(club.created).format('DD.MM.YYYY'),
-                    <div>
-                      <Tooltip text={club.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
-                        <div onClick={this.toggleLock(club.id, club.status)} className={`button-lock ${club.status === 'blocked' ? 'button-lock_active' : ''}`}/>
-                      </Tooltip>
-                      <Tooltip text='Удалить'>
-                        <div onClick={this.props.removeClub(club.id, club.name)} className="button-remove"/>
-                      </Tooltip>
-                    </div>
-                  ]}
-                  </Table.Row> 
-                ))
-              }
-            </Table>
+          ? <TableWithPagination
+              className="clubs"
+              header={header}
+              mappingFn={this.mappingFn}
+              data={filteredClubs}
+            />
             : <div className="empty-table">Нет доступных клубов</div>
-         }
-         {true && <Pagination pagesCount={5} currentPage={1}/>}
+        }
       </div>
     );
   }

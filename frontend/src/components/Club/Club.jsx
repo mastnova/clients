@@ -3,12 +3,18 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import './Club.scss';
 
-import Table from '../UI/Table/Table';
 import Tooltip from '../UI/Tooltip/Tooltip';
-import Pagination from '../UI/Pagination/Pagination';
+import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
 import API from '../../API';
 
 const header = ['#', 'Акция', 'Описание', 'Дата добавления'];
+
+const mappingFn = (promo, i) => [
+  i + 1,
+  promo.name,
+  promo.description,
+  moment(promo.created).format('DD.MM.YYYY')
+]
 
 class Club extends PureComponent {
   constructor(props) {
@@ -17,8 +23,6 @@ class Club extends PureComponent {
       club: {
         promotions: []
       },
-      rowsPerPage: 1,
-      currentPage: 1,
     };
   }
 
@@ -43,19 +47,8 @@ class Club extends PureComponent {
     this.props.history.push('/');
   }
 
-  onChangePage = (currentPage) => {
-    this.setState({ currentPage });
-  }
-
-  filterByPage = (promos) => {
-    const start = (this.state.currentPage - 1) * this.state.rowsPerPage;
-    const end = start + this.state.rowsPerPage;
-    return promos.slice(start, end)
-  }
-
   render() {
     const id = this.props.match.params.id;
-    const filteredPromotions = this.filterByPage(this.state.club.promotions);
     return (
       <div className="page page_club">
         <div className="unit-header unit-header_club">
@@ -84,28 +77,12 @@ class Club extends PureComponent {
             <div className="unit-info__text">{moment(this.state.club.created).format('DD.MM.YYYY')}</div>
           </div>
         </div>
-        {Boolean(filteredPromotions.length) &&
-          <Table className="clubs">
-            <Table.Header>{header}</Table.Header>
-            {
-              filteredPromotions.map((promo, i) => (
-                <Table.Row key={promo.id}>
-                  {[
-                    i + 1,
-                    promo.name,
-                    promo.description,
-                    moment(promo.created).format('DD.MM.YYYY')
-                  ]}
-                </Table.Row>
-              ))
-            }
-          </Table>
-        }
-        {this.state.club.promotions.length > this.state.rowsPerPage &&
-          <Pagination
-            pagesCount={Math.ceil(this.state.club.promotions.length / this.state.rowsPerPage)}
-            currentPage={this.state.currentPage}
-            onChange={this.onChangePage}
+        {Boolean(this.state.club.promotions.length) &&
+          <TableWithPagination 
+            className="clubs"
+            header={header}
+            mappingFn={mappingFn}
+            data={this.state.club.promotions}
           />
         }
         <div className="button-wrapper">

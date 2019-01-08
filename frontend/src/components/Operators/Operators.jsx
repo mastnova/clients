@@ -2,10 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import Table from '../UI/Table/Table';
 import Tooltip from '../UI/Tooltip/Tooltip';
 import Input from '../UI/Input/Input';
-import Pagination from '../UI/Pagination/Pagination';
+import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
 import API from '../../API';
 
 const header = ['#', 'Оператор', 'Дата регистрации', ''];
@@ -16,8 +15,6 @@ class Operators extends PureComponent {
     this.state = {
       operators: [],
       search: '',
-      rowsPerPage: 10,
-      currentPage: 1,
     };
   }
 
@@ -44,12 +41,6 @@ class Operators extends PureComponent {
 
   filterBySearch = (ops) => {
     return ops.filter(op => op.login.includes(this.state.search));
-  }
-
-  filterByPage = (ops) => {
-    const start = (this.state.currentPage - 1) * this.state.rowsPerPage;
-    const end = start + this.state.rowsPerPage;
-    return ops.slice(start, end)
   }
 
   toggleLock = (id, status) => async () => {
@@ -79,14 +70,22 @@ class Operators extends PureComponent {
     });
   }
 
-  onChangePage = (currentPage) => {
-    this.setState({currentPage});
-  }
+  mappingFn = (operator, i) => [
+    i + 1,
+    operator.login,
+    moment(operator.created).format('DD.MM.YYYY'),
+    <div>
+      <Tooltip text={operator.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
+        <div onClick={this.toggleLock(operator.id, operator.status)} className={`button-lock ${operator.status === 'blocked' ? 'button-lock_active' : ''}`} />
+      </Tooltip>
+      <Tooltip text='Удалить'>
+        <div onClick={this.removeOperator(operator.id, operator.login)} className="button-remove" />
+      </Tooltip>
+    </div>
+  ]
 
   render() {
     const opsWithFilter = this.filterBySearch(this.state.operators);
-    const filteredOperators = this.filterByPage(opsWithFilter);
-
     return (
       <div className="page page_operators">
         <div className="search-block">
@@ -104,36 +103,13 @@ class Operators extends PureComponent {
         </div>
         {
           this.state.operators.length
-            ? <Table className="clubs">
-              <Table.Header>{header}</Table.Header>
-              {
-                filteredOperators.map((operator, i) => (
-                  <Table.Row key={operator.id}>
-                    {[
-                      i + 1,
-                      operator.login,
-                      moment(operator.created).format('DD.MM.YYYY'),
-                      <div>
-                        <Tooltip text={operator.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
-                          <div onClick={this.toggleLock(operator.id, operator.status)} className={`button-lock ${operator.status === 'blocked' ? 'button-lock_active' : ''}`} />
-                        </Tooltip>
-                        <Tooltip text='Удалить'>
-                          <div onClick={this.removeOperator(operator.id, operator.login)} className="button-remove" />
-                        </Tooltip>
-                      </div>
-                    ]}
-                  </Table.Row>
-                ))
-              }
-            </Table>
+            ? <TableWithPagination
+                className="clubs"
+                header={header}
+                mappingFn={this.mappingFn}
+                data={opsWithFilter}
+              />
             : <div className="empty-table">Для клуба нет назначенных операторов</div>
-        }
-        {opsWithFilter.length > this.state.rowsPerPage && 
-          <Pagination
-            pagesCount={Math.ceil(opsWithFilter.length / this.state.rowsPerPage)}
-            currentPage={this.state.currentPage}
-            onChange={this.onChangePage}
-          />
         }
       </div>
     );

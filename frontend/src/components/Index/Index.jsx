@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import './Index.scss';
 
-import Table from '../UI/Table/Table';
+import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
 import Tooltip from '../UI/Tooltip/Tooltip';
 import Input from '../UI/Input/Input';
 import { PAGE_URL } from '../../constants';
@@ -46,6 +46,21 @@ class Index extends PureComponent {
     this.props.updateAgents();
   }
 
+  mappingFn = (agent, i) => [
+    i + 1,
+    <Link to={`${PAGE_URL.clubs}/${agent.id}`}>{agent.login}</Link>,
+    agent.clientsCount,
+    moment(agent.created).format('DD.MM.YYYY'),
+    <div>
+      <Tooltip text={agent.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
+        <div onClick={this.toggleLock(agent.id, agent.status)} className={`button-lock ${agent.status === 'blocked' ? 'button-lock_active' : ''}`} />
+      </Tooltip>
+      <Tooltip text='Удалить'>
+        <div onClick={this.props.removeAgent(agent.id, agent.login)} className="button-remove" />
+      </Tooltip>
+    </div>
+  ]
+
   render() {
     const filteredAgents = this.filterBySearch(this.props.users);
     return (
@@ -65,29 +80,12 @@ class Index extends PureComponent {
         </div>
         {
           this.props.users.length
-          ? <Table className="agents">
-            <Table.Header>{header}</Table.Header>
-            {
-              filteredAgents.map((agent, i) => (
-                <Table.Row key={agent.id}>
-                  {[
-                    i + 1,
-                    <Link to={`${PAGE_URL.clubs}/${agent.id}`}>{agent.login}</Link>,
-                    agent.clientsCount,
-                    moment(agent.created).format('DD.MM.YYYY'),
-                    <div>
-                      <Tooltip text={agent.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
-                        <div onClick={this.toggleLock(agent.id, agent.status)} className={`button-lock ${agent.status === 'blocked' ? 'button-lock_active' : ''}`} />
-                      </Tooltip>
-                      <Tooltip text='Удалить'>
-                        <div onClick={this.props.removeAgent(agent.id, agent.login)} className="button-remove" />
-                      </Tooltip>
-                    </div>
-                  ]}
-                </Table.Row>
-              ))
-            }
-          </Table>
+          ? <TableWithPagination
+              className="agents"
+              header={header}
+              mappingFn={this.mappingFn}
+              data={filteredAgents}
+            />
           : <div className="empty-table">Список агентов пуст</div>
         }
       </div>

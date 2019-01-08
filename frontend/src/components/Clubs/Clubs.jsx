@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
-import Table from '../UI/Table/Table';
+import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
 import Tooltip from '../UI/Tooltip/Tooltip';
 import Input from '../UI/Input/Input';
 import { PAGE_URL } from '../../constants';
@@ -45,9 +45,24 @@ class Clubs extends PureComponent {
     this.props.updateClubs(club);
   }
 
+  mappingFn = (club, i) => [
+    i + 1,
+    <Link to={`${PAGE_URL.club}/${club.id}${PAGE_URL.clients}`}>{club.name}</Link>,
+    club.clientsCount,
+    club.ownerName,
+    moment(club.created).format('DD.MM.YYYY'),
+    <div>
+      <Tooltip text={club.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
+        <div onClick={this.toggleLock(club.id, club.status)} className={`button-lock ${club.status === 'blocked' ? 'button-lock_active' : ''}`} />
+      </Tooltip>
+      <Tooltip text='Удалить'>
+        <div onClick={this.props.removeClub(club.id, club.name)} className="button-remove" />
+      </Tooltip>
+    </div>
+  ]
+
   render() {
     const clubs = this.getClubs();
-
     return (
       <div className="page page_clubs">
         <div className="search-block">
@@ -63,30 +78,12 @@ class Clubs extends PureComponent {
         </div>
         {
           clubs.length
-            ? <Table className="clubsall">
-              <Table.Header>{header}</Table.Header>
-              {
-                clubs.map((club, i) => (
-                  <Table.Row key={club.id}>
-                    {[
-                      i + 1,
-                      <Link to={`${PAGE_URL.club}/${club.id}${PAGE_URL.clients}`}>{club.name}</Link>,
-                      club.clientsCount,
-                      club.ownerName,
-                      moment(club.created).format('DD.MM.YYYY'),
-                      <div>
-                        <Tooltip text={club.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
-                          <div onClick={this.toggleLock(club.id, club.status)} className={`button-lock ${club.status === 'blocked' ? 'button-lock_active' : ''}`} />
-                        </Tooltip>
-                        <Tooltip text='Удалить'>
-                          <div onClick={this.props.removeClub(club.id, club.name)} className="button-remove" />
-                        </Tooltip>
-                      </div>
-                    ]}
-                  </Table.Row>
-                ))
-              }
-            </Table>
+            ? <TableWithPagination
+                className="clubsall"
+                header={header}
+                mappingFn={this.mappingFn}
+                data={clubs}
+              />
             : <div className="empty-table">Список клубов пуст</div>
         }
       </div>
