@@ -5,6 +5,7 @@ import moment from 'moment';
 import Table from '../UI/Table/Table';
 import Tooltip from '../UI/Tooltip/Tooltip';
 import Input from '../UI/Input/Input';
+import Pagination from '../UI/Pagination/Pagination';
 import API from '../../API';
 
 const header = ['#', 'Оператор', 'Дата регистрации', ''];
@@ -15,6 +16,8 @@ class Operators extends PureComponent {
     this.state = {
       operators: [],
       search: '',
+      rowsPerPage: 10,
+      currentPage: 1,
     };
   }
 
@@ -36,11 +39,17 @@ class Operators extends PureComponent {
   }
 
   onChangeInput = ({ value }) => {
-    this.setState({ search: value });
+    this.setState({ search: value, currentPage: 1 });
   }
 
   filterBySearch = (ops) => {
     return ops.filter(op => op.login.includes(this.state.search));
+  }
+
+  filterByPage = (ops) => {
+    const start = (this.state.currentPage - 1) * this.state.rowsPerPage;
+    const end = start + this.state.rowsPerPage;
+    return ops.slice(start, end)
   }
 
   toggleLock = (id, status) => async () => {
@@ -70,8 +79,14 @@ class Operators extends PureComponent {
     });
   }
 
+  onChangePage = (currentPage) => {
+    this.setState({currentPage});
+  }
+
   render() {
-    const filteredOperators = this.filterBySearch(this.state.operators);
+    const opsWithFilter = this.filterBySearch(this.state.operators);
+    const filteredOperators = this.filterByPage(opsWithFilter);
+
     return (
       <div className="page page_operators">
         <div className="search-block">
@@ -112,6 +127,13 @@ class Operators extends PureComponent {
               }
             </Table>
             : <div className="empty-table">Для клуба нет назначенных операторов</div>
+        }
+        {opsWithFilter.length > this.state.rowsPerPage && 
+          <Pagination
+            pagesCount={Math.ceil(opsWithFilter.length / this.state.rowsPerPage)}
+            currentPage={this.state.currentPage}
+            onChange={this.onChangePage}
+          />
         }
       </div>
     );

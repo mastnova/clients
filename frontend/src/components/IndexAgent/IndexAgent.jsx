@@ -8,6 +8,7 @@ import Table from '../UI/Table/Table';
 import Tooltip from '../UI/Tooltip/Tooltip';
 import Input from '../UI/Input/Input';
 import { PAGE_URL } from '../../constants';
+import Pagination from '../UI/Pagination/Pagination';
 import API from '../../API';
 
 const header = ['#', 'Клуб', 'Количество клиентов', 'Дата регистрации', ''];
@@ -90,6 +91,7 @@ class IndexAgent extends PureComponent {
             </Table>
             : <div className="empty-table">Нет доступных клубов</div>
          }
+         {true && <Pagination pagesCount={5} currentPage={1}/>}
       </div>
     );
   }

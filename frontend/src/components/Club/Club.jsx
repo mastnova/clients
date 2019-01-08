@@ -5,7 +5,7 @@ import './Club.scss';
 
 import Table from '../UI/Table/Table';
 import Tooltip from '../UI/Tooltip/Tooltip';
-
+import Pagination from '../UI/Pagination/Pagination';
 import API from '../../API';
 
 const header = ['#', 'Акция', 'Описание', 'Дата добавления'];
@@ -17,6 +17,8 @@ class Club extends PureComponent {
       club: {
         promotions: []
       },
+      rowsPerPage: 1,
+      currentPage: 1,
     };
   }
 
@@ -41,8 +43,19 @@ class Club extends PureComponent {
     this.props.history.push('/');
   }
 
+  onChangePage = (currentPage) => {
+    this.setState({ currentPage });
+  }
+
+  filterByPage = (promos) => {
+    const start = (this.state.currentPage - 1) * this.state.rowsPerPage;
+    const end = start + this.state.rowsPerPage;
+    return promos.slice(start, end)
+  }
+
   render() {
     const id = this.props.match.params.id;
+    const filteredPromotions = this.filterByPage(this.state.club.promotions);
     return (
       <div className="page page_club">
         <div className="unit-header unit-header_club">
@@ -71,11 +84,11 @@ class Club extends PureComponent {
             <div className="unit-info__text">{moment(this.state.club.created).format('DD.MM.YYYY')}</div>
           </div>
         </div>
-        {Boolean(this.state.club.promotions.length) &&
+        {Boolean(filteredPromotions.length) &&
           <Table className="clubs">
             <Table.Header>{header}</Table.Header>
             {
-              this.state.club.promotions.map((promo, i) => (
+              filteredPromotions.map((promo, i) => (
                 <Table.Row key={promo.id}>
                   {[
                     i + 1,
@@ -87,6 +100,13 @@ class Club extends PureComponent {
               ))
             }
           </Table>
+        }
+        {this.state.club.promotions.length > this.state.rowsPerPage &&
+          <Pagination
+            pagesCount={Math.ceil(this.state.club.promotions.length / this.state.rowsPerPage)}
+            currentPage={this.state.currentPage}
+            onChange={this.onChangePage}
+          />
         }
         <div className="button-wrapper">
           <button className="button" type="button" onClick={this.onAddPromo}>
