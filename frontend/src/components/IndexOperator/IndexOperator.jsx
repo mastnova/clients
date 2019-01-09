@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
+import Select from 'react-select';
 import './IndexOperator.scss';
 
 import Input from '../UI/Input/Input';
@@ -11,7 +12,7 @@ class IndexOperator extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      promoName: '',
+      promoName: 'Без акции',
       promoId: '',
       club: {
         name: 'Клуб',
@@ -48,10 +49,10 @@ class IndexOperator extends PureComponent {
     }
   }
 
-  onPromoSelect = ({target}) => {
+  onPromoSelect = ({value, label}) => {
     this.setState({
-      promoId: target.value,
-      promoName: target.options[target.selectedIndex].text,
+      promoId: value,
+      promoName: label,
     })
   }
 
@@ -114,6 +115,11 @@ class IndexOperator extends PureComponent {
         </div>
       );
     }
+
+    const options = this.state.club.promotions.map(promo => ({ value: promo.id, label: promo.name }));
+    options.unshift({ value: '', label: 'Без акции' });
+    const selectedOption = { value: this.state.promoId, label: this.state.promoName };
+    console.log(options)
     return (
       <div className="page-container operator-index">
         <MenuOperator />
@@ -146,12 +152,14 @@ class IndexOperator extends PureComponent {
             </label>
             <label className="label">
               <div>Акция</div>
-              <select onChange={this.onPromoSelect} value={this.state.promoId}>
-                <option value="">без акции</option>
-                {
-                  this.state.club.promotions.map( promo => <option key={promo.id} value={promo.id}>{promo.name}</option>)
-                }
-              </select>
+              <Select
+                className="select"
+                classNamePrefix="select"
+                isSearchable={false}
+                value={selectedOption}
+                onChange={this.onPromoSelect}
+                options={options}
+              />
             </label>
             <button className="button" onClick={this.onSubmit} disabled={!this.isFormValid()}>Отправить</button>
           </div>
