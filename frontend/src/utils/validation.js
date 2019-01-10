@@ -15,6 +15,9 @@ export function isValid (value, type) {
       return true;
     }
     return false;
+  } else if (type === 'phone') {
+    const regexp = /^\+7 \([0-9]{3}\) [0-9]{3} - [0-9]{2} - [0-9]{2}$/;
+    return regexp.test(value);
   }
   console.error('Unknown validation type');
 }

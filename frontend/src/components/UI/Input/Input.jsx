@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import InputMask from 'react-input-mask';
 import './Input.scss';
 
 import { isValid as isInputValid } from '../../../utils/validation';
@@ -50,7 +51,19 @@ class Input extends PureComponent {
     );
     return (
       <div className={this.props.icon ? `input-wrapper input-wrapper_${this.props.icon}`: null}>
-      <input
+      {
+        this.props.mask ?
+        <InputMask
+          className={cn}
+          onChange={this.onChange}
+          onBlur={this.onBlur}
+          value={this.props.value}
+          mask={this.props.mask}
+          alwaysShowMask
+          inputRef={(el) => { this.input = el }}
+        />
+      
+      :<input
         className={cn}
         type={this.props.type}
         name={this.props.name}
@@ -60,6 +73,7 @@ class Input extends PureComponent {
         placeholder={this.props.placeholder}
         ref={(el) => {this.input = el}}
       />
+      }
       </div>
     );
   }

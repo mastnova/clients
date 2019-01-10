@@ -119,7 +119,6 @@ class IndexOperator extends PureComponent {
     const options = this.state.club.promotions.map(promo => ({ value: promo.id, label: promo.name }));
     options.unshift({ value: '', label: 'Без акции' });
     const selectedOption = { value: this.state.promoId, label: this.state.promoName };
-    console.log(options)
     return (
       <div className="page-container operator-index">
         <MenuOperator />
@@ -144,8 +143,9 @@ class IndexOperator extends PureComponent {
               <Input
                 name="phone"
                 icon="phone"
+                mask="+7 (999) 999 - 99 - 99"
                 placeholder="Введите телефон"
-                validationType="required"
+                validationType="phone"
                 value={this.state.phone}
                 onChange={this.onChangeInput}
               />
