@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import TableExport from 'tableexport';
 import './Clients.scss';
 
 import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
@@ -20,6 +21,8 @@ class Clients extends Component {
       search: '',
     };
   }
+
+  tableId = 'datatable'
 
   componentWillMount() {
     this.fetchClients();
@@ -67,7 +70,23 @@ class Clients extends Component {
         <div onClick={this.removeClient(client.id, client.name)} className="button-remove" />
       </Tooltip>
     </div>
-  ]
+  ];
+
+  downloadClients = (type) => () => {
+    const date = moment().format('YYYY.MM.DD-HH_mm');
+    const table = TableExport(document.getElementById(this.tableId),
+      {
+        ignoreCols: [0, 6],
+        formats: ["xls", "xlsx", "csv"],
+        exportButtons: false,
+        filename: `clients_${date}`,
+        sheetname: "clients",
+      }
+    );
+    let data = table.getExportData();
+    data = type === 'xls' ? data[this.tableId].xlsx : data[this.tableId].csv;
+    table.export2file(data.data, data.mimeType, data.filename, data.fileExtension);
+  }
 
   render() {
     const filteredClients = this.filterBySearch(this.state.clients);
@@ -82,12 +101,16 @@ class Clients extends Component {
               value={this.state.search}
               onChange={this.onChangeInput} />
           </div>
-          <p></p>
+          <div>
+            <button className="button-file button-file__xls" onClick={this.downloadClients('xls')}></button>
+            <button className="button-file button-file__csv" onClick={this.downloadClients('csv')}></button>
+          </div>
         </div>
         {
           this.state.clients.length
             ? <TableWithPagination
                 className="clients"
+                idName={this.tableId}
                 header={header}
                 mappingFn={this.mappingFn}
                 data={filteredClients}

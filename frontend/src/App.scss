@@ -303,3 +303,27 @@ body {
   }
 }
 
+.button-file {
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  transition: all .2s;
+  
+  &__xls {
+    background-image: url('./images/icons/xls.png');
+  }
+
+  &__csv {
+    background-image: url('./images/icons/csv.png');
+  }
+
+  &:hover {
+    background-color: #f2f2f8;
+  }
+}
+

@@ -6,8 +6,9 @@ import Pagination from '../Pagination/Pagination';
 
 class TableWithPagination extends PureComponent {
 
-  defaultProps = {
+  static defaultProps = {
     className: '',
+    idName: '',
     data: [],
   }
 
@@ -34,7 +35,7 @@ class TableWithPagination extends PureComponent {
     const filteredData = this.filterByPage(this.props.data);
     return (
       <div>
-        <Table className={this.props.className}>
+        <Table className={this.props.className} idName={this.props.idName}>
           <Table.Header>{this.props.header}</Table.Header>
           <tbody>
           {
@@ -61,6 +62,7 @@ class TableWithPagination extends PureComponent {
 
 TableWithPagination.propTypes = {
   className: PropTypes.string,
+  idName: PropTypes.string,
   header: PropTypes.arrayOf(PropTypes.string).isRequired,
   mappingFn: PropTypes.func.isRequired,
   data: PropTypes.array,
