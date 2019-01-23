@@ -49,6 +49,22 @@
     background: url('../../../images/icons/phone.png');
   }
 
+  &_text:before {
+    background: url('../../../images/icons/txt.png');
+  }
+
+  &_promo:before {
+    background: url('../../../images/icons/promo.png');
+  }
+
+  &_club:before {
+    background: url('../../../images/icons/club.png');
+  }
+
+  &_location:before {
+    background: url('../../../images/icons/location.png');
+  }
+
   &_search:before {
     background: url('../../../images/icons/search.png');
     width: 17px !important;

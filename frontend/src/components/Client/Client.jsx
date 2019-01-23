@@ -32,11 +32,17 @@ class Client extends Component {
     }
   }
 
-  removeClient = (id) => async () => {
-    const isRemoved = await API.removeClient(id);
-    if (isRemoved) {
-      this.props.history.goBack();
-    }
+  removeClient = (id, name) => () => {
+    this.props.openPopup('remove-confirm', {
+      title: 'Удаление клиента',
+      content: `<div>Вы действительно хотите удалить клиента? <br/><b>${name}</b></div>`,
+      callback: async () => {
+        const isRemoved = await API.removeClient(id);
+        if (isRemoved) {
+          this.props.history.goBack();
+        }
+      }
+    });
   }
 
   render() {
@@ -46,7 +52,7 @@ class Client extends Component {
           Клиент - {this.state.client.name}
           <div className="unit-header__remove">
             <Tooltip text='Удалить' leftOffset='12px'>
-              <div onClick={this.removeClient(this.state.client.id)} className="button-remove button-remove_big" />
+              <div onClick={this.removeClient(this.state.client.id, this.state.client.name)} className="button-remove button-remove_big" />
             </Tooltip>
           </div>
         </div>

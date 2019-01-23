@@ -61,7 +61,7 @@ class AddClub extends PureComponent {
             <Input
               name="name"
               icon="club"
-              placeholder="Введите название клуба"
+              placeholder="Введите название"
               validationType="required"
               value={this.state.name}
               onChange={this.onChangeInput}
@@ -71,8 +71,8 @@ class AddClub extends PureComponent {
             <div>Адрес</div>
             <Input
               name="address"
-              icon="address"
-              placeholder="Введите адрес клуба"
+              icon="location"
+              placeholder="Введите адрес"
               validationType="required"
               value={this.state.address}
               onChange={this.onChangeInput}

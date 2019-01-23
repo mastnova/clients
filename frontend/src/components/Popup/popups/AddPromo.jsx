@@ -52,7 +52,7 @@ class AddPromo extends PureComponent {
             <div>Название</div>
             <Input
               name="name"
-              icon="login"
+              icon="promo"
               placeholder="Введите название"
               validationType="required"
               value={this.state.name}
@@ -61,14 +61,15 @@ class AddPromo extends PureComponent {
           </label>
           <label className="label">
             <div>Описание</div>
-            <textarea
-              className="textarea"
-              name="desc"
-              icon="desc"
-              placeholder="Введите описание"
-              value={this.state.desc}
-              onChange={this.onChangeTextarea}
-            />
+            <div className="textarea-icon textarea-icon__text">
+              <textarea
+                className="textarea"
+                name="desc"
+                placeholder="Введите описание"
+                value={this.state.desc}
+                onChange={this.onChangeTextarea}
+              />
+            </div>
           </label>
           <button className="button" type="submit" disabled={!this.isFormValid()}>
             <span className="button_add">Добавить</span>

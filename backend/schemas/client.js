@@ -25,7 +25,7 @@ const schemaClient = new db.Schema({
   },
   created: {
     type: Date,
-    default: Date.now()
+    default: Date.now
   },
   status: {
     type: String,

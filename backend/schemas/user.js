@@ -36,7 +36,7 @@ const schemaUser = new db.Schema({
   },
   created: {
     type: Date,
-    default: Date.now()
+    default: Date.now
   },
   token: {
     type: String,

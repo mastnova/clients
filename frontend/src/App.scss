@@ -46,7 +46,7 @@ body {
   border: 1px solid #344178;
   color: #344178;
   border-radius: 5px;
-  padding-left: 40px;
+  padding-left: 10px;
   box-sizing: border-box;
   padding-top: 10px;
   outline: none;
@@ -327,3 +327,23 @@ body {
   }
 }
 
+.textarea-icon {
+  position: relative;
+  
+  .textarea {
+    padding-left: 40px;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &__text:after {
+    background: url('./images/icons/txt.png') no-repeat center;
+  }
+}

@@ -98,7 +98,7 @@ class Operators extends PureComponent {
               onChange={this.onChangeInput} />
           </div>
           <button className="button" type="button" onClick={this.onAddOperator}>
-            <span className="button_add">Создать оператора</span>
+            <span className="button_add">Добавить оператора</span>
           </button>
         </div>
         {
