@@ -43,21 +43,29 @@ class Operators extends PureComponent {
     return ops.filter(op => op.login.includes(this.state.search));
   }
 
-  toggleLock = (id, status) => async () => {
-    let operator;
-    if (status === 'active') {
-      operator = await API.blockUser(id);
-    } else {
-      operator = await API.activateUser(id);
-    }
-    if (operator) {
-      const updatedOps = this.state.operators.map(op => op.id === operator.id ? operator : op);
-      this.setState({ operators: updatedOps });
-    }
+  toggleLock = (id, status, login) => () => {
+    const action = status === 'active' ? 'заблокировать' : 'разблокировать';
+    this.props.openPopup('action-confirm', {
+      title: 'Блокировка оператора',
+      button: action,
+      content: `<div>Вы действительно хотите ${action} оператора? <br/><b>${login}</b></div>`,
+      callback: async () => {
+        let operator;
+        if (status === 'active') {
+          operator = await API.blockUser(id);
+        } else {
+          operator = await API.activateUser(id);
+        }
+        if (operator) {
+          const updatedOps = this.state.operators.map(op => op.id === operator.id ? operator : op);
+          this.setState({ operators: updatedOps });
+        }
+      }
+    });
   }
 
   removeOperator = (id, name) => () => {
-    this.props.openPopup('remove-confirm', {
+    this.props.openPopup('action-confirm', {
       title: 'Удаление оператора',
       content: `<div>Вы действительно хотите удалить оператора? <br/><b>${name}</b></div>`,
       callback: async () => {
@@ -76,7 +84,7 @@ class Operators extends PureComponent {
     moment(operator.created).format('DD.MM.YYYY'),
     <div>
       <Tooltip text={operator.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
-        <div onClick={this.toggleLock(operator.id, operator.status)} className={`button-lock ${operator.status === 'blocked' ? 'button-lock_active' : ''}`} />
+        <div onClick={this.toggleLock(operator.id, operator.status, operator.login)} className={`button-lock ${operator.status === 'blocked' ? 'button-lock_active' : ''}`} />
       </Tooltip>
       <Tooltip text='Удалить'>
         <div onClick={this.removeOperator(operator.id, operator.login)} className="button-remove" />

@@ -36,14 +36,22 @@ class Index extends PureComponent {
     return users.filter(user => user.login.includes(this.state.search));
   }
 
-  toggleLock = (id, status) => async () => {
-    let agent;
-    if (status === 'active') {
-      agent = await API.blockUser(id);
-    } else {
-      agent = await API.activateUser(id);
-    }
-    this.props.updateAgents();
+  toggleLock = (id, status, login) => () => {
+    const action = status === 'active' ? 'заблокировать' : 'разблокировать';
+    this.props.openPopup('action-confirm', {
+      title: 'Блокировка агента',
+      button: action,
+      content: `<div>Вы действительно хотите ${action} агента? <br/><b>${login}</b></div>`,
+      callback: async () => {
+        let agent;
+        if (status === 'active') {
+          agent = await API.blockUser(id);
+        } else {
+          agent = await API.activateUser(id);
+        }
+        this.props.updateAgents();
+      }
+    });
   }
 
   mappingFn = (agent, i) => [
@@ -53,7 +61,7 @@ class Index extends PureComponent {
     moment(agent.created).format('DD.MM.YYYY'),
     <div>
       <Tooltip text={agent.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
-        <div onClick={this.toggleLock(agent.id, agent.status)} className={`button-lock ${agent.status === 'blocked' ? 'button-lock_active' : ''}`} />
+        <div onClick={this.toggleLock(agent.id, agent.status, agent.login)} className={`button-lock ${agent.status === 'blocked' ? 'button-lock_active' : ''}`} />
       </Tooltip>
       <Tooltip text='Удалить'>
         <div onClick={this.props.removeAgent(agent.id, agent.login)} className="button-remove" />

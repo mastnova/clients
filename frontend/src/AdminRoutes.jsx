@@ -88,7 +88,7 @@ class AdminRoutes extends PureComponent {
   }
 
   removeClub = (id, name) => async () => {
-    this.props.openPopup('remove-confirm', {
+    this.props.openPopup('action-confirm', {
       title: 'Удаление клуба',
       content: `<div>Вы действительно хотите удалить клуб? <br/><b>${name}</b></div>`,
       callback: async () => {
@@ -102,7 +102,7 @@ class AdminRoutes extends PureComponent {
   }
 
   removeAgent = (id, name) => () => {
-    this.props.openPopup('remove-confirm', {
+    this.props.openPopup('action-confirm', {
       title: 'Удаление агента',
       content: `<div>Вы действительно хотите удалить агента? <br/><b>${name}</b></div>`,
       callback: async () => {

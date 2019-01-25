@@ -57,7 +57,7 @@ class AgentRoutes extends PureComponent {
   }
 
   removeClub = (id, name) => () => {
-    this.props.openPopup('remove-confirm', {
+    this.props.openPopup('action-confirm', {
       title: 'Удаление клуба',
       content: `<div>Вы действительно хотите удалить клуб? <br/><b>${name}</b></div>`,
       callback: async () => {

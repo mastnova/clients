@@ -45,7 +45,7 @@ class Clients extends Component {
   }
 
   removeClient = (id, name) => () => {
-    this.props.openPopup('remove-confirm', {
+    this.props.openPopup('action-confirm', {
       title: 'Удаление клиента',
       content: `<div>Вы действительно хотите удалить клиента? <br/><b>${name}</b></div>`,
       callback: async () => {

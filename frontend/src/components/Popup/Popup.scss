@@ -97,6 +97,10 @@
   &__buttons {
     display: flex;
     justify-content: space-between;
+
+    button {
+      text-transform: capitalize;
+    }
   }
 
   &__phone {

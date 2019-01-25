@@ -35,14 +35,22 @@ class Clubs extends PureComponent {
     this.setState({ search: value });
   }
 
-  toggleLock = (id, status) => async () => {
-    let club;
-    if (status === 'active') {
-      club = await API.blockClub(id);
-    } else {
-      club = await API.activateClub(id);
-    }
-    this.props.updateClubs(club);
+  toggleLock = (id, status, name) => () => {
+    const action = status === 'active' ? 'заблокировать' : 'разблокировать';
+    this.props.openPopup('action-confirm', {
+      title: 'Блокировка клуба',
+      button: action,
+      content: `<div>Вы действительно хотите ${action} клуб? <br/><b>${name}</b></div>`,
+      callback: async () => {
+        let club;
+        if (status === 'active') {
+          club = await API.blockClub(id);
+        } else {
+          club = await API.activateClub(id);
+        }
+        this.props.updateClubs(club);
+      }
+    });
   }
 
   mappingFn = (club, i) => [
@@ -53,7 +61,7 @@ class Clubs extends PureComponent {
     moment(club.created).format('DD.MM.YYYY'),
     <div>
       <Tooltip text={club.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
-        <div onClick={this.toggleLock(club.id, club.status)} className={`button-lock ${club.status === 'blocked' ? 'button-lock_active' : ''}`} />
+        <div onClick={this.toggleLock(club.id, club.status, club.name)} className={`button-lock ${club.status === 'blocked' ? 'button-lock_active' : ''}`} />
       </Tooltip>
       <Tooltip text='Удалить'>
         <div onClick={this.props.removeClub(club.id, club.name)} className="button-remove" />

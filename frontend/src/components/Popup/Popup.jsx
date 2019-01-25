@@ -7,7 +7,7 @@ import AddAgent from './popups/AddAgent';
 import AddClub from './popups/AddClub';
 import AddPromo from './popups/AddPromo';
 import AddOperator from './popups/AddOperator';
-import RemoveConfirm from './popups/RemoveConfirm';
+import ActionConfirm from './popups/ActionConfirm';
 import SmsConfirm from './popups/SmsConfirm';
 import Alert from './popups/Alert';
 
@@ -49,8 +49,8 @@ class Popup extends PureComponent {
       content = <AddPromo data={this.props.data} openPopup={this.props.open} />
     } else if (this.props.name === 'add-operator') {
       content = <AddOperator data={this.props.data} openPopup={this.props.open} />
-    } else if (this.props.name === 'remove-confirm') {
-      content = <RemoveConfirm data={this.props.data} close={this.props.close}/>
+    } else if (this.props.name === 'action-confirm') {
+      content = <ActionConfirm data={this.props.data} close={this.props.close}/>
     } else if (this.props.name === 'sms-confirm') {
       content = <SmsConfirm data={this.props.data} close={this.props.close} />
     }
