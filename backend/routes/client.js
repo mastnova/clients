@@ -67,11 +67,21 @@ module.exports = function (app) {
                 if (client && client.status === 'active') {
                   if (!promotion.id) {
                     res.status(403);
-                    res.send(Errors.clientExist);
+                    res.send({
+                      ...Errors.clientExist,
+                      info: {
+                        name: client.name,
+                        phone: client.phone,
+                        created: client.created
+                      }
+                    });
                   } else {
                     if (client.hasPromotion(promotion.id)) {
                       res.status(403);
-                      res.send(Errors.clientPromoted);
+                      res.send({
+                        ...Errors.clientPromoted,
+                        info: client.getPromotion(promotion.id)
+                      });
                     } else {
                       client.addPromotion({ ...promotion, creator: operator.login });
                       client.save(function (error) {
@@ -79,7 +89,7 @@ module.exports = function (app) {
                           res.status(400);
                           res.send(error);
                         } else {
-                          res.send({ status: 'ok' });
+                          res.send({ status: 'promoted' });
                         }
                       });
                     }
@@ -110,7 +120,7 @@ module.exports = function (app) {
                           res.status(400);
                           res.send(error);
                         } else {
-                          res.send({ status: 'ok' });
+                          res.send({ status: 'registered' });
                         }
                       });
                     }

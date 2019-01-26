@@ -6,20 +6,15 @@ class Alert extends Component {
     data: {
       type: 'success',
       text: 'success',
+      title: '',
     }
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      
-    };
-  }
-
   render() {
-    const {type, text} = this.props.data;
+    const {type, text, title} = this.props.data;
     return (
       <div className="popup-content popup_alert">
+        {title && <div className="popup_alert__title">{title}</div>}
         <div className={`popup_alert__alert popup_alert__alert_${type}`}>
           <span className="popup_alert__msg" dangerouslySetInnerHTML={{__html: text}}/>
         </div>
@@ -32,8 +27,9 @@ class Alert extends Component {
 Alert.propTypes = {
   close: PropTypes.func.isRequired,
   data: PropTypes.shape({
-    type: PropTypes.oneOf(['success', 'error', 'worning']).isRequired,
+    type: PropTypes.oneOf(['success', 'error', 'info']).isRequired,
     text: PropTypes.string.isRequired,
+    title: PropTypes.string,
   })
 };
 

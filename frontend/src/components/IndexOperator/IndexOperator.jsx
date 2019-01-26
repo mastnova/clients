@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
+import moment from 'moment';
 import './IndexOperator.scss';
 
 import Input from '../UI/Input/Input';
@@ -85,15 +86,27 @@ class IndexOperator extends PureComponent {
       code,
     });
     if (response.isOk) {
-      this.props.openPopup('alert', { type: 'success', text: `Клиент <b>${this.state.name}</b> успешно добавлен` });
+      if (response.data.status === 'promoted') {
+        this.props.openPopup('alert', { type: 'success', text: `Клиент <b>${this.state.name}</b> добавлен к акции <b>${this.state.promoName}</b>` });
+      } else {
+        this.props.openPopup('alert', { type: 'success', text: `Клиент <b>${this.state.name}</b> успешно зарегистрирован` });
+      }
     } else {
       let text = 'Произошла ошибка';
+      let title = 'Ошибка';
+      let type = 'error';
       if (response.data.code === 7) {
-        text = 'Такой клиент уже зарегистрирован';
+        const { name, phone, created } = response.data.info;
+        title = 'Клиент уже зарегистрирован';
+        text = `Имя клиента - <b>${name}</b><br/>Номер телефона - <b>${phone}</b><br/>Дата регистрации - <b>${moment(created).format('DD.MM.YYYY HH:mm')}</b>`;
+        type = 'info';
       } else if (response.data.code === 8) {
-        text = 'Клиент уже участвует в акции';
+        const { name, date } = response.data.info;
+        title = 'Клиент участвовал сегодня в этой акции';
+        text = `Название акции - <b>${name}</b><br/>Дата добавления - <b>${moment(date).format('DD.MM.YYYY HH:mm')}</b>`;
+        type = 'info';
       }
-      this.props.openPopup('alert', { type: 'error', text });
+      this.props.openPopup('alert', { type, title, text });
     }
   }
 

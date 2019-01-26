@@ -45,6 +45,10 @@ schemaClient.methods.hasPromotion = function (id) {
   return !!promo.length
 };
 
+schemaClient.methods.getPromotion = function (id) {
+  return this.promotions.find(promo => promo.id === id);
+}
+
 schemaClient.methods.changeStatus = function (status) {
   const states = ['active', 'removed'];
   if (states.includes(status)) {

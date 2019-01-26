@@ -59,7 +59,7 @@
     font-family: 'pn-bold';
     color: #344178;
     font-size: 18px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
 
   button {
@@ -123,7 +123,7 @@
 
 .popup_alert {
   width: 460px;
-  height: 160px;
+  min-height: 160px;
 
   &__alert {
     font-family: 'pn-regular';
@@ -142,6 +142,23 @@
     &_error {
       background-color: #ea7711;
     }
+
+    &_info {
+      background-color: #2491E6;
+
+      .popup_alert__msg {
+        background: none;
+        padding-left: 0;
+        line-height: 24px;
+      }
+    }
+  }
+
+  &__title {
+    font-family: 'pn-bold';
+    color: #344178;
+    font-size: 18px;
+    margin-bottom: 20px;
   }
 
   &__msg {
