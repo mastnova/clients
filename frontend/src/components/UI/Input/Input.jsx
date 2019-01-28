@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import InputMask from 'react-input-mask';
 import './Input.scss';
 
-import { isValid as isInputValid } from '../../../utils/validation';
+import { validate } from '../../../utils/validation';
 
 class Input extends PureComponent {
   static defaultProps = {
@@ -19,18 +19,23 @@ class Input extends PureComponent {
     super(props);
     this.state = {
       isValid: false,
+      error: '',
       isActivated: false,
+      errorIsHidden: true,
     };
   }
 
   onChange = () => {
     const value = this.input.value;
     const comparingValue = this.props.compareWith;
-    let isValid = isInputValid(value, this.props.validationType);
+    let {isValid, error} = validate(value, this.props.validationType);
     if (comparingValue) {
-      isValid = value === comparingValue ? isValid : false
+      if (value !== comparingValue) {
+        isValid = false;
+        error = 'Поля не совпадают';
+      }
     }
-    this.setState({isValid});
+    this.setState({ isValid, error });
     this.props.onChange({
       name: this.props.name,
       value,
@@ -39,7 +44,19 @@ class Input extends PureComponent {
   }
 
   onBlur = () => {
-    this.setState({isActivated: true});
+    this.setState({isActivated: true, errorIsHidden: true});
+  }
+
+  onFocus = () => {
+    if (this.state.isActivated) {
+      this.setState({ errorIsHidden: false });
+    } else {
+      this.onChange();
+    }
+  }
+
+  shouldShowError = () => {
+    return !!this.props.validationType && !this.state.isValid && !this.state.errorIsHidden
   }
 
   render() {
@@ -69,11 +86,13 @@ class Input extends PureComponent {
         name={this.props.name}
         onChange={this.onChange}
         onBlur={this.onBlur}
+        onFocus={this.onFocus}
         value={this.props.value}
         placeholder={this.props.placeholder}
         ref={(el) => {this.input = el}}
       />
       }
+        {this.shouldShowError() && <div className="input__message">{this.state.error}</div>}
       </div>
     );
   }
