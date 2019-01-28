@@ -62,9 +62,9 @@ module.exports = function (app) {
               res.status(403);
               res.send(Errors.notAllowed);
             } else {
-              Client.findOne({ club: operator.clubId, phone }, function (err, client) {
+              Client.findOne({ club: operator.clubId, phone, status: 'active' }, function (err, client) {
                 if (err) next(err);
-                if (client && client.status === 'active') {
+                if (client) {
                   if (!promotion.id) {
                     res.status(403);
                     res.send({
@@ -195,9 +195,9 @@ module.exports = function (app) {
     User.findOne({ token }, function (err, operator) {
       if (err) next(err);
       if (operator) {
-        Client.findOne({ club: operator.clubId, phone }, function (err, client) {
+        Client.findOne({ club: operator.clubId, phone, status: 'active' }, function (err, client) {
           if (err) next(err);
-          if (client && client.status === 'active') {
+          if (client) {
             res.send({ is_exist: true });
           } else {
             res.send({ is_exist: false });
