@@ -46,6 +46,18 @@
       background: url('../../../images/icons/ops.png') no-repeat left center;
     }
 
+    &_icon-agent span {
+      background: url('../../../images/icons/ag.png') no-repeat left center;
+    }
+
+    &_icon-client span {
+      background: url('../../../images/icons/client.png') no-repeat left center;
+    }
+
+    &_icon-promo span {
+      background: url('../../../images/icons/promo.png') no-repeat left center;
+    }
+
     &_disabled {
       background-color: transparent;
       cursor: not-allowed;
