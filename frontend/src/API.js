@@ -57,10 +57,6 @@ const API = {
     method: 'GET',
     url: '/api/club/',
   },
-  removeClub: {
-    method: 'DELETE',
-    url: '/api/club/',
-  },
   changeClubStatus: {
     method: 'PUT',
     url: '/api/club',
@@ -179,8 +175,8 @@ async function createClub(club) {
   return response;
 }
 
-async function getClubs(id = '') {
-  const response = await request(API.getClubs.url + id);
+async function getClubs(id = '', status) {
+  const response = await request(`${API.getClubs.url}${id}${status ? '/' + status : ''}`);
   if (response.isOk) {
     return response.data;
   }
@@ -205,7 +201,8 @@ async function blockClub(id) {
 }
 
 async function removeClub(id) {
-  const response = await request(API.removeClub.url + id, API.removeClub.method);
+  const params = { id, status: 'removed' };
+  const response = await request(API.changeClubStatus.url, API.changeClubStatus.method, params);
   if (response.isOk) {
     return true;
   }

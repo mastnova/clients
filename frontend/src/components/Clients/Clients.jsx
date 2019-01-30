@@ -12,6 +12,7 @@ import { PAGE_URL } from '../../constants';
 import API from '../../API';
 
 const header = ['#', 'Имя клиента', 'Телефон', 'Акции', 'Добавил', 'Дата регистрации', ''];
+const headerRemoved = ['#', 'Имя клиента', 'Телефон', 'Акции', 'Добавил', 'Дата регистрации', 'Дата удаления'];
 
 class Clients extends Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class Clients extends Component {
     this.state = {
       clients: [],
       search: '',
+      status: 'active',
     };
   }
 
@@ -32,7 +34,8 @@ class Clients extends Component {
     const clubId = this.props.match.params.id;
     const clients = await API.getClients(clubId);
     if (clients) {
-      this.setState({clients});
+      const status = clients[0] ? clients[0].status : 'active';
+      this.setState({clients, status});
     }
   }
 
@@ -58,19 +61,27 @@ class Clients extends Component {
     });
   }
 
-  mappingFn = (client, i) => [
-    i + 1,
-    <Link to={`${PAGE_URL.club}/${this.props.match.params.id}${PAGE_URL.clients}/${client.id}`}>{client.name}</Link>,
-    client.phone,
-    client.promotions.length,
-    client.creator,
-    moment(client.created).format('DD.MM.YYYY'),
-    <div>
-      <Tooltip text='Удалить'>
-        <div onClick={this.removeClient(client.id, client.name)} className="button-remove" />
-      </Tooltip>
-    </div>
-  ];
+  mappingFn = (client, i) => {
+    let lastColumn = (
+      <div>
+        <Tooltip text='Удалить'>
+          <div onClick={this.removeClient(client.id, client.name)} className="button-remove" />
+        </Tooltip>
+      </div>
+    );
+    if (this.state.status === 'removed') {
+      lastColumn = <div>{moment(client.removed).format('DD.MM.YYYY')}</div>;
+    }
+    return [
+      i + 1,
+      <Link to={`${PAGE_URL.club}/${this.props.match.params.id}${PAGE_URL.clients}/${client.id}`}>{client.name}</Link>,
+      client.phone,
+      client.promotions.length,
+      client.creator,
+      moment(client.created).format('DD.MM.YYYY'),
+      lastColumn
+    ]
+  };
 
   downloadClients = (type) => () => {
     const date = moment().format('YYYY.MM.DD-HH_mm');
@@ -93,7 +104,10 @@ class Clients extends Component {
     return (
       <div className="page page_clients">
         <div className="search-block">
-          <div className="search-block__title">Список Клиентов</div>
+          {this.state.status === 'removed'
+            ? <div className="search-block__title search-block__title_red">Удаленные клиенты</div>
+            : <div className="search-block__title">Список Клиентов</div>
+          }
           <div className="search-block__input">
             <Input
               icon="search"
@@ -106,12 +120,13 @@ class Clients extends Component {
             <button className="button-file button-file__csv" onClick={this.downloadClients('csv')}></button>
           </div>
         </div>
+        {this.state.status === 'removed' && <div className="crossline" />}
         {
           this.state.clients.length
             ? <TableWithPagination
                 className="clients"
                 idName={this.tableId}
-                header={header}
+                header={this.state.status === 'removed' ? headerRemoved : header}
                 mappingFn={this.mappingFn}
                 data={filteredClients}
               />

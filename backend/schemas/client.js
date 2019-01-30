@@ -31,6 +31,9 @@ const schemaClient = new db.Schema({
     type: String,
     require: true,
     default: 'active',
+  },
+  removed: {
+    type: Date
   }
 });
 
@@ -47,12 +50,15 @@ schemaClient.methods.hasPromotion = function (id) {
 
 schemaClient.methods.getPromotion = function (id) {
   return this.promotions.find(promo => promo.id === id);
-}
+};
 
 schemaClient.methods.changeStatus = function (status) {
   const states = ['active', 'removed'];
   if (states.includes(status)) {
     this.status = status;
+    if (status === 'removed') {
+      this.removed = Date.now();
+    }
   }
 };
 

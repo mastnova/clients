@@ -18,7 +18,7 @@ module.exports = function (app) {
       if (user) {
         Client.findById(id, function(err, client) {
           if (err) next(err);
-          if (client && client.status !== 'removed') {
+          if (client && (client.status !== 'removed' || user.role === 'root')) {
             Club.findById(client.club, function (err, club) {
               if (err) next(err);
               if (club) {

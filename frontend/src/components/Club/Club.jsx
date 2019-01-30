@@ -54,9 +54,13 @@ class Club extends PureComponent {
         <div className="unit-header unit-header_club">
           Клуб - {this.state.club.name}
           <div className="unit-header__remove">
-            <Tooltip text='Удалить' leftOffset='12px'>
-              <div onClick={this.removeClub(this.state.club.id)} className="button-remove button-remove_big" />
-            </Tooltip>
+          {
+            this.state.club.status === 'removed'
+            ? <div className="removed-text">Удален</div>
+            : <Tooltip text='Удалить' leftOffset='12px'>
+                <div onClick={this.removeClub(this.state.club.id)} className="button-remove button-remove_big" />
+              </Tooltip>
+          }
           </div>
         </div>
         <div className="unit-info">
@@ -85,11 +89,13 @@ class Club extends PureComponent {
             data={this.state.club.promotions}
           />
         }
-        <div className="button-wrapper">
-          <button className="button" type="button" onClick={this.onAddPromo}>
-            <span className="button_add">Создать акцию</span>
-          </button>
-        </div>
+        {this.state.club.status !== 'removed' &&
+          <div className="button-wrapper">
+            <button className="button" type="button" onClick={this.onAddPromo}>
+              <span className="button_add">Создать акцию</span>
+            </button>
+          </div>
+        }
       </div>
     );
   }

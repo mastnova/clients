@@ -51,9 +51,13 @@ class Client extends Component {
         <div className="unit-header unit-header_client">
           Клиент - {this.state.client.name}
           <div className="unit-header__remove">
-            <Tooltip text='Удалить' leftOffset='12px'>
-              <div onClick={this.removeClient(this.state.client.id, this.state.client.name)} className="button-remove button-remove_big" />
-            </Tooltip>
+          {
+            this.state.client.status === 'removed'
+            ? <div className="removed-text">Удален</div>
+            : <Tooltip text='Удалить' leftOffset='12px'>
+                <div onClick={this.removeClient(this.state.client.id, this.state.client.name)} className="button-remove button-remove_big" />
+              </Tooltip>
+          }
           </div>
         </div>
         <div className="unit-info">

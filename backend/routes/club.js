@@ -92,6 +92,13 @@ module.exports = function (app) {
                 if (err) {
                   next(err);
                 } else {
+                  if (status === 'removed') {
+                    User.deleteMany({ '_id': { $in: club.operators } }, function (err) {
+                      Client.updateMany({ club: club.id }, { status: status }, {}, function(err){
+                        if (err) console.log(err);
+                      })
+                    });
+                  }
                   res.send(club);
                 }
               });
@@ -109,38 +116,5 @@ module.exports = function (app) {
         res.send(Errors.invalidToken);
       }
     })
-  });
-
-  app.delete('/api/club/:id', function (req, res, next) {
-    const id = req.params.id;
-    const token = req.cookies['token'];
-    User.findOne({ token }, function (err, user) {
-      if (err) next(err);
-      if (user) {
-        Club.findById(id, function (err, club) {
-          if (err) next(err);
-          if (club) {
-            if (club.owner == user.id || user.role === 'root') {
-              User.deleteMany({ '_id': { $in: club.operators } }, function(err) {
-                Client.deleteMany({club: club.id}, function (err) {
-                  club.remove(function () {
-                    res.send({ status: 'ok' })
-                  });
-                })
-              });
-            } else {
-              res.status(401);
-              res.send(Errors.notAllowed)
-            }
-          } else {
-            res.status(404);
-            res.send(Errors.notFound)
-          }
-        });
-      } else {
-        res.status(401);
-        res.send(Errors.invalidToken);
-      }
-    });
   });
 }

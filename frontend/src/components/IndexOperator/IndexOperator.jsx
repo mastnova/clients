@@ -118,7 +118,7 @@ class IndexOperator extends PureComponent {
         </div>
       );
     }
-    if (this.state.club.status === 'blocked') {
+    if (this.state.club.status !== 'active') {
       return (
         <div className="page-container operator-index">
           <MenuOperator />

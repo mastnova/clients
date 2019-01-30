@@ -10,17 +10,26 @@ import { PAGE_URL } from '../../constants';
 import API from '../../API';
 
 const header = ['#', 'Клуб', 'Количество клиентов', 'Агент клуба', 'Дата создания', ''];
+const headerRemoved = ['#', 'Клуб', 'Количество клиентов', 'Агент клуба', 'Дата создания', 'Дата удаления'];
 
 class Clubs extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       search: '',
+      status: 'active',
     };
   }
 
   componentWillMount() {
     this.props.updateClubs();
+  }
+
+  componentWillReceiveProps(props) {
+    if (this.state.status !== props.status) {
+      this.props.updateClubs(null, props.status);
+      this.setState({status: props.status})
+    }
   }
 
   getClubs() {
@@ -53,28 +62,40 @@ class Clubs extends PureComponent {
     });
   }
 
-  mappingFn = (club, i) => [
-    i + 1,
-    <Link to={`${PAGE_URL.club}/${club.id}${PAGE_URL.clients}`}>{club.name}</Link>,
-    club.clientsCount,
-    club.ownerName,
-    moment(club.created).format('DD.MM.YYYY'),
-    <div>
-      <Tooltip text={club.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
-        <div onClick={this.toggleLock(club.id, club.status, club.name)} className={`button-lock ${club.status === 'blocked' ? 'button-lock_active' : ''}`} />
-      </Tooltip>
-      <Tooltip text='Удалить'>
-        <div onClick={this.props.removeClub(club.id, club.name)} className="button-remove" />
-      </Tooltip>
-    </div>
-  ]
+  mappingFn = (club, i) => {
+    let lastColumn = (
+      <div>
+        <Tooltip text={club.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
+          <div onClick={this.toggleLock(club.id, club.status, club.name)} className={`button-lock ${club.status === 'blocked' ? 'button-lock_active' : ''}`} />
+        </Tooltip>
+        <Tooltip text='Удалить'>
+          <div onClick={this.props.removeClub(club.id, club.name)} className="button-remove" />
+        </Tooltip>
+      </div>
+    );
+    if (this.props.status === 'removed') {
+      lastColumn = <div>{moment(club.removed).format('DD.MM.YYYY')}</div>;
+    }
+    return [
+      i + 1,
+      <Link to={`${PAGE_URL.club}/${club.id}${PAGE_URL.clients}`}>{club.name}</Link>,
+      club.clientsCount,
+      club.ownerName,
+      moment(club.created).format('DD.MM.YYYY'),
+      lastColumn
+    ]
+  }
 
   render() {
     const clubs = this.getClubs();
+    const agentId = this.props.match.params.agentId;
     return (
       <div className="page page_clubs">
         <div className="search-block">
-          <div className="search-block__title">Управление клубами</div>
+          {this.props.status === 'removed'
+            ? <div className="search-block__title search-block__title_red">Удаленные клубы</div>
+            : <div className="search-block__title">Управление клубами</div>
+          }
           <div className="search-block__input">
             <Input
               icon="search"
@@ -82,13 +103,18 @@ class Clubs extends PureComponent {
               value={this.state.search}
               onChange={this.onChangeInput} />
           </div>
-          <p></p>
+          {
+            this.props.status !== 'removed'
+            ? <Link to={`${agentId ? agentId + '/' : ''}removed`}><button className="button button_remove button_red">удаленные клубы</button></Link>
+            : <button onClick={this.props.history.goBack} className="button button_gray">Вернуться назад</button>
+          }
         </div>
+        {this.props.status === 'removed' && <div className="crossline" />}
         {
           clubs.length
             ? <TableWithPagination
                 className="clubsall"
-                header={header}
+                header={this.props.status === 'removed' ? headerRemoved : header}
                 mappingFn={this.mappingFn}
                 data={clubs}
               />

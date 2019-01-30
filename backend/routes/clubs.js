@@ -9,6 +9,7 @@ const clubsProjection = {
   created: true,
   status: true,
   owner: true,
+  removed: true,
 };
 
 module.exports = function (app) {
@@ -17,7 +18,7 @@ module.exports = function (app) {
     User.findOne({ token }, function (err, user) {
       if (err) next(err);
       if (user) {
-        Club.find({ owner: user.id }, clubsProjection, function (err, clubs) {
+        Club.find({ owner: user.id, status: 'active' }, clubsProjection, function (err, clubs) {
           if (err) next(err);
           res.send(clubs);
         })
@@ -28,14 +29,15 @@ module.exports = function (app) {
     });
   });
 
-  app.get('/api/clubs/:agentId', function (req, res, next) {
+  app.get('/api/clubs/:agentId/:status', function (req, res, next) {
     const token = req.cookies['token'];
     const agentId = req.params.agentId;
+    const status = req.params.status;
     User.findOne({ token }, function (err, user) {
       if (err) next(err);
       if (user) {
         if(user.role === 'root') {
-          const search = agentId === 'all' ? {} : { owner: agentId };
+          const search = agentId === 'all' ? { status } : { owner: agentId, status };
           Club.find(search, clubsProjection, function (err, clubs) {
             if (err) next(err);
             res.send(clubs);

@@ -85,13 +85,31 @@ body {
     filter: brightness(10);
   }
 
+  &_remove {
+    padding-left: 25px;
+    background: url('./images/icons/basket-red.png');
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-position-x: 20px;
+  }
+
   &_gray {
-    background-color: #e4e4f4;
+    background-color: #f2f2f8;
     color: #344178;
     transition: all .2s;
 
     &:hover {
-      background-color: #f2f2f8 !important;
+      background-color: #e4e4f4 !important;
+    }
+  }
+
+  &_red {
+    background-color: #feeaea;
+    color: #783434;
+    transition: all .2s;
+
+    &:hover {
+      background-color: #f8bebe !important;
     }
   }
 }
@@ -173,6 +191,10 @@ body {
     font-family: 'pn-semibold';
     font-size: 18px;
     color: #344178;
+
+    &_red {
+      color: #ff6262;
+    }
   }
 
   &__input {
@@ -210,7 +232,15 @@ body {
   &__remove {
     position: absolute;
     right: 30px;
-    top: 25px;
+    top: 0px;
+
+    .removed-text {
+      color: #ff6262;
+    }
+
+    .tooltip {
+      margin-top: 25px;
+    }
   }
 }
 
@@ -346,4 +376,9 @@ body {
   &__text:after {
     background: url('./images/icons/txt.png') no-repeat center;
   }
+}
+
+.crossline {
+  height: 5px;
+  background-color: #ff6262;
 }

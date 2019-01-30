@@ -8,7 +8,9 @@ const schemas = {
     { name: 'index', regexp: /^\/$/ },
     { name: 'club', regexp: /^\/club\/.{24}$/ },
     { name: 'clubs', regexp: /^\/clubs\/.{24}$/ },
+    { name: 'clubsRemoved', regexp: /^\/clubs\/.{24}\/removed$/ },
     { name: 'clubsAll', regexp: /^\/clubs\/all$/ },
+    { name: 'clubsAllRemoved', regexp: /^\/clubs\/removed$/ },
     { name: 'clients', regexp: /^\/club\/.{24}\/clients$/ },
     { name: 'client', regexp: /^\/club\/.{24}\/clients\/.{24}$/ },
     { name: 'operators', regexp: /^\/club\/.{24}\/operators$/ },
@@ -33,7 +35,9 @@ class Breadcrumbs extends PureComponent {
       index: { text: 'Главная', url: '/' },
       club: (id) => ({ text: `Клуб ${clubName}`, url: `/club/${id}/clients` }),
       clubs: { text: `Клубы агента`, url },
+      clubsRemoved: { text: `Удаленные клубы агента`, url },
       clubsAll: { text: `Клубы`, url },
+      clubsAllRemoved: { text: `Удаленные клубы`, url },
       operators: (id) => ({ text: 'Управление операторами', url }),
       clients: (id) => ({ text: 'Управление клиентами', url: `/club/${id}/clients` }),
       client: (id) => ({ text: 'Клиент', url }),
@@ -46,8 +50,14 @@ class Breadcrumbs extends PureComponent {
     if (page === 'clubsAll') {
       return [links.index, links.clubsAll];
     }
+    if (page === 'clubsAllRemoved') {
+      return [links.index, links.clubsAllRemoved];
+    }
     if (page ==='clubs') {
       return [links.index, links.clubs];
+    }
+    if (page === 'clubsRemoved') {
+      return [links.index, links.clubsRemoved];
     }
     if (page === 'club') {
       return [links.index, links.club(clubId), links.promo];

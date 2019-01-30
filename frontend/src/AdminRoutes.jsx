@@ -29,8 +29,8 @@ class AdminRoutes extends PureComponent {
     }
   }
 
-  fetchData = () => {
-    Promise.all([this.fetchClubs(), this.fetchAgents()]).then((responses) => {
+  fetchData = (status = 'active') => {
+    Promise.all([this.fetchClubs('all', status), this.fetchAgents()]).then((responses) => {
       const clubs = responses[0];
       const agents = responses[1];
       const counters = {};
@@ -56,8 +56,8 @@ class AdminRoutes extends PureComponent {
     return agents;
   }
 
-  fetchClubs = async (id = 'all') => {
-    const clubs = await API.getClubs(id);
+  fetchClubs = async (id = 'all', status) => {
+    const clubs = await API.getClubs(id, status);
     return clubs;
   }
 
@@ -70,9 +70,9 @@ class AdminRoutes extends PureComponent {
     this.setState({ clubName: club.name ? `(${club.name})` : ''});
   }
 
-  updateClubs = (newClub) => {
+  updateClubs = (newClub, status) => {
     if (!newClub) {
-      this.fetchData();
+      this.fetchData(status);
       return;
     };
     const updatedClubs = this.state.clubs.map(club => (
@@ -123,6 +123,8 @@ class AdminRoutes extends PureComponent {
         <Route path={PAGE_URL.index} exact render={(props) => <Index {...props} openPopup={this.props.openPopup} users={this.state.agents} updateAgents={this.updateAgents} removeAgent={this.removeAgent}/>} />
         <Switch>
           <Route path={`${PAGE_URL.clubs}/all`} exact render={(props) => <Clubs {...props} openPopup={this.props.openPopup} clubs={this.state.clubs} updateClubs={this.updateClubs} removeClub={this.removeClub}/>} />
+          <Route path={`${PAGE_URL.clubs}/removed`} exact render={(props) => <Clubs {...props} openPopup={this.props.openPopup} clubs={this.state.clubs} updateClubs={this.updateClubs} removeClub={this.removeClub} status="removed"/>} />
+          <Route path={`${PAGE_URL.clubs}/:agentId/removed`} exact render={(props) => <Clubs {...props} openPopup={this.props.openPopup} clubs={this.state.clubs} updateClubs={this.updateClubs} removeClub={this.removeClub} status="removed"/>} />
           <Route path={`${PAGE_URL.clubs}/:agentId`} exact render={(props) => <Clubs {...props} openPopup={this.props.openPopup} clubs={this.state.clubs} updateClubs={this.updateClubs} removeClub={this.removeClub}/>} />
         </Switch>
         <Route path={`${PAGE_URL.club}/:id`} exact render={(props) => <Club {...props} openPopup={this.props.openPopup} removeClub={this.removeClub} />} />
