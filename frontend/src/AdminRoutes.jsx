@@ -131,7 +131,7 @@ class AdminRoutes extends PureComponent {
         </Switch>
         <Route path={`${PAGE_URL.club}/:id`} exact render={(props) => <Club {...props} openPopup={this.props.openPopup} removeClub={this.removeClub} />} />
         <Route path={`${PAGE_URL.club}/:id${PAGE_URL.operators}`} exact render={(props) => <Operators {...props} openPopup={this.props.openPopup} />} />
-        <Route path={`${PAGE_URL.club}/:id${PAGE_URL.clients}`} exact render={(props) => <Clients {...props} openPopup={this.props.openPopup} />} />
+        <Route path={`${PAGE_URL.club}/:id${PAGE_URL.clients}`} exact render={(props) => <Clients {...props} openPopup={this.props.openPopup} clubName={this.state.clubName}/>} />
         <Route path={`${PAGE_URL.club}/:id${PAGE_URL.clients}/:clientId`} exact render={(props) => <Client {...props} openPopup={this.props.openPopup} />} />
       </div>
     );

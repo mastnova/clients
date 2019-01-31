@@ -105,8 +105,8 @@ class Clients extends Component {
       <div className="page page_clients">
         <div className="search-block">
           {this.state.status === 'removed'
-            ? <div className="search-block__title search-block__title_red">Удаленные клиенты</div>
-            : <div className="search-block__title">Список Клиентов</div>
+            ? <div className="search-block__title search-block__title_red">Удаленные клиенты {this.props.clubName}</div>
+            : <div className="search-block__title">Список Клиентов {this.props.clubName}</div>
           }
           <div className="search-block__input">
             <Input
@@ -138,7 +138,7 @@ class Clients extends Component {
 }
 
 Clients.propTypes = {
-  
+  clubName: PropTypes.string.isRequired,
 };
 
 export default Clients;
