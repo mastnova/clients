@@ -35,9 +35,9 @@ class AdminRoutes extends PureComponent {
       const agents = responses[1];
       const counters = {};
       clubs.forEach(club => {
-        counters[club.owner] = counters[club.owner] ? counters[club.owner] + club.clientsCount : club.clientsCount;
+        counters[club.owner] = counters[club.owner] ? counters[club.owner] + 1 : 1;
       });
-      const updatedAgents = agents.map(agent => ({ ...agent, clientsCount: counters[agent.id] || 0 }));
+      const updatedAgents = agents.map(agent => ({ ...agent, clubsCount: counters[agent.id] || 0 }));
       const agentsNames = {};
       agents.forEach(agent => {
         agentsNames[agent.id] = agent.login;

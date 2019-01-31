@@ -10,7 +10,7 @@ import Input from '../UI/Input/Input';
 import { PAGE_URL } from '../../constants';
 import API from '../../API';
 
-const header = ['#', 'Агент', 'Количество клиентов', 'Дата создания', ''];
+const header = ['#', 'Агент', 'Количество клубов', 'Дата создания', ''];
 
 class Index extends PureComponent {
   constructor(props) {
@@ -57,7 +57,7 @@ class Index extends PureComponent {
   mappingFn = (agent, i) => [
     i + 1,
     <Link to={`${PAGE_URL.clubs}/${agent.id}`}>{agent.login}</Link>,
-    agent.clientsCount,
+    agent.clubsCount,
     moment(agent.created).format('DD.MM.YYYY'),
     <div>
       <Tooltip text={agent.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
