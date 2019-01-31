@@ -24,7 +24,17 @@ module.exports = function (app) {
               User.find({'_id': {$in: club.operators}}, usersProjection, function (err, ops) {
                 if (err) next(err);
                 if (ops) {
-                  res.send(ops)
+                  const updatedOps = ops.map(op => {
+                    const obj = op.toObject();
+                    const id = obj._id;
+                    delete obj._id;
+                     return {
+                       id,
+                       ...obj,
+                       clubName: club.name,
+                     };
+                  });
+                  res.send(updatedOps)
                 }
               });
             } else {

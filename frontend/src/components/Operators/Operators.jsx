@@ -7,7 +7,7 @@ import Input from '../UI/Input/Input';
 import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
 import API from '../../API';
 
-const header = ['#', 'Оператор', 'Дата регистрации', ''];
+const header = ['#', 'Оператор', 'Клуб', 'Дата регистрации', ''];
 
 class Operators extends PureComponent {
   constructor(props) {
@@ -81,6 +81,7 @@ class Operators extends PureComponent {
   mappingFn = (operator, i) => [
     i + 1,
     operator.login,
+    operator.clubName,
     moment(operator.created).format('DD.MM.YYYY'),
     <div>
       <Tooltip text={operator.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
