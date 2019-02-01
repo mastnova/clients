@@ -117,11 +117,16 @@ class AdminRoutes extends PureComponent {
     });
   }
 
+  getClubOwner = (clubId) => {
+    const club = this.state.clubs.find( club => club.id === clubId);
+    return club ? club.owner : null;
+  }
+
   render() {
     return (
       <div className="page-container">
         <Route path={[`${PAGE_URL.club}/:id`, PAGE_URL.index]} component={MenuAdmin} />
-        <Route render={(props) => <Breadcrumbs {...props} setClubId={this.setClubId} clubName={this.state.clubName} />} />
+        <Route render={(props) => <Breadcrumbs {...props} setClubId={this.setClubId} clubName={this.state.clubName} user="admin" getClubOwner={this.getClubOwner}/>} />
         <Route path={PAGE_URL.index} exact render={(props) => <Index {...props} openPopup={this.props.openPopup} users={this.state.agents} updateAgents={this.updateAgents} removeAgent={this.removeAgent}/>} />
         <Switch>
           <Route path={`${PAGE_URL.clubs}/all`} exact render={(props) => <Clubs {...props} openPopup={this.props.openPopup} clubs={this.state.clubs} updateClubs={this.updateClubs} removeClub={this.removeClub} status="active"/>} />

@@ -42,6 +42,10 @@ class Breadcrumbs extends PureComponent {
       clients: (id) => ({ text: 'Управление клиентами', url: `/club/${id}/clients` }),
       client: (id) => ({ text: 'Клиент', url }),
       promo: { text: `Акции клуба`, url },
+      agent: (clubId) => {
+        const agentId = this.props.getClubOwner(clubId);
+        return { text: `Клубы агента`, url: `/clubs/${agentId}` }
+      },
     };
 
     if (page === 'index') {
@@ -65,8 +69,11 @@ class Breadcrumbs extends PureComponent {
     if (page === 'operators') {
       return [links.index, links.club(clubId), links.operators(clubId)];
     }
-    if (page === 'clients') {
+    if (page === 'clients' && this.props.user === 'agent') {
       return [links.index, links.club(clubId)];
+    }
+    if (page === 'clients' && this.props.user === 'admin') {
+      return [links.index, links.agent(clubId), links.club(clubId)];
     }
     if (page === 'client') {
       return [links.index, links.club(clubId), links.client(clubId)];
@@ -90,6 +97,8 @@ class Breadcrumbs extends PureComponent {
 Breadcrumbs.propTypes = {
   setClubId: PropTypes.func.isRequired,
   clubName: PropTypes.string.isRequired,
+  user: PropTypes.oneOf(['admin', 'agent']),
+  getClubOwner: PropTypes.func,
 }
 
 export default Breadcrumbs;
