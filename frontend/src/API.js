@@ -73,6 +73,18 @@ const API = {
     method: 'POST',
     url: '/api/promotion/',
   },
+  changeClubName: {
+    method: 'PUT',
+    url: '/api/club/name',
+  },
+  changeClientName: {
+    method: 'PUT',
+    url: '/api/client/name',
+  },
+  changeUser: {
+    method: 'PUT',
+    url: '/api/user/update',
+  },
 };
 
 async function request(url, method = 'GET', data) {
@@ -266,6 +278,24 @@ async function createPromotion(clubId, promo) {
   return response;
 }
 
+async function changeClubName(id, name) {
+  const body = { id, name };
+  const response = await request(API.changeClubName.url, API.changeClubName.method, body);
+  return response.data;
+}
+
+async function changeClientName(id, name) {
+  const body = { id, name };
+  const response = await request(API.changeClientName.url, API.changeClientName.method, body);
+  return response.data;
+}
+
+async function changeUser(id, login, password) {
+  const body = { id, login, password };
+  const response = await request(API.changeUser.url, API.changeUser.method, body);
+  return response;
+}
+
 export default {
   hasRoot,
   createUser,
@@ -289,4 +319,7 @@ export default {
   getOperators,
   removeOperator,
   createPromotion,
+  changeClubName,
+  changeClientName,
+  changeUser,
 };

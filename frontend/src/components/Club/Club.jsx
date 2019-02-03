@@ -47,8 +47,40 @@ class Club extends PureComponent {
     this.props.history.push('/');
   }
 
+  editClub = (id, name) => () => {
+    this.props.openPopup('edit-name', {
+      title: 'Редактировать клуб',
+      input: {
+        name: 'Название клуба',
+        placeholder: 'Введите название клуба',
+        icon: 'club',
+        value: name,
+      },
+      callback: async (newName) => {
+        const club = await API.changeClubName(id, newName);
+        this.setState({
+          club: {
+            ...this.state.club,
+            name: newName,
+          }
+        });
+        this.props.updateClubs(club)
+      }
+    });
+  }
+
   render() {
     const id = this.props.match.params.id;
+    const buttons = (
+      <div>
+        <Tooltip text='Изменить' leftOffset='5px'>
+          <div onClick={this.editClub(this.state.club.id, this.state.club.name)} className="button-edit button-edit_big" />
+        </Tooltip>
+        <Tooltip text='Удалить' leftOffset='12px'>
+          <div onClick={this.removeClub(this.state.club.id)} className="button-remove button-remove_big" />
+        </Tooltip>
+      </div>
+    );
     return (
       <div className="page page_club">
         <div className="unit-header unit-header_club">
@@ -57,9 +89,7 @@ class Club extends PureComponent {
           {
             this.state.club.status === 'removed'
             ? <div className="removed-text">Удален</div>
-            : <Tooltip text='Удалить' leftOffset='12px'>
-                <div onClick={this.removeClub(this.state.club.id)} className="button-remove button-remove_big" />
-              </Tooltip>
+            : buttons
           }
           </div>
         </div>

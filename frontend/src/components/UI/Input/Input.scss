@@ -32,12 +32,14 @@
   &__message {
     background: red;
     position: absolute;
-    top: -10px;
-    right: 0px;
+    bottom: 10px;
+    right: -10px;
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 14px;
     color: #fff;
+    max-width: 220px;
+    z-index: 2;
 
     &:after {
       position: absolute;

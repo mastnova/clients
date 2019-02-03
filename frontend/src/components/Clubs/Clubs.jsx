@@ -44,6 +44,22 @@ class Clubs extends PureComponent {
     this.setState({ search: value });
   }
 
+  editClub = (id, name) => () => {
+    this.props.openPopup('edit-name', {
+      title: 'Редактировать клуб',
+      input: {
+        name: 'Название клуба',
+        placeholder: 'Введите название клуба',
+        icon: 'club',
+        value: name,
+      },
+      callback: async (newName) => {
+        const club = await API.changeClubName(id, newName);
+        this.props.updateClubs(club);
+      }
+    });
+  }
+
   toggleLock = (id, status, name) => () => {
     const action = status === 'active' ? 'заблокировать' : 'разблокировать';
     this.props.openPopup('action-confirm', {
@@ -65,6 +81,9 @@ class Clubs extends PureComponent {
   mappingFn = (club, i) => {
     let lastColumn = (
       <div>
+        <Tooltip text='Изменить' leftOffset="-10px">
+          <div onClick={this.editClub(club.id, club.name)} className="button-edit" />
+        </Tooltip>
         <Tooltip text={club.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
           <div onClick={this.toggleLock(club.id, club.status, club.name)} className={`button-lock ${club.status === 'blocked' ? 'button-lock_active' : ''}`} />
         </Tooltip>

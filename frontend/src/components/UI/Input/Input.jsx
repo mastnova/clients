@@ -11,6 +11,7 @@ class Input extends PureComponent {
     name: 'input',
     type: 'text',
     value: '',
+    defaultValue: '',
     placeholder: '',
     onChange: () => { },
   }
@@ -23,6 +24,10 @@ class Input extends PureComponent {
       isActivated: false,
       errorIsHidden: true,
     };
+  }
+  
+  componentDidMount() {
+    this.input.value = this.props.defaultValue;
   }
 
   onChange = () => {
@@ -107,6 +112,7 @@ Input.propTypes = {
   placeholder: PropTypes.string,
   validationType: PropTypes.string,
   compareWith: PropTypes.string,
+  defaultValue: PropTypes.string,
 };
 
 export default Input;

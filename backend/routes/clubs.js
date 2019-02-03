@@ -32,7 +32,7 @@ module.exports = function (app) {
   app.get('/api/clubs/:agentId/:status', function (req, res, next) {
     const token = req.cookies['token'];
     const agentId = req.params.agentId;
-    const status = req.params.status;
+    const status = req.params.status !== 'removed' ? {$ne: 'removed'} : 'removed';
     User.findOne({ token }, function (err, user) {
       if (err) next(err);
       if (user) {

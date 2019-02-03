@@ -54,12 +54,43 @@ class Index extends PureComponent {
     });
   }
 
+  editAgent = (id, name) => () => {
+    this.props.openPopup('edit-user', {
+      title: 'Редактировать агента',
+      login: name,
+      callback: async (login, password) => {
+        const response = await API.changeUser(id, login, password);
+        if (response.isOk) {
+          this.props.openPopup('alert', {
+            type: 'success',
+            title: 'Агент изменен',
+            text: 'Изменения успешно сохранены'
+          });
+          this.props.updateAgents();
+        } else {
+          let error = 'Произошла ошибка';
+          if (response.data.code === 6) {
+            error = 'Такой логин уже зарегистрирован';
+          }
+          this.props.openPopup('alert', {
+            type: 'error',
+            title: 'Ошибка',
+            text: error,
+          });
+        }
+      }
+    });
+  }
+
   mappingFn = (agent, i) => [
     i + 1,
     <Link to={`${PAGE_URL.clubs}/${agent.id}`}>{agent.login}</Link>,
     agent.clubsCount,
     moment(agent.created).format('DD.MM.YYYY'),
     <div>
+      <Tooltip text='Изменить' leftOffset="-10px">
+        <div onClick={this.editAgent(agent.id, agent.login)} className="button-edit" />
+      </Tooltip>
       <Tooltip text={agent.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
         <div onClick={this.toggleLock(agent.id, agent.status, agent.login)} className={`button-lock ${agent.status === 'blocked' ? 'button-lock_active' : ''}`} />
       </Tooltip>

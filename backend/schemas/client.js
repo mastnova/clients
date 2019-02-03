@@ -62,6 +62,12 @@ schemaClient.methods.changeStatus = function (status) {
   }
 };
 
+schemaClient.methods.changeName = function (name) {
+  if (name) {
+    this.name = name;
+  }
+};
+
 schemaClient.set('toJSON', {
   virtuals: true,
   versionKey: false,

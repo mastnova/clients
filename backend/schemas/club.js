@@ -68,6 +68,12 @@ schemaClub.methods.changeStatus = function (status) {
   }
 };
 
+schemaClub.methods.changeName = function (name) {
+  if (name) {
+    this.name = name;
+  }
+};
+
 schemaClub.set('toJSON', {
   virtuals: true,
   versionKey: false,

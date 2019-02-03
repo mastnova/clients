@@ -84,7 +84,7 @@ class Login extends PureComponent {
                   icon="password"
                   type="password"
                   placeholder="Введите пароль"
-                  validationType="password"
+                  validationType="required"
                   value={this.state.password}
                   onChange={this.onChangeInput}
                 />

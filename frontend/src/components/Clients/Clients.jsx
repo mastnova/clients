@@ -47,6 +47,27 @@ class Clients extends Component {
     return clients.filter(client => client.name.includes(this.state.search) || client.phone.includes(this.state.search) || client.creator.includes(this.state.search));
   }
 
+  editClient = (id, name) => () => {
+    this.props.openPopup('edit-name', {
+      title: 'Редактировать клиента',
+      input: {
+        name: 'Имя клиента',
+        placeholder: 'Введите имя клиента',
+        value: name,
+        icon: 'login',
+      },
+      callback: async (newName) => {
+        const client = await API.changeClientName(id, newName);
+        this.updateClients(client);
+      }
+    });
+  }
+
+  updateClients = (newClient) => {
+    const updatedClients = this.state.clients.map(client => client.id === newClient.id ? newClient : client);
+    this.setState({ clients: updatedClients });
+  }
+
   removeClient = (id, name) => () => {
     this.props.openPopup('action-confirm', {
       title: 'Удаление клиента',
@@ -64,6 +85,9 @@ class Clients extends Component {
   mappingFn = (client, i) => {
     let lastColumn = (
       <div>
+        <Tooltip text='Изменить' leftOffset="-10px">
+          <div onClick={this.editClient(client.id, client.name)} className="button-edit" />
+        </Tooltip>
         <Tooltip text='Удалить'>
           <div onClick={this.removeClient(client.id, client.name)} className="button-remove" />
         </Tooltip>

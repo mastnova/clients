@@ -10,6 +10,8 @@ import AddOperator from './popups/AddOperator';
 import ActionConfirm from './popups/ActionConfirm';
 import SmsConfirm from './popups/SmsConfirm';
 import Alert from './popups/Alert';
+import EditName from './popups/EditName';
+import EditUser from './popups/EditUser';
 
 class Popup extends PureComponent {
   constructor(props) {
@@ -53,6 +55,10 @@ class Popup extends PureComponent {
       content = <ActionConfirm data={this.props.data} close={this.props.close}/>
     } else if (this.props.name === 'sms-confirm') {
       content = <SmsConfirm data={this.props.data} close={this.props.close} />
+    } else if (this.props.name === 'edit-name') {
+      content = <EditName data={this.props.data} close={this.props.close} />
+    } else if (this.props.name === 'edit-user') {
+      content = <EditUser data={this.props.data} close={this.props.close} />
     }
 
     const cantClose = this.props.name === 'alert' || this.props.name === 'sms-confirm';

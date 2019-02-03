@@ -45,7 +45,38 @@ class Client extends Component {
     });
   }
 
+  editClient = (id, name) => () => {
+    this.props.openPopup('edit-name', {
+      title: 'Редактировать клиента',
+      input: {
+        name: 'Имя клиента',
+        placeholder: 'Введите имя клиента',
+        icon: 'login',
+        value: name,
+      },
+      callback: async (newName) => {
+        const client = await API.changeClientName(id, newName);
+        this.setState({
+          client: {
+            ...this.state.client,
+            name: newName,
+          }
+        });
+      }
+    });
+  }
+
   render() {
+    const buttons = (
+      <div>
+        <Tooltip text='Изменить' leftOffset='5px'>
+          <div onClick={this.editClient(this.state.client.id, this.state.client.name)} className="button-edit button-edit_big" />
+        </Tooltip>
+        <Tooltip text='Удалить' leftOffset='12px'>
+          <div onClick={this.removeClient(this.state.client.id, this.state.client.name)} className="button-remove button-remove_big" />
+        </Tooltip>
+      </div>
+    );
     return (
       <div className="page page_client">
         <div className="unit-header unit-header_client">
@@ -54,9 +85,7 @@ class Client extends Component {
           {
             this.state.client.status === 'removed'
             ? <div className="removed-text">Удален</div>
-            : <Tooltip text='Удалить' leftOffset='12px'>
-                <div onClick={this.removeClient(this.state.client.id, this.state.client.name)} className="button-remove button-remove_big" />
-              </Tooltip>
+            : buttons
           }
           </div>
         </div>
