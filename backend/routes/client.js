@@ -83,7 +83,13 @@ module.exports = function (app) {
                         info: client.getPromotion(promotion.id)
                       });
                     } else {
-                      client.addPromotion({ ...promotion, creator: operator.login });
+                      client.addPromotion({
+                        ...promotion,
+                        creator: {
+                          login: operator.login,
+                          avatar: operator.avatar,
+                        }
+                      });
                       client.save(function (error) {
                         if (error) {
                           res.status(400);
@@ -104,11 +110,14 @@ module.exports = function (app) {
                   if (promotion.id) {
                     promotions.push({
                       ...promotion,
-                      creator: operator.login,
+                      creator: {
+                        login: operator.login,
+                        avatar: operator.avatar,
+                      },
                       date: new Date().getTime(),
                     });
                   }
-                  new Client({ name, phone, promotions, club: operator.clubId, creator: operator.login })
+                  new Client({ name, phone, promotions, club: operator.clubId, creator: { login: operator.login, avatar: operator.avatar} })
                   .save(function (error) {
                     if (error) {
                       res.status(400);

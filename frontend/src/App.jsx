@@ -19,6 +19,7 @@ class App extends Component {
     userName: '',
     userRole: '',
     userClub: '',
+    userAvatar: '',
     hasAuth: false,
   }
 
@@ -36,6 +37,7 @@ class App extends Component {
       userRole: this.state.userRole,
       userClub: this.state.userClub,
       hasAuth: this.state.hasAuth,
+      userAvatar: this.state.userAvatar,
     }
     sessionStorage.setItem('user', JSON.stringify(user));
   }
@@ -59,6 +61,7 @@ class App extends Component {
       userName: user.login,
       userRole: user.role,
       userClub: user.clubId,
+      userAvatar: user.avatar,
       hasAuth: true,
     }, this.saveUser);
   }
@@ -68,6 +71,7 @@ class App extends Component {
       userName: '',
       userRole: '',
       userClub: '',
+      userAvatar: '',
       hasAuth: false,
     }, () => {
       this.saveUser();
@@ -127,7 +131,7 @@ class App extends Component {
           <Route path={PAGE_URL.root} exact component={Root} />
           <Route children={() =>
             <>
-              <Header role={this.state.userRole} name={this.state.userName} onLogout={this.onLogout} />
+              <Header role={this.state.userRole} name={this.state.userName} avatar={this.state.userAvatar} onLogout={this.onLogout} />
               {routesByRole}
               <Popup
                 isOpen={this.state.popupIsOpen}

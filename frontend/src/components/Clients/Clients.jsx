@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import TableExport from 'tableexport';
+import cn from 'classnames';
 import './Clients.scss';
 
 import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
@@ -44,7 +45,7 @@ class Clients extends Component {
   }
 
   filterBySearch = (clients) => {
-    return clients.filter(client => client.name.includes(this.state.search) || client.phone.includes(this.state.search) || client.creator.includes(this.state.search));
+    return clients.filter(client => client.name.includes(this.state.search) || client.phone.includes(this.state.search) || client.creator.login.includes(this.state.search));
   }
 
   editClient = (id, name) => () => {
@@ -96,12 +97,13 @@ class Clients extends Component {
     if (this.state.status === 'removed') {
       lastColumn = <div>{moment(client.removed).format('DD.MM.YYYY')}</div>;
     }
+    const avaClass = cn(`header__avatar_${client.creator.avatar}`, 'header__avatar_min', 'header__avatar_operator');
     return [
       i + 1,
       <Link to={`${PAGE_URL.club}/${this.props.match.params.id}${PAGE_URL.clients}/${client.id}`}>{client.name}</Link>,
       client.phone,
       client.promotions.length,
-      client.creator,
+      <div className={avaClass}>{client.creator.login}</div>,
       moment(client.created).format('DD.MM.YYYY'),
       lastColumn
     ]

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import cn from 'classnames';
 import './Client.scss';
 
-import Table from '../UI/Table/Table';
+import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
 import Tooltip from '../UI/Tooltip/Tooltip';
 import API from '../../API';
 import { PAGE_URL } from '../../constants';
@@ -15,6 +16,10 @@ class Client extends Component {
     super(props);
     this.state = {
       client: {
+        creator: {
+          login: '',
+          avatar: 0,
+        },
         promotions: []
       },
     };
@@ -66,6 +71,16 @@ class Client extends Component {
     });
   }
 
+  mappingFn = (promo, i) => {
+    const avaClass = cn(`header__avatar_${promo.creator.avatar}`, 'header__avatar_min', 'header__avatar_operator');
+    return [
+      i + 1,
+      promo.name,
+      <div className={avaClass}>{promo.creator.login}</div>,
+      moment(promo.date).format('DD.MM.YYYY')
+    ]
+  }
+
   render() {
     const buttons = (
       <div>
@@ -100,7 +115,7 @@ class Client extends Component {
           </div>
           <div className="unit-info__label unit-info__label_creator">
             <div className="unit-info__name">Добавил</div>
-            <div className="unit-info__text">{this.state.client.creator}</div>
+            <div className="unit-info__text">{this.state.client.creator.login}</div>
           </div>
           <div className="unit-info__label unit-info__label_created">
             <div className="unit-info__name">Дата регистрации</div>
@@ -109,21 +124,12 @@ class Client extends Component {
         </div>
         
         {Boolean(this.state.client.promotions.length) &&
-          <Table className="clubs">
-            <Table.Header>{header}</Table.Header>
-            {
-              this.state.client.promotions.map((promo, i) => (
-                <Table.Row key={promo.id}>
-                  {[
-                    i + 1,
-                    promo.name,
-                    promo.creator,
-                    moment(promo.date).format('DD.MM.YYYY')
-                  ]}
-                </Table.Row>
-              ))
-            }
-          </Table>
+          <TableWithPagination
+            className="clubs"
+            header={header}
+            mappingFn={this.mappingFn}
+            data={this.state.client.promotions}
+          />
         }
       </div>
     );

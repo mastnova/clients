@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 import moment from 'moment';
 
 import Tooltip from '../UI/Tooltip/Tooltip';
@@ -57,8 +58,7 @@ class Operators extends PureComponent {
           operator = await API.activateUser(id);
         }
         if (operator) {
-          const updatedOps = this.state.operators.map(op => op.id === operator.id ? operator : op);
-          this.setState({ operators: updatedOps });
+          this.updateOperators(operator);
         }
       }
     });
@@ -111,23 +111,26 @@ class Operators extends PureComponent {
     });
   }
 
-  mappingFn = (operator, i) => [
-    i + 1,
-    operator.login,
-    operator.clubName,
-    moment(operator.created).format('DD.MM.YYYY'),
-    <div>
-      <Tooltip text='Изменить' leftOffset="-10px">
-        <div onClick={this.editOperator(operator.id, operator.login)} className="button-edit" />
-      </Tooltip>
-      <Tooltip text={operator.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
-        <div onClick={this.toggleLock(operator.id, operator.status, operator.login)} className={`button-lock ${operator.status === 'blocked' ? 'button-lock_active' : ''}`} />
-      </Tooltip>
-      <Tooltip text='Удалить'>
-        <div onClick={this.removeOperator(operator.id, operator.login)} className="button-remove" />
-      </Tooltip>
-    </div>
-  ]
+  mappingFn = (operator, i) => {
+    const avaClass = cn(`header__avatar_${operator.avatar}`, 'header__avatar_min', 'header__avatar_operator');
+    return [
+      i + 1,
+      <div className={avaClass}>{operator.login}</div>,
+      operator.clubName,
+      moment(operator.created).format('DD.MM.YYYY'),
+      <div>
+        <Tooltip text='Изменить' leftOffset="-10px">
+          <div onClick={this.editOperator(operator.id, operator.login)} className="button-edit" />
+        </Tooltip>
+        <Tooltip text={operator.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
+          <div onClick={this.toggleLock(operator.id, operator.status, operator.login)} className={`button-lock ${operator.status === 'blocked' ? 'button-lock_active' : ''}`} />
+        </Tooltip>
+        <Tooltip text='Удалить'>
+          <div onClick={this.removeOperator(operator.id, operator.login)} className="button-remove" />
+        </Tooltip>
+      </div>
+    ]
+  }
 
   render() {
     const opsWithFilter = this.filterBySearch(this.state.operators);

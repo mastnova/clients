@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import cn from 'classnames';
 import moment from 'moment';
 
 import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
@@ -95,11 +96,12 @@ class Clubs extends PureComponent {
     if (this.props.status === 'removed') {
       lastColumn = <div>{moment(club.removed).format('DD.MM.YYYY')}</div>;
     }
+    const avaClass = cn(`header__avatar_${club.ownerName.avatar}`, 'header__avatar_min', 'header__avatar_agent');
     return [
       i + 1,
       <Link to={`${PAGE_URL.club}/${club.id}${PAGE_URL.clients}`}>{club.name}</Link>,
       club.clientsCount,
-      club.ownerName,
+      <div className={avaClass}>{club.ownerName.login}</div>,
       moment(club.created).format('DD.MM.YYYY'),
       lastColumn
     ]

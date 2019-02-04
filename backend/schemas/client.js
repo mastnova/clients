@@ -20,8 +20,14 @@ const schemaClient = new db.Schema({
     require: true,
   },
   creator: {
-    type: String,
-    require: true,
+    login: {
+      type: String,
+      require: true,
+    },
+    avatar: {
+      type: Number,
+      require: true,
+    }
   },
   created: {
     type: Date,

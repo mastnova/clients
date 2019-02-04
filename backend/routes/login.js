@@ -15,15 +15,16 @@ module.exports = function (app) {
           } else {
             const login = user.login;
             const role = user.role;
+            const avatar = user.avatar;
             const token = user.generateToken();
             user.token = token;
             user.save(function (err, updatedUser) {
               if (err) next(err);
               res.cookie('token', token, { httpOnly: true, sameSite: true });
               if (role === 'operator') {
-                res.send({ status: 'ok', role, login, clubId: user.clubId });
+                res.send({ status: 'ok', role, login, avatar, clubId: user.clubId });
               } else {
-                res.send({ status: 'ok', role, login });
+                res.send({ status: 'ok', role, login, avatar });
               }
             })
           }

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import cn from 'classnames';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import './Index.scss';
@@ -82,23 +82,28 @@ class Index extends PureComponent {
     });
   }
 
-  mappingFn = (agent, i) => [
-    i + 1,
-    <Link to={`${PAGE_URL.clubs}/${agent.id}`}>{agent.login}</Link>,
-    agent.clubsCount,
-    moment(agent.created).format('DD.MM.YYYY'),
-    <div>
-      <Tooltip text='Изменить' leftOffset="-10px">
-        <div onClick={this.editAgent(agent.id, agent.login)} className="button-edit" />
-      </Tooltip>
-      <Tooltip text={agent.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
-        <div onClick={this.toggleLock(agent.id, agent.status, agent.login)} className={`button-lock ${agent.status === 'blocked' ? 'button-lock_active' : ''}`} />
-      </Tooltip>
-      <Tooltip text='Удалить'>
-        <div onClick={this.props.removeAgent(agent.id, agent.login)} className="button-remove" />
-      </Tooltip>
-    </div>
-  ]
+  mappingFn = (agent, i) => {
+    const avaClass = cn(`header__avatar_${agent.avatar}`, 'header__avatar_min', 'header__avatar_agent');
+    return [
+      i + 1,
+      <div className={avaClass}>
+        <Link to={`${PAGE_URL.clubs}/${agent.id}`}>{agent.login}</Link>
+      </div>,
+      agent.clubsCount,
+      moment(agent.created).format('DD.MM.YYYY'),
+      <div>
+        <Tooltip text='Изменить' leftOffset="-10px">
+          <div onClick={this.editAgent(agent.id, agent.login)} className="button-edit" />
+        </Tooltip>
+        <Tooltip text={agent.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
+          <div onClick={this.toggleLock(agent.id, agent.status, agent.login)} className={`button-lock ${agent.status === 'blocked' ? 'button-lock_active' : ''}`} />
+        </Tooltip>
+        <Tooltip text='Удалить'>
+          <div onClick={this.props.removeAgent(agent.id, agent.login)} className="button-remove" />
+        </Tooltip>
+      </div>
+    ]
+  }
 
   render() {
     const filteredAgents = this.filterBySearch(this.props.users);
@@ -131,9 +136,5 @@ class Index extends PureComponent {
     );
   }
 }
-
-Index.propTypes = {
-  
-};
 
 export default Index;

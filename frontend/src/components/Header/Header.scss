@@ -47,19 +47,161 @@
     font-size: 18px;
   }
 
+  &__avatar_min {
+    background-size: 50%;
+    background-position: 0px center;
+    background-repeat: no-repeat;
+    padding-left: 30px;
+    height: 20px;
+    background-size: contain;
+    line-height: 20px;
+  }
+
   &__avatar {
     width: 40px;
     height: 40px;
     margin-left: 25px;
 
-    &_operator {
-      background: url('../../images/icons/operator.png');
+    &_admin {
+      &.header__avatar_1 {
+        background-image: url('../../images/avatars/admin/1.png');
+      }
+      &.header__avatar_2 {
+        background-image: url('../../images/avatars/admin/2.png');
+      }
+      &.header__avatar_3 {
+        background-image: url('../../images/avatars/admin/3.png');
+      }
+      &.header__avatar_4 {
+        background-image: url('../../images/avatars/admin/4.png');
+      }
+      &.header__avatar_5 {
+        background-image: url('../../images/avatars/admin/5.png');
+      }
+      &.header__avatar_6 {
+        background-image: url('../../images/avatars/admin/6.png');
+      }
+      &.header__avatar_7 {
+        background-image: url('../../images/avatars/admin/7.png');
+      }
+      &.header__avatar_8 {
+        background-image: url('../../images/avatars/admin/8.png');
+      }
+      &.header__avatar_9 {
+        background-image: url('../../images/avatars/admin/9.png');
+      }
+      &.header__avatar_10 {
+        background-image: url('../../images/avatars/admin/10.png');
+      }
+      &.header__avatar_11 {
+        background-image: url('../../images/avatars/admin/11.png');
+      }
+      &.header__avatar_12 {
+        background-image: url('../../images/avatars/admin/12.png');
+      }
+      &.header__avatar_13 {
+        background-image: url('../../images/avatars/admin/13.png');
+      }
+      &.header__avatar_14 {
+        background-image: url('../../images/avatars/admin/14.png');
+      }
+      &.header__avatar_15 {
+        background-image: url('../../images/avatars/admin/15.png');
+      }
     }
     &_agent {
-      background: url('../../images/icons/agent.png');
+      &.header__avatar_1 {
+        background-image: url('../../images/avatars/agent/1.png');
+      }
+      &.header__avatar_2 {
+        background-image: url('../../images/avatars/agent/2.png');
+      }
+      &.header__avatar_3 {
+        background-image: url('../../images/avatars/agent/3.png');
+      }
+      &.header__avatar_4 {
+        background-image: url('../../images/avatars/agent/4.png');
+      }
+      &.header__avatar_5 {
+        background-image: url('../../images/avatars/agent/5.png');
+      }
+      &.header__avatar_6 {
+        background-image: url('../../images/avatars/agent/6.png');
+      }
+      &.header__avatar_7 {
+        background-image: url('../../images/avatars/agent/7.png');
+      }
+      &.header__avatar_8 {
+        background-image: url('../../images/avatars/agent/8.png');
+      }
+      &.header__avatar_9 {
+        background-image: url('../../images/avatars/agent/9.png');
+      }
+      &.header__avatar_10 {
+        background-image: url('../../images/avatars/agent/10.png');
+      }
+      &.header__avatar_11 {
+        background-image: url('../../images/avatars/agent/11.png');
+      }
+      &.header__avatar_12 {
+        background-image: url('../../images/avatars/agent/12.png');
+      }
+      &.header__avatar_13 {
+        background-image: url('../../images/avatars/agent/13.png');
+      }
+      &.header__avatar_14 {
+        background-image: url('../../images/avatars/agent/14.png');
+      }
+      &.header__avatar_15 {
+        background-image: url('../../images/avatars/agent/15.png');
+      }
     }
-    &_admin {
-      background: url('../../images/icons/admin.png');
+    &_operator {
+      &.header__avatar_1 {
+        background-image: url('../../images/avatars/operator/1.png');
+      }
+      &.header__avatar_2 {
+        background-image: url('../../images/avatars/operator/2.png');
+      }
+      &.header__avatar_3 {
+        background-image: url('../../images/avatars/operator/3.png');
+      }
+      &.header__avatar_4 {
+        background-image: url('../../images/avatars/operator/4.png');
+      }
+      &.header__avatar_5 {
+        background-image: url('../../images/avatars/operator/5.png');
+      }
+      &.header__avatar_6 {
+        background-image: url('../../images/avatars/operator/6.png');
+      }
+      &.header__avatar_7 {
+        background-image: url('../../images/avatars/operator/7.png');
+      }
+      &.header__avatar_8 {
+        background-image: url('../../images/avatars/operator/8.png');
+      }
+      &.header__avatar_9 {
+        background-image: url('../../images/avatars/operator/9.png');
+      }
+      &.header__avatar_10 {
+        background-image: url('../../images/avatars/operator/10.png');
+      }
+      &.header__avatar_11 {
+        background-image: url('../../images/avatars/operator/11.png');
+      }
+      &.header__avatar_12 {
+        background-image: url('../../images/avatars/operator/12.png');
+      }
+      &.header__avatar_13 {
+        background-image: url('../../images/avatars/operator/13.png');
+      }
+      &.header__avatar_14 {
+        background-image: url('../../images/avatars/operator/14.png');
+      }
+      &.header__avatar_15 {
+        background-image: url('../../images/avatars/operator/15.png');
+      }
     }
   }
 

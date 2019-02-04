@@ -1,11 +1,21 @@
 const db = require('../db');
 const crypt = require('crypto');
 
+const generateAvatar = () => {
+  const max = 15;
+  return Math.floor(Math.random() * max) + 1;
+}
+
 const schemaUser = new db.Schema({
   login: {
     type: String,
     require: true,
     unique: true,
+  },
+  avatar: {
+    type: Number,
+    require: true,
+    default: generateAvatar
   },
   role: {
     type: String,

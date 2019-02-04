@@ -8,6 +8,7 @@ const usersProjection = {
   created: true,
   status: true,
   parent: true,
+  avatar: true,
 };
 
 module.exports = function (app) {
