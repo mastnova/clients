@@ -46,8 +46,10 @@ class AddClub extends PureComponent {
     if (response.isOk) {
       this.props.openPopup('alert', { type: 'success', text: `Клуб <b>${this.state.name}</b> успешно создан` });
       this.props.data.callback();
+      this.props.close(1);
     } else {
-      this.props.openPopup('alert', { type: 'error', text: 'Произошла ошибка' });
+      const text = response.data.code === 6 ? 'Такой логин уже зарегистрирован' : 'Произошла ошибка';
+      this.props.openPopup('alert', { type: 'error', text });
     }
   }
 

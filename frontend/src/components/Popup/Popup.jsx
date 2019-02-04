@@ -41,24 +41,29 @@ class Popup extends PureComponent {
     }
 
     let content;
+    const props = {
+      data: this.props.data,
+      openPopup: this.props.open,
+      close: this.props.close,
+    }
     if (this.props.name === 'add-agent') {
-      content = <AddAgent data={this.props.data} openPopup={this.props.open}/>
+      content = <AddAgent {...props}/>
     } else if (this.props.name === 'alert') {
-      content = <Alert data={this.props.data} close={this.props.close}/>
+      content = <Alert {...props}/>
     } else if (this.props.name === 'add-club') {
-      content = <AddClub data={this.props.data} openPopup={this.props.open} />
+      content = <AddClub {...props}/>
     } else if(this.props.name === 'add-promo') {
-      content = <AddPromo data={this.props.data} openPopup={this.props.open} />
+      content = <AddPromo {...props}/>
     } else if (this.props.name === 'add-operator') {
-      content = <AddOperator data={this.props.data} openPopup={this.props.open} />
+      content = <AddOperator {...props}/>
     } else if (this.props.name === 'action-confirm') {
-      content = <ActionConfirm data={this.props.data} close={this.props.close}/>
+      content = <ActionConfirm {...props}/>
     } else if (this.props.name === 'sms-confirm') {
-      content = <SmsConfirm data={this.props.data} close={this.props.close} />
+      content = <SmsConfirm {...props}/>
     } else if (this.props.name === 'edit-name') {
-      content = <EditName data={this.props.data} close={this.props.close} />
+      content = <EditName {...props}/>
     } else if (this.props.name === 'edit-user') {
-      content = <EditUser data={this.props.data} close={this.props.close} />
+      content = <EditUser {...props}/>
     }
 
     const cantClose = this.props.name === 'alert' || this.props.name === 'sms-confirm';

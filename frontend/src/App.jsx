@@ -16,6 +16,9 @@ class App extends Component {
     popupIsOpen: false,
     popupName: '',
     popupData: null,
+    secondPopupIsOpen: false,
+    secondPopupName: '',
+    secondPopupData: null,
     userName: '',
     userRole: '',
     userClub: '',
@@ -43,17 +46,31 @@ class App extends Component {
   }
 
   openPopup = (popupName, data) => {
-    this.setState({
-      popupIsOpen: true,
-      popupName,
-      popupData: data,
-    });
+    if (this.state.popupIsOpen) {
+      this.setState({
+        secondPopupIsOpen: true,
+        secondPopupName: popupName,
+        secondPopupData: data,
+      });
+    } else {
+      this.setState({
+        popupIsOpen: true,
+        popupName,
+        popupData: data,
+      });
+    }
   }
 
-  closePopup = () => {
-    this.setState({
-      popupIsOpen: false
-    });
+  closePopup = (popupNumber) => {
+    if (this.state.secondPopupIsOpen && popupNumber !== 1) {
+      this.setState({
+        secondPopupIsOpen: false
+      });
+    } else {
+      this.setState({
+        popupIsOpen: false
+      });
+    }
   }
 
   onLogin = (user) => {
@@ -150,6 +167,14 @@ class App extends Component {
                 isOpen={this.state.popupIsOpen}
                 name={this.state.popupName}
                 data={this.state.popupData}
+                open={this.openPopup}
+                close={this.closePopup}
+              />
+              <Popup
+                {...props}
+                isOpen={this.state.secondPopupIsOpen}
+                name={this.state.secondPopupName}
+                data={this.state.secondPopupData}
                 open={this.openPopup}
                 close={this.closePopup}
               />

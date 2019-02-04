@@ -38,6 +38,7 @@ class AddPromo extends PureComponent {
     if (response.isOk) {
       this.props.openPopup('alert', { type: 'success', text: `Акция <b>${this.state.name}</b> успешно добавлена` });
       this.props.data.callback();
+      this.props.close(1);
     } else {
       this.props.openPopup('alert', { type: 'error', text: response.data.message });
     }
