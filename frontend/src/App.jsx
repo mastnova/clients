@@ -67,15 +67,21 @@ class App extends Component {
   }
 
   onLogout = () => {
+    this.openPopup('action-confirm', {
+      title: 'Выйти из системы учета клиентов?',
+      button: 'Выйти',
+      callback: this.logout,
+    });
+  }
+
+  logout = () => {
     this.setState({
       userName: '',
       userRole: '',
       userClub: '',
       userAvatar: '',
       hasAuth: false,
-    }, () => {
-      this.saveUser();
-    });
+    }, this.saveUser);
   }
 
   render() {

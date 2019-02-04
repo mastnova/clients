@@ -13,9 +13,11 @@ class RemoveConfirm extends PureComponent {
     return (
       <div className="popup-content popup_confirm">
         <div className="popup-content__title" dangerouslySetInnerHTML={{ __html: title }} />
-        <div className="popup_alert__alert">
-          <span className="popup_confirm__remove-content" dangerouslySetInnerHTML={{ __html: content }} />
-        </div>
+        {content &&
+          <div className="popup_alert__alert">
+            <span className="popup_confirm__remove-content" dangerouslySetInnerHTML={{ __html: content }} />
+          </div>
+        }
         <div className="popup_confirm__buttons">
           <button className="button" onClick={this.onAccept}>{button || 'Удалить'}</button>
           <button className="button button_gray" onClick={this.props.close}>Закрыть</button>
@@ -30,7 +32,7 @@ RemoveConfirm.propTypes = {
   data: PropTypes.shape({
     callback: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
-    content: PropTypes.string.isRequired,
+    content: PropTypes.string,
     button: PropTypes.string,
   })
 };
