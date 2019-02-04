@@ -1,10 +1,11 @@
 export function validate (value, type) {
   if (!type) return true;
   if (type === 'login') {
-    if (value.length) {
+    const regexp = /^(?=.*[A-Za-z0-9]$)[A-Za-z][\_A-Za-z\d.-]{3,20}$/;
+    if (regexp.test(value)) {
       return { isValid: true };
     }
-    return { isValid: false, error: 'Заполните поле' };
+    return { isValid: false, error: 'Длина логина 4-20 символов. Можно использовать латинские буквы, цифры, тире, подчеркивание и точку' };
   } else if (type === 'password') {
     const regexp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,14}$/;
     if (regexp.test(value)) {

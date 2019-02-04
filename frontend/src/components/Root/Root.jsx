@@ -64,7 +64,7 @@ class Root extends PureComponent {
                 <Input
                   name="login"
                   placeholder="Логин"
-                  validationType="login"
+                  validationType="required"
                   value={this.state.login}
                   onChange={this.onChangeInput}
                 />
@@ -75,7 +75,7 @@ class Root extends PureComponent {
                   type="password"
                   name="password"
                   placeholder="Пароль"
-                  validationType="password"
+                  validationType="required"
                   value={this.state.password}
                   onChange={this.onChangeInput}
                 />
@@ -86,7 +86,7 @@ class Root extends PureComponent {
                   type="password"
                   name="repeatPassword"
                   placeholder="Пароль"
-                  validationType="password"
+                  validationType="required"
                   value={this.state.repeatPassword}
                   compareWith={this.state.password}
                   onChange={this.onChangeInput}
