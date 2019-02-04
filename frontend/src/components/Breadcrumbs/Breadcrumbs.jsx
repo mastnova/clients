@@ -3,31 +3,9 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom'
 import './Breadcrumbs.scss';
 
-const schemas = {
-  Agent: [
-    { name: 'index', regexp: /^\/$/ },
-    { name: 'club', regexp: /^\/club\/.{24}$/ },
-    { name: 'clubs', regexp: /^\/clubs\/.{24}$/ },
-    { name: 'clubsRemoved', regexp: /^\/clubs\/.{24}\/removed$/ },
-    { name: 'clubsAll', regexp: /^\/clubs\/all$/ },
-    { name: 'clubsAllRemoved', regexp: /^\/clubs\/removed$/ },
-    { name: 'clients', regexp: /^\/club\/.{24}\/clients$/ },
-    { name: 'client', regexp: /^\/club\/.{24}\/clients\/.{24}$/ },
-    { name: 'operators', regexp: /^\/club\/.{24}\/operators$/ },
-  ]
-}
+import { parseURL } from '../../utils/url';
 
 class Breadcrumbs extends PureComponent {
-  parseURL = (url) => {
-    let clubId = null;
-    if ( /^\/club\//.test(url) ) {
-      clubId = url.substr(6, 24);
-      this.props.setClubId(clubId);
-    }
-    
-    const page = schemas.Agent.find( page => page.regexp.test(url)) || {};
-    return { page: page.name, clubId, url };
-  }
 
   getLinks = ({page, clubId, url}) => {
     const clubName = this.props.clubName;
@@ -82,8 +60,11 @@ class Breadcrumbs extends PureComponent {
   }
 
   render() {
-    const currentPage = this.parseURL(document.location.pathname);
+    const currentPage = parseURL(document.location.pathname);
     const links = this.getLinks(currentPage);
+    if (currentPage.clubId) {
+      this.props.setClubId(currentPage.clubId);
+    }
     return (
       <div className="breadcrumbs">
         {

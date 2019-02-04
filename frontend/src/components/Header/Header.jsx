@@ -4,7 +4,16 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './Header.scss';
 
+import { setPageTitle } from '../../utils/url';
+
 class Header extends PureComponent {
+
+  componentWillMount() {
+    setPageTitle();
+    this.props.history.listen((location) => {
+      setPageTitle(location.pathname);
+    });
+  }
 
   render() {
     const {role, avatar} = this.props;

@@ -129,11 +129,18 @@ class App extends Component {
         <Switch>
           <Route path={PAGE_URL.login} exact render={(props) => <Login {...props} onLogin={this.onLogin} hasAuth={this.state.hasAuth} />} />
           <Route path={PAGE_URL.root} exact component={Root} />
-          <Route children={() =>
+          <Route children={(props) =>
             <>
-              <Header role={this.state.userRole} name={this.state.userName} avatar={this.state.userAvatar} onLogout={this.onLogout} />
+              <Header
+                {...props}
+                role={this.state.userRole}
+                name={this.state.userName}
+                avatar={this.state.userAvatar}
+                onLogout={this.onLogout}
+              />
               {routesByRole}
               <Popup
+                {...props}
                 isOpen={this.state.popupIsOpen}
                 name={this.state.popupName}
                 data={this.state.popupData}
