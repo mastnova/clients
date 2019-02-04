@@ -8,6 +8,7 @@ const usersProjection = {
   created: true,
   status: true,
   parent: true,
+  avatar: true,
 };
 
 module.exports = function (app) {
@@ -123,6 +124,52 @@ module.exports = function (app) {
                     Club.updateMany({ owner: targetedUser.id }, { status });
                   }
                   res.send(tu);
+                }
+              });
+            } else {
+              res.status(403);
+              res.send(Errors.notAllowed);
+            }
+          } else {
+            res.status(404);
+            res.send(Errors.notFound);
+          }
+        });
+      } else {
+        res.status(401);
+        res.send(Errors.invalidToken);
+      }
+    })
+  });
+
+  app.put('/api/user/update', function (req, res, next) {
+    const id = req.body.id;
+    const login = req.body.login;
+    const password = req.body.password;
+    const token = req.cookies['token'];
+    User.findOne({ token }, function (err, user) {
+      if (err) next(err);
+      if (user) {
+        User.findById(id, usersProjection, function (err, targetedUser) {
+          if (err) next(err);
+          if (targetedUser) {
+            if (user.id == targetedUser.parent || user.role === 'root') {
+              targetedUser.login = login;
+              targetedUser.password = password;
+              targetedUser.save(function (err, tu) {
+                if (err) {
+                  res.status(400);
+                  err.code === 11000 ? res.send(Errors.userExist) : res.send(err);
+                } else {
+                  obj = tu.toObject();
+                  delete obj.token;
+                  delete obj.hash;
+                  delete obj.password;
+                  delete obj.salt;
+                  delete obj.iteration;
+                  obj.id = obj._id;
+                  delete obj._id;
+                  res.send(obj);
                 }
               });
             } else {

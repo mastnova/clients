@@ -12,8 +12,8 @@ class MenuAgent extends PureComponent {
         <NavLink exact to={PAGE_URL.index} activeClassName="menu-tab_active" className="menu-tab menu-tab_icon-club"><span>Клубы</span></NavLink>
         {
           this.props.match.params.id
-            ? <NavLink exact to={`${PAGE_URL.club}/${this.props.match.params.id}${PAGE_URL.clients}`} activeClassName="menu-tab_active" className="menu-tab menu-tab_icon-ops"><span>Клиенты</span></NavLink>
-            : <a className="menu-tab menu-tab_icon-ops menu-tab_disabled"><span>Клиенты</span></a>
+            ? <NavLink exact to={`${PAGE_URL.club}/${this.props.match.params.id}${PAGE_URL.clients}`} activeClassName="menu-tab_active" className="menu-tab menu-tab_icon-client"><span>Клиенты</span></NavLink>
+            : <a className="menu-tab menu-tab_icon-client menu-tab_disabled"><span>Клиенты</span></a>
         }
         {
           this.props.match.params.id
@@ -22,8 +22,8 @@ class MenuAgent extends PureComponent {
         }
         {
           this.props.match.params.id
-            ? <NavLink exact to={`${PAGE_URL.club}/${this.props.match.params.id}`} activeClassName="menu-tab_active" className="menu-tab menu-tab_icon-ops"><span>Акции</span></NavLink>
-            : <a className="menu-tab menu-tab_icon-ops menu-tab_disabled"><span>Акции</span></a>
+            ? <NavLink exact to={`${PAGE_URL.club}/${this.props.match.params.id}`} activeClassName="menu-tab_active" className="menu-tab menu-tab_icon-promo"><span>Акции</span></NavLink>
+            : <a className="menu-tab menu-tab_icon-promo menu-tab_disabled"><span>Акции</span></a>
         }
       </Menu>
     );

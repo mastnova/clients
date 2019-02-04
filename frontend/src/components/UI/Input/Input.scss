@@ -28,6 +28,29 @@
   &.input__success {
     border: 1px solid #35ad35;
   }
+
+  &__message {
+    background: red;
+    position: absolute;
+    bottom: 10px;
+    right: -10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #fff;
+    max-width: 220px;
+    z-index: 2;
+
+    &:after {
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      content: '';
+      border-top: 5px solid red;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+    }
+  }
 }
 
 .input-wrapper {
@@ -43,6 +66,26 @@
 
   &_password:before {
     background: url('../../../images/icons/password.png');
+  }
+
+  &_phone:before {
+    background: url('../../../images/icons/phone.png');
+  }
+
+  &_text:before {
+    background: url('../../../images/icons/txt.png');
+  }
+
+  &_promo:before {
+    background: url('../../../images/icons/promo.png');
+  }
+
+  &_club:before {
+    background: url('../../../images/icons/club.png');
+  }
+
+  &_location:before {
+    background: url('../../../images/icons/location.png');
   }
 
   &_search:before {

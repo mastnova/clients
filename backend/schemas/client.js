@@ -20,17 +20,26 @@ const schemaClient = new db.Schema({
     require: true,
   },
   creator: {
-    type: String,
-    require: true,
+    login: {
+      type: String,
+      require: true,
+    },
+    avatar: {
+      type: Number,
+      require: true,
+    }
   },
   created: {
     type: Date,
-    default: Date.now()
+    default: Date.now
   },
   status: {
     type: String,
     require: true,
     default: 'active',
+  },
+  removed: {
+    type: Date
   }
 });
 
@@ -45,10 +54,23 @@ schemaClient.methods.hasPromotion = function (id) {
   return !!promo.length
 };
 
+schemaClient.methods.getPromotion = function (id) {
+  return this.promotions.find(promo => promo.id === id);
+};
+
 schemaClient.methods.changeStatus = function (status) {
   const states = ['active', 'removed'];
   if (states.includes(status)) {
     this.status = status;
+    if (status === 'removed') {
+      this.removed = Date.now();
+    }
+  }
+};
+
+schemaClient.methods.changeName = function (name) {
+  if (name) {
+    this.name = name;
   }
 };
 

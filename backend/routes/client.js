@@ -18,7 +18,7 @@ module.exports = function (app) {
       if (user) {
         Client.findById(id, function(err, client) {
           if (err) next(err);
-          if (client && client.status !== 'removed') {
+          if (client && (client.status !== 'removed' || user.role === 'root')) {
             Club.findById(client.club, function (err, club) {
               if (err) next(err);
               if (club) {
@@ -62,24 +62,40 @@ module.exports = function (app) {
               res.status(403);
               res.send(Errors.notAllowed);
             } else {
-              Client.findOne({ club: operator.clubId, phone }, function (err, client) {
+              Client.findOne({ club: operator.clubId, phone, status: 'active' }, function (err, client) {
                 if (err) next(err);
-                if (client && client.status === 'active') {
+                if (client) {
                   if (!promotion.id) {
                     res.status(403);
-                    res.send(Errors.clientExist);
+                    res.send({
+                      ...Errors.clientExist,
+                      info: {
+                        name: client.name,
+                        phone: client.phone,
+                        created: client.created
+                      }
+                    });
                   } else {
                     if (client.hasPromotion(promotion.id)) {
                       res.status(403);
-                      res.send(Errors.clientPromoted);
+                      res.send({
+                        ...Errors.clientPromoted,
+                        info: client.getPromotion(promotion.id)
+                      });
                     } else {
-                      client.addPromotion({ ...promotion, creator: operator.login });
+                      client.addPromotion({
+                        ...promotion,
+                        creator: {
+                          login: operator.login,
+                          avatar: operator.avatar,
+                        }
+                      });
                       client.save(function (error) {
                         if (error) {
                           res.status(400);
                           res.send(error);
                         } else {
-                          res.send({ status: 'ok' });
+                          res.send({ status: 'promoted' });
                         }
                       });
                     }
@@ -94,11 +110,14 @@ module.exports = function (app) {
                   if (promotion.id) {
                     promotions.push({
                       ...promotion,
-                      creator: operator.login,
+                      creator: {
+                        login: operator.login,
+                        avatar: operator.avatar,
+                      },
                       date: new Date().getTime(),
                     });
                   }
-                  new Client({ name, phone, promotions, club: operator.clubId, creator: operator.login })
+                  new Client({ name, phone, promotions, club: operator.clubId, creator: { login: operator.login, avatar: operator.avatar} })
                   .save(function (error) {
                     if (error) {
                       res.status(400);
@@ -110,7 +129,7 @@ module.exports = function (app) {
                           res.status(400);
                           res.send(error);
                         } else {
-                          res.send({ status: 'ok' });
+                          res.send({ status: 'registered' });
                         }
                       });
                     }
@@ -185,9 +204,9 @@ module.exports = function (app) {
     User.findOne({ token }, function (err, operator) {
       if (err) next(err);
       if (operator) {
-        Client.findOne({ club: operator.clubId, phone }, function (err, client) {
+        Client.findOne({ club: operator.clubId, phone, status: 'active' }, function (err, client) {
           if (err) next(err);
-          if (client && client.status === 'active') {
+          if (client) {
             res.send({ is_exist: true });
           } else {
             res.send({ is_exist: false });
@@ -198,5 +217,47 @@ module.exports = function (app) {
         res.send(Errors.invalidToken);
       }
     });
+  });
+
+  app.put('/api/client/name', function (req, res, next) {
+    const id = req.body.id;
+    const name = req.body.name;
+    const token = req.cookies['token'];
+    User.findOne({ token }, function (err, user) {
+      if (err) next(err);
+      if (user) {
+        Client.findById(id, function (err, client) {
+          if (err) next(err);
+          if (client) {
+            Club.findById(client.club, function (err, club) {
+              if (club) {
+                if (club.owner == user.id || user.role === 'root') {
+                  client.changeName(name);
+                  client.save(function (err, cl) {
+                    if (err) {
+                      next(err);
+                    } else {
+                      res.send(cl);
+                    }
+                  });
+                } else {
+                  res.status(403);
+                  res.send(Errors.notAllowed);
+                }
+              } else {
+                res.status(400);
+                res.send(err);
+              }
+            });
+          } else {
+            res.status(404);
+            res.send(Errors.notFound);
+          }
+        });
+      } else {
+        res.status(401);
+        res.send(Errors.invalidToken);
+      }
+    })
   });
 }

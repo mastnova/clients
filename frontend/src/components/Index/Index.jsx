@@ -1,16 +1,17 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import cn from 'classnames';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import './Index.scss';
 
-import Table from '../UI/Table/Table';
+import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
 import Tooltip from '../UI/Tooltip/Tooltip';
+import LongText from '../UI/LongText/LongText';
 import Input from '../UI/Input/Input';
 import { PAGE_URL } from '../../constants';
 import API from '../../API';
 
-const header = ['#', 'Агент', 'Количество клиентов', 'Дата создания', ''];
+const header = ['#', 'Агент', 'Количество клубов', 'Дата создания', ''];
 
 class Index extends PureComponent {
   constructor(props) {
@@ -18,6 +19,10 @@ class Index extends PureComponent {
     this.state = {
       search: '',
     };
+  }
+
+  componentWillMount() {
+    this.props.updateAgents();
   }
 
   showPopup = () => {
@@ -32,14 +37,73 @@ class Index extends PureComponent {
     return users.filter(user => user.login.includes(this.state.search));
   }
 
-  toggleLock = (id, status) => async () => {
-    let agent;
-    if (status === 'active') {
-      agent = await API.blockUser(id);
-    } else {
-      agent = await API.activateUser(id);
-    }
-    this.props.updateAgents();
+  toggleLock = (id, status, login) => () => {
+    const action = status === 'active' ? 'заблокировать' : 'разблокировать';
+    this.props.openPopup('action-confirm', {
+      title: 'Блокировка агента',
+      button: action,
+      content: `<div>Вы действительно хотите ${action} агента? <br/><b>${login}</b></div>`,
+      callback: async () => {
+        let agent;
+        if (status === 'active') {
+          agent = await API.blockUser(id);
+        } else {
+          agent = await API.activateUser(id);
+        }
+        this.props.updateAgents();
+      }
+    });
+  }
+
+  editAgent = (id, name) => () => {
+    this.props.openPopup('edit-user', {
+      title: 'Редактировать агента',
+      login: name,
+      callback: async (login, password) => {
+        const response = await API.changeUser(id, login, password);
+        if (response.isOk) {
+          this.props.openPopup('alert', {
+            type: 'success',
+            title: 'Агент изменен',
+            text: 'Изменения успешно сохранены'
+          });
+          this.props.updateAgents();
+        } else {
+          let error = 'Произошла ошибка';
+          if (response.data.code === 6) {
+            error = 'Такой логин уже зарегистрирован';
+          }
+          this.props.openPopup('alert', {
+            type: 'error',
+            title: 'Ошибка',
+            text: error,
+          });
+        }
+      }
+    });
+  }
+
+  mappingFn = (agent, i) => {
+    const avaClass = cn(`header__avatar_${agent.avatar}`, 'header__avatar_min', 'header__avatar_agent');
+    return [
+      i + 1,
+      <div className={avaClass}>
+        <Link to={`${PAGE_URL.clubs}/${agent.id}`}><LongText>{agent.login}</LongText></Link>
+      </div>,
+      agent.clubsCount,
+      moment(agent.created).format('DD.MM.YYYY HH:mm:ss'),
+      <div>
+        <Tooltip text='Изменить' leftOffset="-10px">
+          <div onClick={this.editAgent(agent.id, agent.login)} className="button-edit" />
+        </Tooltip>
+        <Tooltip text={agent.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
+          <div onClick={this.toggleLock(agent.id, agent.status, agent.login)} className={`button-lock ${agent.status === 'blocked' ? 'button-lock_active' : ''}`} />
+        </Tooltip>
+        <Tooltip text='Удалить'>
+          <div onClick={this.props.removeAgent(agent.id, agent.login)} className="button-remove" />
+        </Tooltip>
+      </div>
+    ]
   }
 
   render() {
@@ -61,38 +125,17 @@ class Index extends PureComponent {
         </div>
         {
           this.props.users.length
-          ? <Table className="agents">
-            <Table.Header>{header}</Table.Header>
-            {
-              filteredAgents.map((agent, i) => (
-                <Table.Row key={agent.id}>
-                  {[
-                    i + 1,
-                    <Link to={`${PAGE_URL.clubs}/${agent.id}`}>{agent.login}</Link>,
-                    agent.clientsCount,
-                    moment(agent.created).format('DD.MM.YYYY'),
-                    <div>
-                      <Tooltip text={agent.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
-                        <div onClick={this.toggleLock(agent.id, agent.status)} className={`button-lock ${agent.status === 'blocked' ? 'button-lock_active' : ''}`} />
-                      </Tooltip>
-                      <Tooltip text='Удалить'>
-                        <div onClick={this.props.removeAgent(agent.id, agent.login)} className="button-remove" />
-                      </Tooltip>
-                    </div>
-                  ]}
-                </Table.Row>
-              ))
-            }
-          </Table>
+          ? <TableWithPagination
+              className="agents"
+              header={header}
+              mappingFn={this.mappingFn}
+              data={filteredAgents}
+            />
           : <div className="empty-table">Список агентов пуст</div>
         }
       </div>
     );
   }
 }
-
-Index.propTypes = {
-  
-};
 
 export default Index;

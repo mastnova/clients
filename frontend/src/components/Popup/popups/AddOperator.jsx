@@ -38,6 +38,7 @@ class AddOperator extends PureComponent {
     if (response.isOk) {
       this.props.openPopup('alert', { type: 'success', text: `Оператор <b>${this.state.login}</b> успешно добавлен` });
       this.props.data.callback();
+      this.props.close(1);
     } else {
       const text = response.data.code === 6 ? 'Такой логин уже зарегистрирован' : 'Произошла ошибка';
       this.props.openPopup('alert', { type: 'error', text });

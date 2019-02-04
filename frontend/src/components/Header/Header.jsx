@@ -4,26 +4,28 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import './Header.scss';
 
+import { setPageTitle } from '../../utils/url';
+
 class Header extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      
-    };
-  }
 
   componentWillMount() {
-    
+    setPageTitle();
+    this.props.history.listen((location) => {
+      setPageTitle(location.pathname);
+    });
   }
 
   render() {
-    const {role} = this.props;
-    const avaClass = cn({
-      'header__avatar': true,
-      'header__avatar_operator': role === 'operator',
-      'header__avatar_agent': role === 'agent',
-      'header__avatar_admin': role === 'root',
-    });
+    const {role, avatar} = this.props;
+    const avaClass = cn(
+      'header__avatar',
+      `header__avatar_${avatar}`,
+      {
+        'header__avatar_operator': role === 'operator',
+        'header__avatar_agent': role === 'agent',
+        'header__avatar_admin': role === 'root',
+      }
+    );
     return (
       <div className="header">
         <div className="header__content">
@@ -43,7 +45,10 @@ class Header extends PureComponent {
 }
 
 Header.propTypes = {
-  
+  role: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  onLogout: PropTypes.func.isRequired,
+  avatar: PropTypes.number.isRequired,
 };
 
 export default Header;

@@ -5,6 +5,7 @@ const usersProjection = {
   login: true,
   created: true,
   status: true,
+  avatar: true,
 };
 
 module.exports = function (app) {

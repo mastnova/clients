@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
+import Select from 'react-select';
+import moment from 'moment';
 import './IndexOperator.scss';
 
 import Input from '../UI/Input/Input';
@@ -11,7 +13,7 @@ class IndexOperator extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      promoName: '',
+      promoName: 'Без акции',
       promoId: '',
       club: {
         name: 'Клуб',
@@ -48,10 +50,10 @@ class IndexOperator extends PureComponent {
     }
   }
 
-  onPromoSelect = ({target}) => {
+  onPromoSelect = ({value, label}) => {
     this.setState({
-      promoId: target.value,
-      promoName: target.options[target.selectedIndex].text,
+      promoId: value,
+      promoName: label,
     })
   }
 
@@ -84,15 +86,27 @@ class IndexOperator extends PureComponent {
       code,
     });
     if (response.isOk) {
-      this.props.openPopup('alert', { type: 'success', text: `Клиент <b>${this.state.name}</b> успешно добавлен` });
+      if (response.data.status === 'promoted') {
+        this.props.openPopup('alert', { type: 'success', text: `Клиент <b>${this.state.name}</b> добавлен к акции <b>${this.state.promoName}</b>` });
+      } else {
+        this.props.openPopup('alert', { type: 'success', text: `Клиент <b>${this.state.name}</b> успешно зарегистрирован` });
+      }
     } else {
       let text = 'Произошла ошибка';
+      let title = 'Ошибка';
+      let type = 'error';
       if (response.data.code === 7) {
-        text = 'Такой клиент уже зарегистрирован';
+        const { name, phone, created } = response.data.info;
+        title = 'Клиент уже зарегистрирован';
+        text = `Имя клиента - <b>${name}</b><br/>Номер телефона - <b>${phone}</b><br/>Дата регистрации - <b>${moment(created).format('DD.MM.YYYY HH:mm')}</b>`;
+        type = 'info';
       } else if (response.data.code === 8) {
-        text = 'Клиент уже участвует в акции';
+        const { name, date } = response.data.info;
+        title = 'Клиент участвовал сегодня в этой акции';
+        text = `Название акции - <b>${name}</b><br/>Дата добавления - <b>${moment(date).format('DD.MM.YYYY HH:mm')}</b>`;
+        type = 'info';
       }
-      this.props.openPopup('alert', { type: 'error', text });
+      this.props.openPopup('alert', { type, title, text });
     }
   }
 
@@ -104,7 +118,7 @@ class IndexOperator extends PureComponent {
         </div>
       );
     }
-    if (this.state.club.status === 'blocked') {
+    if (this.state.club.status !== 'active') {
       return (
         <div className="page-container operator-index">
           <MenuOperator />
@@ -114,6 +128,10 @@ class IndexOperator extends PureComponent {
         </div>
       );
     }
+
+    const options = this.state.club.promotions.map(promo => ({ value: promo.id, label: promo.name }));
+    options.unshift({ value: '', label: 'Без акции' });
+    const selectedOption = { value: this.state.promoId, label: this.state.promoName };
     return (
       <div className="page-container operator-index">
         <MenuOperator />
@@ -138,20 +156,23 @@ class IndexOperator extends PureComponent {
               <Input
                 name="phone"
                 icon="phone"
+                mask="+7 (999) 999 - 99 - 99"
                 placeholder="Введите телефон"
-                validationType="required"
+                validationType="phone"
                 value={this.state.phone}
                 onChange={this.onChangeInput}
               />
             </label>
             <label className="label">
               <div>Акция</div>
-              <select onChange={this.onPromoSelect} value={this.state.promoId}>
-                <option value="">без акции</option>
-                {
-                  this.state.club.promotions.map( promo => <option key={promo.id} value={promo.id}>{promo.name}</option>)
-                }
-              </select>
+              <Select
+                className="select"
+                classNamePrefix="select"
+                isSearchable={false}
+                value={selectedOption}
+                onChange={this.onPromoSelect}
+                options={options}
+              />
             </label>
             <button className="button" onClick={this.onSubmit} disabled={!this.isFormValid()}>Отправить</button>
           </div>

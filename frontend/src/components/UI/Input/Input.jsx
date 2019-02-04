@@ -1,15 +1,17 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import InputMask from 'react-input-mask';
 import './Input.scss';
 
-import { isValid as isInputValid } from '../../../utils/validation';
+import { validate } from '../../../utils/validation';
 
 class Input extends PureComponent {
   static defaultProps = {
     name: 'input',
     type: 'text',
     value: '',
+    defaultValue: '',
     placeholder: '',
     onChange: () => { },
   }
@@ -18,18 +20,27 @@ class Input extends PureComponent {
     super(props);
     this.state = {
       isValid: false,
+      error: '',
       isActivated: false,
+      errorIsHidden: true,
     };
+  }
+  
+  componentDidMount() {
+    this.input.value = this.props.defaultValue;
   }
 
   onChange = () => {
     const value = this.input.value;
     const comparingValue = this.props.compareWith;
-    let isValid = isInputValid(value, this.props.validationType);
+    let {isValid, error} = validate(value, this.props.validationType);
     if (comparingValue) {
-      isValid = value === comparingValue ? isValid : false
+      if (value !== comparingValue) {
+        isValid = false;
+        error = 'Поля не совпадают';
+      }
     }
-    this.setState({isValid});
+    this.setState({ isValid, error });
     this.props.onChange({
       name: this.props.name,
       value,
@@ -38,7 +49,19 @@ class Input extends PureComponent {
   }
 
   onBlur = () => {
-    this.setState({isActivated: true});
+    this.setState({isActivated: true, errorIsHidden: true});
+  }
+
+  onFocus = () => {
+    if (this.state.isActivated) {
+      this.setState({ errorIsHidden: false });
+    } else {
+      this.onChange();
+    }
+  }
+
+  shouldShowError = () => {
+    return !!this.props.validationType && !this.state.isValid && !this.state.errorIsHidden
   }
 
   render() {
@@ -50,16 +73,31 @@ class Input extends PureComponent {
     );
     return (
       <div className={this.props.icon ? `input-wrapper input-wrapper_${this.props.icon}`: null}>
-      <input
+      {
+        this.props.mask ?
+        <InputMask
+          className={cn}
+          onChange={this.onChange}
+          onBlur={this.onBlur}
+          value={this.props.value}
+          mask={this.props.mask}
+          alwaysShowMask
+          inputRef={(el) => { this.input = el }}
+        />
+      
+      :<input
         className={cn}
         type={this.props.type}
         name={this.props.name}
         onChange={this.onChange}
         onBlur={this.onBlur}
+        onFocus={this.onFocus}
         value={this.props.value}
         placeholder={this.props.placeholder}
         ref={(el) => {this.input = el}}
       />
+      }
+        {this.shouldShowError() && <div className="input__message">{this.state.error}</div>}
       </div>
     );
   }
@@ -74,6 +112,7 @@ Input.propTypes = {
   placeholder: PropTypes.string,
   validationType: PropTypes.string,
   compareWith: PropTypes.string,
+  defaultValue: PropTypes.string,
 };
 
 export default Input;

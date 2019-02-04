@@ -5,6 +5,7 @@ import './Login.scss';
 import Input from '../UI/Input/Input';
 import API from '../../API'; 
 import { PAGE_URL } from '../../constants';
+import { setPageTitle } from '../../utils/url';
 
 class Login extends PureComponent {
   constructor(props) {
@@ -19,6 +20,7 @@ class Login extends PureComponent {
   }
 
   componentWillMount() {
+    setPageTitle();
     if (this.props.hasAuth) {
       this.props.history.push(PAGE_URL.index);
     }
@@ -72,7 +74,7 @@ class Login extends PureComponent {
                   name="login"
                   icon="login"
                   placeholder="Введите логин"
-                  validationType="login"
+                  validationType="required"
                   value={this.state.login}
                   onChange={this.onChangeInput}
                 />
@@ -84,7 +86,7 @@ class Login extends PureComponent {
                   icon="password"
                   type="password"
                   placeholder="Введите пароль"
-                  validationType="password"
+                  validationType="required"
                   value={this.state.password}
                   onChange={this.onChangeInput}
                 />

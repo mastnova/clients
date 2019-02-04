@@ -20,10 +20,17 @@ module.exports = function (app) {
           if (err) next(err);
           if (club) {
             if (club.owner == user.id || user.role === 'root') {
-              Client.find({club: clubId, status: 'active'}, function(err, clients) {
-                if (err) next(err);
-                res.send(clients);
-              })
+              if (club.status === 'removed') {
+                Client.find({ club: clubId, status: 'removed' }, function (err, clients) {
+                  if (err) next(err);
+                  res.send(clients);
+                })
+              } else {
+                Client.find({ club: clubId, status: 'active' }, function (err, clients) {
+                  if (err) next(err);
+                  res.send(clients);
+                })
+              }
             } else {
               res.status(403);
               res.send(Errors.notAllowed);

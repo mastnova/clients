@@ -30,13 +30,16 @@ const schemaClub = new db.Schema({
   },
   created: {
     type: Date,
-    default: Date.now()
+    default: Date.now
   },
   status: {
     type: String,
     require: true,
     default: 'active',
-  }
+  },
+  removed: {
+    type: Date
+  },
 });
 
 schemaClub.methods.addOperator = function (opId) {
@@ -59,6 +62,15 @@ schemaClub.methods.changeStatus = function (status) {
   const states = ['active', 'blocked', 'removed'];
   if (states.includes(status)) {
     this.status = status;
+    if (status === 'removed') {
+      this.removed = Date.now();
+    }
+  }
+};
+
+schemaClub.methods.changeName = function (name) {
+  if (name) {
+    this.name = name;
   }
 };
 

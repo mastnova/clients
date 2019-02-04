@@ -16,9 +16,13 @@ class App extends Component {
     popupIsOpen: false,
     popupName: '',
     popupData: null,
+    secondPopupIsOpen: false,
+    secondPopupName: '',
+    secondPopupData: null,
     userName: '',
     userRole: '',
     userClub: '',
+    userAvatar: '',
     hasAuth: false,
   }
 
@@ -36,22 +40,37 @@ class App extends Component {
       userRole: this.state.userRole,
       userClub: this.state.userClub,
       hasAuth: this.state.hasAuth,
+      userAvatar: this.state.userAvatar,
     }
     sessionStorage.setItem('user', JSON.stringify(user));
   }
 
   openPopup = (popupName, data) => {
-    this.setState({
-      popupIsOpen: true,
-      popupName,
-      popupData: data,
-    });
+    if (this.state.popupIsOpen) {
+      this.setState({
+        secondPopupIsOpen: true,
+        secondPopupName: popupName,
+        secondPopupData: data,
+      });
+    } else {
+      this.setState({
+        popupIsOpen: true,
+        popupName,
+        popupData: data,
+      });
+    }
   }
 
-  closePopup = () => {
-    this.setState({
-      popupIsOpen: false
-    });
+  closePopup = (popupNumber) => {
+    if (this.state.secondPopupIsOpen && popupNumber !== 1) {
+      this.setState({
+        secondPopupIsOpen: false
+      });
+    } else {
+      this.setState({
+        popupIsOpen: false
+      });
+    }
   }
 
   onLogin = (user) => {
@@ -59,19 +78,27 @@ class App extends Component {
       userName: user.login,
       userRole: user.role,
       userClub: user.clubId,
+      userAvatar: user.avatar,
       hasAuth: true,
     }, this.saveUser);
   }
 
   onLogout = () => {
+    this.openPopup('action-confirm', {
+      title: 'Выйти из системы учета клиентов?',
+      button: 'Выйти',
+      callback: this.logout,
+    });
+  }
+
+  logout = () => {
     this.setState({
       userName: '',
       userRole: '',
       userClub: '',
+      userAvatar: '',
       hasAuth: false,
-    }, () => {
-      this.saveUser();
-    });
+    }, this.saveUser);
   }
 
   render() {
@@ -125,14 +152,29 @@ class App extends Component {
         <Switch>
           <Route path={PAGE_URL.login} exact render={(props) => <Login {...props} onLogin={this.onLogin} hasAuth={this.state.hasAuth} />} />
           <Route path={PAGE_URL.root} exact component={Root} />
-          <Route children={() =>
+          <Route children={(props) =>
             <>
-              <Header role={this.state.userRole} name={this.state.userName} onLogout={this.onLogout} />
+              <Header
+                {...props}
+                role={this.state.userRole}
+                name={this.state.userName}
+                avatar={this.state.userAvatar}
+                onLogout={this.onLogout}
+              />
               {routesByRole}
               <Popup
+                {...props}
                 isOpen={this.state.popupIsOpen}
                 name={this.state.popupName}
                 data={this.state.popupData}
+                open={this.openPopup}
+                close={this.closePopup}
+              />
+              <Popup
+                {...props}
+                isOpen={this.state.secondPopupIsOpen}
+                name={this.state.secondPopupName}
+                data={this.state.secondPopupData}
                 open={this.openPopup}
                 close={this.closePopup}
               />

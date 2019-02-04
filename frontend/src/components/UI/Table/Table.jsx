@@ -34,7 +34,7 @@ class Table extends PureComponent {
   render() {
     const cls = cn(['table', this.props.className]);
     return (
-      <table className={cls}>
+      <table className={cls} id={this.props.idName}>
         {this.props.children}
       </table>
     );
@@ -43,8 +43,7 @@ class Table extends PureComponent {
 
 Table.propTypes = {
   className: PropTypes.string,
+  idName: PropTypes.string,
 };
-
-
 
 export default Table;
