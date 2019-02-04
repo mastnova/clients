@@ -12,6 +12,7 @@ class SmsConfirm extends PureComponent {
 
   onAccept = () => {
     this.props.data.callback(this.state.code);
+    setTimeout(() => this.props.close(1), 100);
   }
 
   onChangeInput = ({target}) => {

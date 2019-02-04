@@ -4,6 +4,7 @@ import moment from 'moment';
 import './Club.scss';
 
 import Tooltip from '../UI/Tooltip/Tooltip';
+import LongText from '../UI/LongText/LongText';
 import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
 import API from '../../API';
 
@@ -11,8 +12,8 @@ const header = ['#', 'Акция', 'Описание', 'Дата добавле�
 
 const mappingFn = (promo, i) => [
   i + 1,
-  promo.name,
-  promo.description,
+  <LongText>{promo.name}</LongText>,
+  <LongText>{promo.description}</LongText>,
   moment(promo.created).format('DD.MM.YYYY HH:mm:ss')
 ]
 
@@ -84,7 +85,7 @@ class Club extends PureComponent {
     return (
       <div className="page page_club">
         <div className="unit-header unit-header_club">
-          Клуб - {this.state.club.name}
+          <div className="long-text" style={{width: '80%'}}>Клуб - {this.state.club.name}</div>
           <div className="unit-header__remove">
           {
             this.state.club.status === 'removed'
@@ -96,11 +97,11 @@ class Club extends PureComponent {
         <div className="unit-info">
           <div className="unit-info__label unit-info__label_club">
             <div className="unit-info__name">Название клуба</div>
-            <div className="unit-info__text">{this.state.club.name}</div>
+            <div className="unit-info__text"><LongText>{this.state.club.name}</LongText></div>
           </div>
           <div className="unit-info__label unit-info__label_phone">
             <div className="unit-info__name">Адрес</div>
-            <div className="unit-info__text">{this.state.club.address}</div>
+            <div className="unit-info__text"><LongText>{this.state.club.address}</LongText></div>
           </div>
           <div className="unit-info__label unit-info__label_creator">
             <div className="unit-info__name">Количество клиентов</div>

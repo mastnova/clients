@@ -6,6 +6,7 @@ import '../Clubs/Clubs.scss';
 
 import Tooltip from '../UI/Tooltip/Tooltip';
 import Input from '../UI/Input/Input';
+import LongText from '../UI/LongText/LongText';
 import { PAGE_URL } from '../../constants';
 import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
 import API from '../../API';
@@ -72,7 +73,7 @@ class IndexAgent extends PureComponent {
 
   mappingFn = (club, i) => [
     i + 1,
-    <Link to={`${PAGE_URL.club}/${club.id}${PAGE_URL.clients}`}>{club.name}</Link>,
+    <Link to={`${PAGE_URL.club}/${club.id}${PAGE_URL.clients}`}><LongText>{club.name}</LongText></Link>,
     club.clientsCount,
     moment(club.created).format('DD.MM.YYYY HH:mm:ss'),
     <div>

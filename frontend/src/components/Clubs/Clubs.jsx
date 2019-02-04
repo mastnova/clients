@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
 import Tooltip from '../UI/Tooltip/Tooltip';
+import LongText from '../UI/LongText/LongText';
 import Input from '../UI/Input/Input';
 import { PAGE_URL } from '../../constants';
 import API from '../../API';
@@ -99,9 +100,9 @@ class Clubs extends PureComponent {
     const avaClass = cn(`header__avatar_${club.ownerName.avatar}`, 'header__avatar_min', 'header__avatar_agent');
     return [
       i + 1,
-      <Link to={`${PAGE_URL.club}/${club.id}${PAGE_URL.clients}`}>{club.name}</Link>,
+      <Link to={`${PAGE_URL.club}/${club.id}${PAGE_URL.clients}`}><LongText>{club.name}</LongText></Link>,
       club.clientsCount,
-      <div className={avaClass}>{club.ownerName.login}</div>,
+      <div className={avaClass}><LongText>{club.ownerName.login}</LongText></div>,
       moment(club.created).format('DD.MM.YYYY HH:mm:ss'),
       lastColumn
     ]

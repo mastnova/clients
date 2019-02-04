@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import Tooltip from '../UI/Tooltip/Tooltip';
 import Input from '../UI/Input/Input';
+import LongText from '../UI/LongText/LongText';
 import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
 import API from '../../API';
 
@@ -115,8 +116,8 @@ class Operators extends PureComponent {
     const avaClass = cn(`header__avatar_${operator.avatar}`, 'header__avatar_min', 'header__avatar_operator');
     return [
       i + 1,
-      <div className={avaClass}>{operator.login}</div>,
-      operator.clubName,
+      <div className={avaClass}><LongText>{operator.login}</LongText></div>,
+      <LongText>{operator.clubName}</LongText>,
       moment(operator.created).format('DD.MM.YYYY HH:mm:ss'),
       <div>
         <Tooltip text='Изменить' leftOffset="-10px">

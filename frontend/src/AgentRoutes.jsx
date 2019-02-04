@@ -43,7 +43,7 @@ class AgentRoutes extends PureComponent {
   setClubName = () => {
     const club = this.state.clubs.find(club => club.id === this.state.selectedClubId) || {};
     this.setState({
-      selectedClubName: club.name ? `(${club.name})` : '',
+      selectedClubName: club.name ? `(${club.name.substr(0, 50)})` : '',
     });
   }
 

@@ -3,17 +3,21 @@
   td:first-child {
     padding-left: 30px;
     width: 160px;
+    max-width: 160px;
   }
   th:nth-child(2),
   td:nth-child(2) {
     width: 360px;
+    max-width: 360px;
   }
   th:nth-child(3),
   td:nth-child(3) {
     width: 270px;
+    max-width: 270px;
   }
   th:nth-child(4),
   td:nth-child(4) {
     width: 240px;
+    max-width: 240px;
   }
 }

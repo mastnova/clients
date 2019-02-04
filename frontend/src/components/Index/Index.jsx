@@ -6,6 +6,7 @@ import './Index.scss';
 
 import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
 import Tooltip from '../UI/Tooltip/Tooltip';
+import LongText from '../UI/LongText/LongText';
 import Input from '../UI/Input/Input';
 import { PAGE_URL } from '../../constants';
 import API from '../../API';
@@ -87,7 +88,7 @@ class Index extends PureComponent {
     return [
       i + 1,
       <div className={avaClass}>
-        <Link to={`${PAGE_URL.clubs}/${agent.id}`}>{agent.login}</Link>
+        <Link to={`${PAGE_URL.clubs}/${agent.id}`}><LongText>{agent.login}</LongText></Link>
       </div>,
       agent.clubsCount,
       moment(agent.created).format('DD.MM.YYYY HH:mm:ss'),

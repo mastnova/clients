@@ -8,6 +8,7 @@ import './Clients.scss';
 
 import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
 import Tooltip from '../UI/Tooltip/Tooltip';
+import LongText from '../UI/LongText/LongText';
 import Input from '../UI/Input/Input';
 import { PAGE_URL } from '../../constants';
 import API from '../../API';
@@ -100,10 +101,10 @@ class Clients extends Component {
     const avaClass = cn(`header__avatar_${client.creator.avatar}`, 'header__avatar_min', 'header__avatar_operator');
     return [
       i + 1,
-      <Link to={`${PAGE_URL.club}/${this.props.match.params.id}${PAGE_URL.clients}/${client.id}`}>{client.name}</Link>,
+      <Link to={`${PAGE_URL.club}/${this.props.match.params.id}${PAGE_URL.clients}/${client.id}`}><LongText>{client.name}</LongText></Link>,
       client.phone,
       client.promotions.length,
-      <div className={avaClass}>{client.creator.login}</div>,
+      <div className={avaClass}><LongText>{client.creator.login}</LongText></div>,
       moment(client.created).format('DD.MM.YYYY HH:mm:ss'),
       lastColumn
     ]
@@ -132,7 +133,7 @@ class Clients extends Component {
         <div className="search-block">
           {this.state.status === 'removed'
             ? <div className="search-block__title search-block__title_red">Удаленные клиенты {this.props.clubName}</div>
-            : <div className="search-block__title">Список Клиентов {this.props.clubName}</div>
+            : <div className="search-block__title"><LongText>Список Клиентов {this.props.clubName}</LongText></div>
           }
           <div className="search-block__input">
             <Input

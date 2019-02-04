@@ -7,7 +7,7 @@ import './Client.scss';
 import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
 import Tooltip from '../UI/Tooltip/Tooltip';
 import API from '../../API';
-import { PAGE_URL } from '../../constants';
+import LongText from '../UI/LongText/LongText';
 
 const header = ['#', 'Акция', 'Добавил', 'Дата'];
 
@@ -75,8 +75,8 @@ class Client extends Component {
     const avaClass = cn(`header__avatar_${promo.creator.avatar}`, 'header__avatar_min', 'header__avatar_operator');
     return [
       i + 1,
-      promo.name,
-      <div className={avaClass}>{promo.creator.login}</div>,
+      <LongText>{promo.name}</LongText>,
+      <div className={avaClass}><LongText>{promo.creator.login}</LongText></div>,
       moment(promo.date).format('DD.MM.YYYY HH:mm:ss')
     ]
   }
@@ -95,7 +95,7 @@ class Client extends Component {
     return (
       <div className="page page_client">
         <div className="unit-header unit-header_client">
-          Клиент - {this.state.client.name}
+          <div className="long-text" style={{ width: '80%' }}>Клиент - {this.state.client.name}</div>
           <div className="unit-header__remove">
           {
             this.state.client.status === 'removed'
@@ -107,7 +107,7 @@ class Client extends Component {
         <div className="unit-info">
           <div className="unit-info__label unit-info__label_username">
             <div className="unit-info__name">Имя</div>
-            <div className="unit-info__text">{this.state.client.name}</div>
+            <div className="unit-info__text"><LongText>{this.state.client.name}</LongText></div>
           </div>
           <div className="unit-info__label unit-info__label_phone">
             <div className="unit-info__name">Телефон</div>
@@ -115,7 +115,7 @@ class Client extends Component {
           </div>
           <div className="unit-info__label unit-info__label_creator">
             <div className="unit-info__name">Добавил</div>
-            <div className="unit-info__text">{this.state.client.creator.login}</div>
+            <div className="unit-info__text"><LongText>{this.state.client.creator.login}</LongText></div>
           </div>
           <div className="unit-info__label unit-info__label_created">
             <div className="unit-info__name">Дата регистрации</div>

@@ -69,7 +69,7 @@ class AdminRoutes extends PureComponent {
 
   setClubName = () => {
     const club = this.state.clubs.find(club => club.id === this.state.selectedClubId) || {};
-    this.setState({ clubName: club.name ? `(${club.name})` : ''});
+    this.setState({ clubName: club.name ? `(${club.name.substr(0, 50)})` : ''});
   }
 
   updateClubs = (newClub, status) => {

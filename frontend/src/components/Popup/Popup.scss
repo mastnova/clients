@@ -134,6 +134,7 @@
 .popup_alert {
   width: 460px;
   min-height: 160px;
+  overflow: hidden;
 
   &__alert {
     font-family: 'pn-regular';
