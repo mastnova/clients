@@ -117,7 +117,7 @@ class Operators extends PureComponent {
       i + 1,
       <div className={avaClass}>{operator.login}</div>,
       operator.clubName,
-      moment(operator.created).format('DD.MM.YYYY'),
+      moment(operator.created).format('DD.MM.YYYY HH:mm:ss'),
       <div>
         <Tooltip text='Изменить' leftOffset="-10px">
           <div onClick={this.editOperator(operator.id, operator.login)} className="button-edit" />

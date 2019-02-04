@@ -13,7 +13,7 @@ const mappingFn = (promo, i) => [
   i + 1,
   promo.name,
   promo.description,
-  moment(promo.created).format('DD.MM.YYYY')
+  moment(promo.created).format('DD.MM.YYYY HH:mm:ss')
 ]
 
 class Club extends PureComponent {
@@ -108,7 +108,7 @@ class Club extends PureComponent {
           </div>
           <div className="unit-info__label unit-info__label_created">
             <div className="unit-info__name">Дата регистрации</div>
-            <div className="unit-info__text">{moment(this.state.club.created).format('DD.MM.YYYY')}</div>
+            <div className="unit-info__text">{moment(this.state.club.created).format('DD.MM.YYYY HH:mm:ss')}</div>
           </div>
         </div>
         {Boolean(this.state.club.promotions.length) &&

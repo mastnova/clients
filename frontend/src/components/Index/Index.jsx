@@ -90,7 +90,7 @@ class Index extends PureComponent {
         <Link to={`${PAGE_URL.clubs}/${agent.id}`}>{agent.login}</Link>
       </div>,
       agent.clubsCount,
-      moment(agent.created).format('DD.MM.YYYY'),
+      moment(agent.created).format('DD.MM.YYYY HH:mm:ss'),
       <div>
         <Tooltip text='Изменить' leftOffset="-10px">
           <div onClick={this.editAgent(agent.id, agent.login)} className="button-edit" />

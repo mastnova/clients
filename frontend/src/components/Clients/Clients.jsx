@@ -95,7 +95,7 @@ class Clients extends Component {
       </div>
     );
     if (this.state.status === 'removed') {
-      lastColumn = <div>{moment(client.removed).format('DD.MM.YYYY')}</div>;
+      lastColumn = <div>{moment(client.removed).format('DD.MM.YYYY HH:mm:ss')}</div>;
     }
     const avaClass = cn(`header__avatar_${client.creator.avatar}`, 'header__avatar_min', 'header__avatar_operator');
     return [
@@ -104,7 +104,7 @@ class Clients extends Component {
       client.phone,
       client.promotions.length,
       <div className={avaClass}>{client.creator.login}</div>,
-      moment(client.created).format('DD.MM.YYYY'),
+      moment(client.created).format('DD.MM.YYYY HH:mm:ss'),
       lastColumn
     ]
   };

@@ -77,7 +77,7 @@ class Client extends Component {
       i + 1,
       promo.name,
       <div className={avaClass}>{promo.creator.login}</div>,
-      moment(promo.date).format('DD.MM.YYYY')
+      moment(promo.date).format('DD.MM.YYYY HH:mm:ss')
     ]
   }
 
@@ -119,7 +119,7 @@ class Client extends Component {
           </div>
           <div className="unit-info__label unit-info__label_created">
             <div className="unit-info__name">Дата регистрации</div>
-            <div className="unit-info__text">{moment(this.state.client.created).format('DD.MM.YYYY')}</div>
+            <div className="unit-info__text">{moment(this.state.client.created).format('DD.MM.YYYY HH:mm:ss')}</div>
           </div>
         </div>
         

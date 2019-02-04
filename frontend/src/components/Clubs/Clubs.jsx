@@ -94,7 +94,7 @@ class Clubs extends PureComponent {
       </div>
     );
     if (this.props.status === 'removed') {
-      lastColumn = <div>{moment(club.removed).format('DD.MM.YYYY')}</div>;
+      lastColumn = <div>{moment(club.removed).format('DD.MM.YYYY HH:mm:ss')}</div>;
     }
     const avaClass = cn(`header__avatar_${club.ownerName.avatar}`, 'header__avatar_min', 'header__avatar_agent');
     return [
@@ -102,7 +102,7 @@ class Clubs extends PureComponent {
       <Link to={`${PAGE_URL.club}/${club.id}${PAGE_URL.clients}`}>{club.name}</Link>,
       club.clientsCount,
       <div className={avaClass}>{club.ownerName.login}</div>,
-      moment(club.created).format('DD.MM.YYYY'),
+      moment(club.created).format('DD.MM.YYYY HH:mm:ss'),
       lastColumn
     ]
   }
