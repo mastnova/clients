@@ -10,7 +10,7 @@ import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
 import { PAGE_URL } from '../../constants';
 import API from '../../API';
 
-const header = ['#', 'Акция', 'Описание', 'Дата добавления'];
+const header = ['#', 'Акция', 'Описание', 'Дата добавления', ''];
 
 class Club extends PureComponent {
   constructor(props) {
@@ -65,11 +65,52 @@ class Club extends PureComponent {
     });
   }
 
+  editPromotion = (id, name, description) => () => {
+    this.props.openPopup('edit-promo', {
+      name,
+      description,
+      callback: async (newName, newDesc) => {
+        const isOk = await API.changePromotion(id, newName, newDesc);
+        if (isOk) {
+          const promotions = this.state.club.promotions.slice();
+          const promo = promotions.find(promo => promo.id === id);
+          promo.name = newName;
+          promo.description = newDesc;
+          this.setState({
+            club: {
+              ...this.state.club,
+              promotions,
+            }
+          });
+        }
+      }
+    });
+  }
+
+  toggleLockPromotion = (id, status, name) => {
+
+  }
+
+  removePromotion = (id, name) => {
+
+  }
+
   mappingFn = (promo, i) => [
     i + 1,
     <Link to={`${PAGE_URL.club}/${this.props.match.params.id}${PAGE_URL.promotion}/${promo.id}`}><LongText>{promo.name}</LongText></Link>,
     <LongText>{promo.description}</LongText>,
-    moment(promo.created).format('DD.MM.YYYY HH:mm:ss')
+    moment(promo.created).format('DD.MM.YYYY HH:mm:ss'),
+    <div>
+      <Tooltip text='Изменить' leftOffset="-10px">
+        <div onClick={this.editPromotion(promo.id, promo.name, promo.description)} className="button-edit" />
+      </Tooltip>
+      <Tooltip text={promo.status === 'blocked' ? 'Разблокировать' : 'Заблокировать'} leftOffset="-29px">
+        <div onClick={this.toggleLockPromotion(promo.id, promo.status, promo.name)} className={`button-lock ${promo.status === 'blocked' ? 'button-lock_active' : ''}`} />
+      </Tooltip>
+      <Tooltip text='Удалить'>
+        <div onClick={this.removePromotion(promo.id, promo.name)} className="button-remove" />
+      </Tooltip>
+    </div>
   ]
 
   render() {

@@ -12,6 +12,7 @@ import SmsConfirm from './popups/SmsConfirm';
 import Alert from './popups/Alert';
 import EditName from './popups/EditName';
 import EditUser from './popups/EditUser';
+import EditPromo from './popups/EditPromo';
 
 class Popup extends PureComponent {
   constructor(props) {
@@ -64,6 +65,8 @@ class Popup extends PureComponent {
       content = <EditName {...props}/>
     } else if (this.props.name === 'edit-user') {
       content = <EditUser {...props}/>
+    } else if (this.props.name === 'edit-promo') {
+      content = <EditPromo {...props} />
     }
 
     const cantClose = this.props.name === 'alert' || this.props.name === 'sms-confirm';

@@ -61,4 +61,39 @@ module.exports = function (app) {
       }
     });
   });
+
+  app.put('/api/promotion/update', function (req, res, next) {
+    const token = req.cookies['token'];
+    const id = req.body.id;
+    const name = req.body.name;
+    const description = req.body.description;
+    User.findOne({ token }, function (err, user) {
+      if (err) next(err);
+      if (user) {
+        Promotion.findById(id, function (err, promotion) {
+          if (err) next(err);
+          if (promotion) {
+            Club.findById(promotion.club, function(err, club) {
+              if (club) {
+                if (club.owner === user.id || user.role === 'root') {
+                  Promotion.update({'_id': id}, {name, description}, function(err, promo) {
+                    res.send({status: 'ok'});
+                  })
+                }
+              } else {
+                res.status(404);
+                res.send(Errors.notFound);
+              }
+            })
+          } else {
+            res.status(404);
+            res.send(Errors.notFound);
+          }
+        })
+      } else {
+        res.status(401);
+        res.send(Errors.invalidToken);
+      }
+    });
+  });
 }

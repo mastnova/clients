@@ -33,8 +33,17 @@ class Promotion extends PureComponent {
     }
   }
 
-  editPromotion = () => {
-
+  editPromotion = (id, name, description) => () => {
+    this.props.openPopup('edit-promo', {
+      name,
+      description,
+      callback: async (newName, newDesc) => {
+        const isOk = await API.changePromotion(id, newName, newDesc);
+        if (isOk) {
+          this.setState({name: newName});
+        }
+      }
+    });
   }
 
   removePromotion = () => {
@@ -57,7 +66,7 @@ class Promotion extends PureComponent {
     clients.forEach( client => {
       const promotions = client.promotions.filter( promo =>  promo.id === promoId).map( promo => ({creator: promo.creator, date: promo.date}));
       promotions.forEach( (promo, i) => {
-        result.push({...client, ...promo, id: client.id + i});
+        result.push({...client, ...promo, key: client.id + i});
       })
     });
     return result;

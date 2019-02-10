@@ -89,6 +89,10 @@ const API = {
     method: 'PUT',
     url: '/api/user/update',
   },
+  changePromotion: {
+    method: 'PUT',
+    url: '/api/promotion/update',
+  },
 };
 
 async function request(url, method = 'GET', data) {
@@ -308,6 +312,12 @@ async function changeUser(id, login, password) {
   return response;
 }
 
+async function changePromotion(id, name, description) {
+  const body = { id, name, description };
+  const response = await request(API.changePromotion.url, API.changePromotion.method, body);
+  return response.isOk;
+}
+
 export default {
   hasRoot,
   createUser,
@@ -335,4 +345,5 @@ export default {
   changeClubName,
   changeClientName,
   changeUser,
+  changePromotion,
 };
