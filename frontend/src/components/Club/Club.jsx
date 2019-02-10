@@ -1,21 +1,16 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import './Club.scss';
 
 import Tooltip from '../UI/Tooltip/Tooltip';
 import LongText from '../UI/LongText/LongText';
 import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
+import { PAGE_URL } from '../../constants';
 import API from '../../API';
 
 const header = ['#', 'Акция', 'Описание', 'Дата добавления'];
-
-const mappingFn = (promo, i) => [
-  i + 1,
-  <LongText>{promo.name}</LongText>,
-  <LongText>{promo.description}</LongText>,
-  moment(promo.created).format('DD.MM.YYYY HH:mm:ss')
-]
 
 class Club extends PureComponent {
   constructor(props) {
@@ -70,6 +65,13 @@ class Club extends PureComponent {
     });
   }
 
+  mappingFn = (promo, i) => [
+    i + 1,
+    <Link to={`${PAGE_URL.club}/${this.props.match.params.id}${PAGE_URL.promotion}/${promo.id}`}><LongText>{promo.name}</LongText></Link>,
+    <LongText>{promo.description}</LongText>,
+    moment(promo.created).format('DD.MM.YYYY HH:mm:ss')
+  ]
+
   render() {
     const id = this.props.match.params.id;
     const buttons = (
@@ -116,7 +118,7 @@ class Club extends PureComponent {
           <TableWithPagination 
             className="clubs"
             header={header}
-            mappingFn={mappingFn}
+            mappingFn={this.mappingFn}
             data={this.state.club.promotions}
           />
         }

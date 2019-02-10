@@ -1,6 +1,7 @@
 const User = require('../schemas/user');
 const Club = require('../schemas/club');
 const Client = require('../schemas/client');
+const Promotion = require('../schemas/promotion');
 const Errors = require('../errors');
 
 module.exports = function (app) {
@@ -13,14 +14,16 @@ module.exports = function (app) {
         Club.findById(id, function (err, club) {
           if (err) next(err);
           if (club) {
-            if (club.owner == user.id || user.role === 'root') {
-              res.send(club)
-            } else if (club.operators.includes(user.id)) {
-              res.send({name: club.name, promotions: club.promotions, status: club.status})
-            } else {
-              res.status(403);
-              res.send(Errors.notAllowed);
-            }
+            Promotion.find({club: id}, function(err, promotions) {
+              if (club.owner == user.id || user.role === 'root') {
+                res.send({...club.result(), promotions: [...promotions]});
+              } else if (club.operators.includes(user.id)) {
+                res.send({ name: club.name, promotions: promotions, status: club.status })
+              } else {
+                res.status(403);
+                res.send(Errors.notAllowed);
+              }
+            })
           } else {
             res.status(404);
             res.send(Errors.notFound);

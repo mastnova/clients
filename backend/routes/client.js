@@ -1,6 +1,7 @@
 const User = require('../schemas/user');
 const Client = require('../schemas/client');
 const Club = require('../schemas/club');
+const Promotion = require('../schemas/promotion');
 const Errors = require('../errors');
 
 const usersProjection = {
@@ -23,7 +24,15 @@ module.exports = function (app) {
               if (err) next(err);
               if (club) {
                 if (club.owner == user.id || user.role === 'root') {
-                  res.send(client);
+                  const promoIds = [...new Set(client.promotions.map( promo => promo.id))];
+                  Promotion.find({ '_id': { $in: promoIds} }, function(err, promotions) {
+                    const promoStatusMap = {};
+                    promotions.forEach(promo => {
+                      promoStatusMap[promo.id] = promo.status;
+                    })
+                    client.promotions = client.promotions.map(promo => ({...promo, status: promoStatusMap[promo.id]}));
+                    res.send(client);
+                  });
                 } else {
                   res.status(403);
                   res.send(Errors.notAllowed);

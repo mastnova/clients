@@ -9,6 +9,7 @@ import Operators from './components/Operators/Operators';
 import Clients from './components/Clients/Clients';
 import Client from './components/Client/Client';
 import Breadcrumbs from './components/Breadcrumbs/Breadcrumbs';
+import Promotion from './components/Promotion/Promotion';
 import { PAGE_URL } from './constants';
 import API from './API';
 
@@ -131,6 +132,7 @@ class AdminRoutes extends PureComponent {
           <Route path={`${PAGE_URL.clubs}/:agentId`} exact render={(props) => <Clubs {...props} openPopup={this.props.openPopup} clubs={this.state.clubs} updateClubs={this.updateClubs} removeClub={this.removeClub} status="active"/>} />
         </Switch>
         <Route path={`${PAGE_URL.club}/:id`} exact render={(props) => <Club {...props} openPopup={this.props.openPopup} removeClub={this.removeClub} updateClubs={this.updateClubs}/>} />
+        <Route path={`${PAGE_URL.club}/:id${PAGE_URL.promotion}/:promoId`} exact render={(props) => <Promotion {...props} openPopup={this.props.openPopup} />} />
         <Route path={`${PAGE_URL.club}/:id${PAGE_URL.operators}`} exact render={(props) => <Operators {...props} openPopup={this.props.openPopup} />} />
         <Route path={`${PAGE_URL.club}/:id${PAGE_URL.clients}`} exact render={(props) => <Clients {...props} openPopup={this.props.openPopup} clubName={this.state.clubName}/>} />
         <Route path={`${PAGE_URL.club}/:id${PAGE_URL.clients}/:clientId`} exact render={(props) => <Client {...props} openPopup={this.props.openPopup} />} />

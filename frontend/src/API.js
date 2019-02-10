@@ -57,6 +57,10 @@ const API = {
     method: 'GET',
     url: '/api/club/',
   },
+  getPromotion: {
+    method: 'GET',
+    url: '/api/promotion/',
+  },
   changeClubStatus: {
     method: 'PUT',
     url: '/api/club',
@@ -230,6 +234,14 @@ async function activateClub(id) {
   return null;
 }
 
+async function getPromotion(id) {
+  const response = await request(API.getPromotion.url + id);
+  if (response.isOk) {
+    return response.data;
+  }
+  return null;
+}
+
 async function blockUser(id) {
   const params = { id, status: 'blocked' };
   const response = await request(API.changeUserStatus.url, API.changeUserStatus.method, params);
@@ -313,6 +325,7 @@ export default {
   blockClub,
   removeClub,
   activateClub,
+  getPromotion,
   blockUser,
   removeUser,
   activateUser,
