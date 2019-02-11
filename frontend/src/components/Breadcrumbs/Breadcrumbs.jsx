@@ -20,6 +20,8 @@ class Breadcrumbs extends PureComponent {
       clients: (id) => ({ text: 'Управление клиентами', url: `/club/${id}/clients` }),
       client: (id) => ({ text: 'Клиент', url }),
       promo: { text: `Акции клуба`, url },
+      singlePromo: { text: `Просмотр акции`, url },
+      promoLink: (id) => ({ text: 'Акции клуба', url: `/club/${id}` }),
       agent: (clubId) => {
         const agentId = this.props.getClubOwner(clubId);
         return { text: `Клубы агента`, url: `/clubs/${agentId}` }
@@ -43,6 +45,9 @@ class Breadcrumbs extends PureComponent {
     }
     if (page === 'club') {
       return [links.index, links.club(clubId), links.promo];
+    }
+    if (page === 'promotion') {
+      return [links.index, links.club(clubId), links.promoLink(clubId), links.singlePromo];
     }
     if (page === 'operators') {
       return [links.index, links.club(clubId), links.operators(clubId)];

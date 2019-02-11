@@ -26,11 +26,11 @@ module.exports = function (app) {
                 if (club.owner == user.id || user.role === 'root') {
                   const promoIds = [...new Set(client.promotions.map( promo => promo.id))];
                   Promotion.find({ '_id': { $in: promoIds} }, function(err, promotions) {
-                    const promoStatusMap = {};
+                    const promoMap = {};
                     promotions.forEach(promo => {
-                      promoStatusMap[promo.id] = promo.status;
+                      promoMap[promo.id] = {status: promo.status, name: promo.name};
                     })
-                    client.promotions = client.promotions.map(promo => ({...promo, status: promoStatusMap[promo.id]}));
+                    client.promotions = client.promotions.map(promo => ({...promo, status: promoMap[promo.id].status, name: promoMap[promo.id].name}));
                     res.send(client);
                   });
                 } else {

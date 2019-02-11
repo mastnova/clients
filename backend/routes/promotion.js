@@ -46,7 +46,7 @@ module.exports = function (app) {
       if (user) {
         Promotion.findById(id, function (err, promotion) {
           if (err) next(err);
-          if (promotion) {
+          if (promotion && promotion.status !== 'removed') {
             Client.find({ 'promotions.id': id, status: 'active' }, function(err, clients) {
               res.send({...promotion.result(), clients: [...clients]})
             })
@@ -67,6 +67,17 @@ module.exports = function (app) {
     const id = req.body.id;
     const name = req.body.name;
     const description = req.body.description;
+    const status = req.body.status;
+    const fieldsForUpdate = {};
+    if (name) {
+      fieldsForUpdate.name = name;
+    }
+    if (description) {
+      fieldsForUpdate.description = description;
+    }
+    if (status) {
+      fieldsForUpdate.status = status;
+    }
     User.findOne({ token }, function (err, user) {
       if (err) next(err);
       if (user) {
@@ -75,10 +86,13 @@ module.exports = function (app) {
           if (promotion) {
             Club.findById(promotion.club, function(err, club) {
               if (club) {
-                if (club.owner === user.id || user.role === 'root') {
-                  Promotion.update({'_id': id}, {name, description}, function(err, promo) {
+                if (club.owner == user.id || user.role === 'root') {
+                  Promotion.updateOne({'_id': id}, fieldsForUpdate, function(err, promo) {
                     res.send({status: 'ok'});
                   })
+                } else {
+                  res.status(401);
+                  res.send(Errors.notAllowed);
                 }
               } else {
                 res.status(404);

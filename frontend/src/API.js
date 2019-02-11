@@ -312,8 +312,8 @@ async function changeUser(id, login, password) {
   return response;
 }
 
-async function changePromotion(id, name, description) {
-  const body = { id, name, description };
+async function changePromotion({id, name, description, status}) {
+  const body = { id, name, description, status };
   const response = await request(API.changePromotion.url, API.changePromotion.method, body);
   return response.isOk;
 }

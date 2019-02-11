@@ -14,11 +14,12 @@ module.exports = function (app) {
         Club.findById(id, function (err, club) {
           if (err) next(err);
           if (club) {
-            Promotion.find({club: id}, function(err, promotions) {
+            Promotion.find({club: id, status: {$ne: 'removed'}}, function(err, promotions) {
               if (club.owner == user.id || user.role === 'root') {
                 res.send({...club.result(), promotions: [...promotions]});
               } else if (club.operators.includes(user.id)) {
-                res.send({ name: club.name, promotions: promotions, status: club.status })
+                const filteredPromos = promotions.filter(promo => promo.status === 'active');
+                res.send({ name: club.name, promotions: filteredPromos, status: club.status })
               } else {
                 res.status(403);
                 res.send(Errors.notAllowed);

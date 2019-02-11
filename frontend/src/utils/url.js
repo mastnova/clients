@@ -9,6 +9,7 @@ const schemas = {
     { name: 'clubsAllRemoved', regexp: /^\/clubs\/removed$/ },
     { name: 'clients', regexp: /^\/club\/.{24}\/clients$/ },
     { name: 'client', regexp: /^\/club\/.{24}\/clients\/.{24}$/ },
+    { name: 'promotion', regexp: /^\/club\/.{24}\/promotion\/.{24}$/ },
     { name: 'operators', regexp: /^\/club\/.{24}\/operators$/ },
   ]
 }
@@ -23,6 +24,7 @@ const titles = {
   clubAllRemoved: 'SlotAdmin | Удаленные клубы',
   clients: 'SlotAdmin | Клиенты',
   client: 'SlotAdmin | Клиент',
+  promotion: 'SlotAdmin | Акция',
   operators: 'SlotAdmin | Операторы',
 }
 

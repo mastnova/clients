@@ -70,7 +70,7 @@ class Club extends PureComponent {
       name,
       description,
       callback: async (newName, newDesc) => {
-        const isOk = await API.changePromotion(id, newName, newDesc);
+        const isOk = await API.changePromotion({id, name: newName, description: newDesc});
         if (isOk) {
           const promotions = this.state.club.promotions.slice();
           const promo = promotions.find(promo => promo.id === id);
@@ -87,12 +87,41 @@ class Club extends PureComponent {
     });
   }
 
-  toggleLockPromotion = (id, status, name) => {
-
+  toggleLockPromotion = (id, status, name) => () => {
+    const action = status === 'active' ? 'заблокировать' : 'разблокировать';
+    this.props.openPopup('action-confirm', {
+      title: 'Блокировка акции',
+      button: action,
+      content: `<div>Вы действительно хотите ${action} акцию? <br/><b>${name}</b></div>`,
+      callback: async () => {
+        const newStatus = status === 'active' ? 'blocked' : 'active';
+        const isOk = await API.changePromotion({ id, status: newStatus });
+        if (isOk) {
+          const promotions = this.state.club.promotions.slice();
+          const promo = promotions.find(promo => promo.id === id);
+          promo.status = newStatus;
+          this.setState({
+            club: {
+              ...this.state.club,
+              promotions,
+            }
+          });
+        }
+      }
+    });
   }
 
-  removePromotion = (id, name) => {
-
+  removePromotion = (id, name) => () => {
+    this.props.openPopup('action-confirm', {
+      title: 'Удаление акции',
+      content: `<div>Вы действительно хотите удалить акцию? <br/><b>${name}</b></div>`,
+      callback: async () => {
+        const isRemoved = await API.changePromotion({ id, status: 'removed' });
+        if (isRemoved) {
+          this.fetchClub();
+        }
+      }
+    });
   }
 
   mappingFn = (promo, i) => [

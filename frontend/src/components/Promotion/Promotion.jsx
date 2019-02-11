@@ -38,7 +38,7 @@ class Promotion extends PureComponent {
       name,
       description,
       callback: async (newName, newDesc) => {
-        const isOk = await API.changePromotion(id, newName, newDesc);
+        const isOk = await API.changePromotion({id, name: newName, description: newDesc});
         if (isOk) {
           this.setState({name: newName});
         }
@@ -46,8 +46,17 @@ class Promotion extends PureComponent {
     });
   }
 
-  removePromotion = () => {
-
+  removePromotion = (id, name) => () => {
+    this.props.openPopup('action-confirm', {
+      title: 'Удаление акции',
+      content: `<div>Вы действительно хотите удалить акцию? <br/><b>${name}</b></div>`,
+      callback: async () => {
+        const isRemoved = await API.changePromotion({id, status: 'removed'});
+        if (isRemoved) {
+          this.props.history.push(`${PAGE_URL.club}/${this.props.match.params.id}`);
+        }
+      }
+    });
   }
 
   mappingFn = (client, i) => {
@@ -80,7 +89,7 @@ class Promotion extends PureComponent {
           <div onClick={this.editPromotion(this.state.id, this.state.name, this.state.description)} className="button-edit button-edit_big" />
         </Tooltip>
         <Tooltip text='Удалить' leftOffset='12px'>
-          <div onClick={this.removePromotion(this.state.id)} className="button-remove button-remove_big" />
+          <div onClick={this.removePromotion(this.state.id, this.state.name)} className="button-remove button-remove_big" />
         </Tooltip>
       </div>
     );
@@ -96,13 +105,14 @@ class Promotion extends PureComponent {
             }
           </div>
         </div>
-        {Boolean(this.state.clients.length) &&
-          <TableWithPagination
+        {Boolean(this.state.clients.length)
+          ? <TableWithPagination
             className="clubs"
             header={header}
             mappingFn={this.mappingFn}
             data={this.state.clients}
           />
+          : <div className="empty-table">Нет клиентов участвующих в акции</div>
         }
       </div>
     );

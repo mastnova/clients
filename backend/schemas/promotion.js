@@ -22,6 +22,7 @@ const schemaPromotion = new db.Schema({
     type: String,
     require: true,
     default: 'active',
+    match: /^(active|blocked|removed)$/,
   },
 });
 
