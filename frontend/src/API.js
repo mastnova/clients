@@ -57,6 +57,10 @@ const API = {
     method: 'GET',
     url: '/api/club/',
   },
+  getPromotion: {
+    method: 'GET',
+    url: '/api/promotion/',
+  },
   changeClubStatus: {
     method: 'PUT',
     url: '/api/club',
@@ -84,6 +88,10 @@ const API = {
   changeUser: {
     method: 'PUT',
     url: '/api/user/update',
+  },
+  changePromotion: {
+    method: 'PUT',
+    url: '/api/promotion/update',
   },
 };
 
@@ -230,6 +238,14 @@ async function activateClub(id) {
   return null;
 }
 
+async function getPromotion(id) {
+  const response = await request(API.getPromotion.url + id);
+  if (response.isOk) {
+    return response.data;
+  }
+  return null;
+}
+
 async function blockUser(id) {
   const params = { id, status: 'blocked' };
   const response = await request(API.changeUserStatus.url, API.changeUserStatus.method, params);
@@ -296,6 +312,12 @@ async function changeUser(id, login, password) {
   return response;
 }
 
+async function changePromotion({id, name, description, status}) {
+  const body = { id, name, description, status };
+  const response = await request(API.changePromotion.url, API.changePromotion.method, body);
+  return response.isOk;
+}
+
 export default {
   hasRoot,
   createUser,
@@ -313,6 +335,7 @@ export default {
   blockClub,
   removeClub,
   activateClub,
+  getPromotion,
   blockUser,
   removeUser,
   activateUser,
@@ -322,4 +345,5 @@ export default {
   changeClubName,
   changeClientName,
   changeUser,
+  changePromotion,
 };

@@ -40,7 +40,7 @@ class TableWithPagination extends PureComponent {
           <tbody>
           {
             filteredData.map((item, i) => (
-              <Table.Row key={item.id || i}>
+              <Table.Row key={item.key || item.id || i}>
                 {this.props.mappingFn(item, i)}
               </Table.Row>
             ))

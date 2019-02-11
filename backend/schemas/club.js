@@ -23,11 +23,6 @@ const schemaClub = new db.Schema({
     require: true,
     default: 0,
   },
-  promotions: {
-    type: Array,
-    require: true,
-    default: [],
-  },
   created: {
     type: Date,
     default: Date.now
@@ -73,6 +68,14 @@ schemaClub.methods.changeName = function (name) {
     this.name = name;
   }
 };
+
+schemaClub.methods.result = function () {
+  const doc = this.toObject();
+  doc.id = doc._id;
+  delete doc._id;
+  delete doc.__v;
+  return doc;
+}
 
 schemaClub.set('toJSON', {
   virtuals: true,

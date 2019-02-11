@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import cn from 'classnames';
+import { Link } from 'react-router-dom';
 import './Client.scss';
 
 import TableWithPagination from '../UI/TableWithPagination/TableWithPagination';
 import Tooltip from '../UI/Tooltip/Tooltip';
-import API from '../../API';
 import LongText from '../UI/LongText/LongText';
+import { PAGE_URL } from '../../constants';
+import API from '../../API';
 
 const header = ['#', 'Акция', 'Добавил', 'Дата'];
 
@@ -73,9 +75,14 @@ class Client extends Component {
 
   mappingFn = (promo, i) => {
     const avaClass = cn(`header__avatar_${promo.creator.avatar}`, 'header__avatar_min', 'header__avatar_operator');
+    const status = promo.status === 'removed' ? <span style={{color: '#ff6262', paddingLeft: '20px'}}>(удалена)</span> : '';
+    let promoName = <Link to={`${PAGE_URL.club}/${this.props.match.params.id}${PAGE_URL.promotion}/${promo.id}`}><LongText>{promo.name}</LongText></Link>;
+    if (promo.status === 'removed') {
+      promoName = <LongText>{promo.name}</LongText>;
+    }
     return [
-      i + 1,
-      <LongText>{promo.name}</LongText>,
+      <span>{i + 1}{status}</span>,
+      promoName,
       <div className={avaClass}><LongText>{promo.creator.login}</LongText></div>,
       moment(promo.date).format('DD.MM.YYYY HH:mm:ss')
     ]

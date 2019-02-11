@@ -71,6 +71,7 @@
 
 .popup_confirm {
   width: 460px;
+  overflow: hidden;
   &__remove-content {
     line-height: 24px;
   }
@@ -114,6 +115,11 @@
 .popup_edit-name {
   width: 365px;
   height: 200px;
+}
+
+.popup_edit-promo {
+  width: 365px;
+  height: 380px;
 }
 
 .popup_edit-user {

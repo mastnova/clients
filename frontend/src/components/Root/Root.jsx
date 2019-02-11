@@ -63,6 +63,7 @@ class Root extends PureComponent {
                 <div>Логин</div>
                 <Input
                   name="login"
+                  icon="login"
                   placeholder="Логин"
                   validationType="required"
                   value={this.state.login}
@@ -73,6 +74,7 @@ class Root extends PureComponent {
                 <div>Пароль</div>
                 <Input
                   type="password"
+                  icon="password"
                   name="password"
                   placeholder="Пароль"
                   validationType="required"
@@ -84,6 +86,7 @@ class Root extends PureComponent {
                 <div>Повтор пароля</div>
                 <Input
                   type="password"
+                  icon="password"
                   name="repeatPassword"
                   placeholder="Пароль"
                   validationType="required"
@@ -92,7 +95,7 @@ class Root extends PureComponent {
                   onChange={this.onChangeInput}
                 />
               </label>
-              <button className="button" type="submit" disabled={!this.isFormValid()}>create</button>
+              <button className="button" type="submit" disabled={!this.isFormValid()}>Создать</button>
             </form>
           </div>
         </div>

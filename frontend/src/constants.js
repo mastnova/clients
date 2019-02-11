@@ -5,6 +5,7 @@ export const PAGE_URL = {
   clients: '/clients',
   client: '/client',
   club: '/club',
+  promotion: '/promotion',
   clubs: '/clubs',
   operators: '/operators',
 }

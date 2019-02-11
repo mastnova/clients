@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom';
 import MenuAgent from './components/MenuAgent/MenuAgent';
 import IndexAgent from './components/IndexAgent/IndexAgent';
 import Club from './components/Club/Club';
+import Promotion from './components/Promotion/Promotion';
 import Operators from './components/Operators/Operators';
 import Clients from './components/Clients/Clients';
 import Client from './components/Client/Client';
@@ -56,7 +57,7 @@ class AgentRoutes extends PureComponent {
     this.setState({ clubs: updatedClubs }, this.setClubName);
   }
 
-  removeClub = (id, name) => () => {
+  removeClub = (id, name, cb) => () => {
     this.props.openPopup('action-confirm', {
       title: 'Удаление клуба',
       content: `<div>Вы действительно хотите удалить клуб? <br/><b>${name}</b></div>`,
@@ -65,6 +66,7 @@ class AgentRoutes extends PureComponent {
         if (isRemoved) {
           const updatedClubs = this.state.clubs.filter(club => club.id !== id);
           this.setState({ clubs: updatedClubs });
+          cb && cb();
         }
       }
     });
@@ -77,6 +79,7 @@ class AgentRoutes extends PureComponent {
         <Route render={(props) => <Breadcrumbs {...props} setClubId={this.setClubId} clubName={this.state.selectedClubName} user="agent"/>}/>
         <Route path={PAGE_URL.index} exact render={(props) => <IndexAgent {...props} openPopup={this.props.openPopup} clubs={this.state.clubs} updateClubs={this.updateClubs} removeClub={this.removeClub}/>} />
         <Route path={`${PAGE_URL.club}/:id`} exact render={(props) => <Club {...props} openPopup={this.props.openPopup} removeClub={this.removeClub} updateClubs={this.updateClubs}/>} />
+        <Route path={`${PAGE_URL.club}/:id${PAGE_URL.promotion}/:promoId`} exact render={(props) => <Promotion {...props} openPopup={this.props.openPopup}/>} />
         <Route path={`${PAGE_URL.club}/:id${PAGE_URL.operators}`} exact render={(props) => <Operators {...props} openPopup={this.props.openPopup}/>} />
         <Route path={`${PAGE_URL.club}/:id${PAGE_URL.clients}`} exact render={(props) => <Clients {...props} openPopup={this.props.openPopup} clubName={this.state.selectedClubName}/>} />
         <Route path={`${PAGE_URL.club}/:id${PAGE_URL.clients}/:clientId`} exact render={(props) => <Client {...props} openPopup={this.props.openPopup}/>} />
