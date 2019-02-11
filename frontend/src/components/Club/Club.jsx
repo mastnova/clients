@@ -38,9 +38,9 @@ class Club extends PureComponent {
     this.props.openPopup('add-promo', { id: this.state.club.id, callback: this.fetchClub});
   }
 
-  removeClub = (id) => () => {
-    this.props.removeClub(id)();
-    this.props.history.push('/');
+  removeClub = (id, name) => () => {
+    const cb = () => this.props.history.push('/');
+    this.props.removeClub(id, name, cb)();
   }
 
   editClub = (id, name) => () => {
@@ -150,7 +150,7 @@ class Club extends PureComponent {
           <div onClick={this.editClub(this.state.club.id, this.state.club.name)} className="button-edit button-edit_big" />
         </Tooltip>
         <Tooltip text='Удалить' leftOffset='12px'>
-          <div onClick={this.removeClub(this.state.club.id)} className="button-remove button-remove_big" />
+          <div onClick={this.removeClub(this.state.club.id, this.state.club.name)} className="button-remove button-remove_big" />
         </Tooltip>
       </div>
     );

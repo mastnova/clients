@@ -71,6 +71,7 @@
 
 .popup_confirm {
   width: 460px;
+  overflow: hidden;
   &__remove-content {
     line-height: 24px;
   }

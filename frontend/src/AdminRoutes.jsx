@@ -86,7 +86,7 @@ class AdminRoutes extends PureComponent {
     this.fetchData();
   }
 
-  removeClub = (id, name) => async () => {
+  removeClub = (id, name, cb) => async () => {
     this.props.openPopup('action-confirm', {
       title: 'Удаление клуба',
       content: `<div>Вы действительно хотите удалить клуб? <br/><b>${name}</b></div>`,
@@ -95,6 +95,7 @@ class AdminRoutes extends PureComponent {
         if (isRemoved) {
           const updatedClubs = this.state.clubs.filter(club => club.id !== id);
           this.setState({ clubs: updatedClubs });
+          cb && cb();
         }
       }
     });

@@ -1,7 +1,7 @@
 export function validate (value, type) {
   if (!type) return true;
   if (type === 'login') {
-    const regexp = /^(?=.*[A-Za-z0-9]$)[A-Za-z][\_A-Za-z\d.-]{3,20}$/;
+    const regexp = /^(?=.*[A-Za-z0-9]$)[A-Za-z][\_A-Za-z\d.-]{3,19}$/;
     if (regexp.test(value)) {
       return { isValid: true };
     }

@@ -57,7 +57,7 @@ class AgentRoutes extends PureComponent {
     this.setState({ clubs: updatedClubs }, this.setClubName);
   }
 
-  removeClub = (id, name) => () => {
+  removeClub = (id, name, cb) => () => {
     this.props.openPopup('action-confirm', {
       title: 'Удаление клуба',
       content: `<div>Вы действительно хотите удалить клуб? <br/><b>${name}</b></div>`,
@@ -66,6 +66,7 @@ class AgentRoutes extends PureComponent {
         if (isRemoved) {
           const updatedClubs = this.state.clubs.filter(club => club.id !== id);
           this.setState({ clubs: updatedClubs });
+          cb && cb();
         }
       }
     });

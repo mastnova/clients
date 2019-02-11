@@ -81,6 +81,7 @@ class Input extends PureComponent {
           onBlur={this.onBlur}
           value={this.props.value}
           mask={this.props.mask}
+          placeholder={this.props.placeholder}
           alwaysShowMask
           inputRef={(el) => { this.input = el }}
         />
