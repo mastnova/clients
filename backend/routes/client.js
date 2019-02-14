@@ -85,62 +85,76 @@ module.exports = function (app) {
                       }
                     });
                   } else {
-                    if (client.hasPromotion(promotion.id)) {
-                      res.status(403);
-                      res.send({
-                        ...Errors.clientPromoted,
-                        info: client.getPromotion(promotion.id)
-                      });
-                    } else {
-                      client.addPromotion({
-                        ...promotion,
-                        creator: {
-                          login: operator.login,
-                          avatar: operator.avatar,
-                        }
-                      });
-                      client.save(function (error) {
-                        if (error) {
-                          res.status(400);
-                          res.send(error);
+                    Promotion.findById(promotion.id, function(err, promo) {
+                      if (promo.status === 'active' ) {
+                        if (client.hasPromotion(promotion.id)) {
+                          res.status(403);
+                          res.send({
+                            ...Errors.clientPromoted,
+                            info: client.getPromotion(promotion.id)
+                          });
                         } else {
-                          res.send({ status: 'promoted' });
+                          client.addPromotion({
+                            ...promotion,
+                            creator: {
+                              login: operator.login,
+                              avatar: operator.avatar,
+                            }
+                          });
+                          client.save(function (error) {
+                            if (error) {
+                              res.status(400);
+                              res.send(error);
+                            } else {
+                              res.send({ status: 'promoted' });
+                            }
+                          });
                         }
-                      });
-                    }
-                  }
-                } else {
-                  if (code !== '3951') {
-                    res.status(400);
-                    res.send({status: 'error'});
-                    return;
-                  }
-                  let promotions = [];
-                  if (promotion.id) {
-                    promotions.push({
-                      ...promotion,
-                      creator: {
-                        login: operator.login,
-                        avatar: operator.avatar,
-                      },
-                      date: new Date().getTime(),
+                      } else {
+                        res.status(404);
+                        res.send(Errors.notFound);
+                      }
                     });
                   }
-                  new Client({ name, phone, promotions, club: operator.clubId, creator: { login: operator.login, avatar: operator.avatar} })
-                  .save(function (error) {
-                    if (error) {
-                      res.status(400);
-                      res.send(error);
+                } else {
+                  Promotion.findById(promotion.id, function (err, promo) {
+                    if (promo.status === 'active') {
+                      if (code !== '3951') {
+                        res.status(400);
+                        res.send({ status: 'error' });
+                        return;
+                      }
+                      let promotions = [];
+                      if (promotion.id) {
+                        promotions.push({
+                          ...promotion,
+                          creator: {
+                            login: operator.login,
+                            avatar: operator.avatar,
+                          },
+                          date: new Date().getTime(),
+                        });
+                      }
+                      new Client({ name, phone, promotions, club: operator.clubId, creator: { login: operator.login, avatar: operator.avatar } })
+                        .save(function (error) {
+                          if (error) {
+                            res.status(400);
+                            res.send(error);
+                          } else {
+                            club.increaseClientsCounter();
+                            club.save(function (error) {
+                              if (error) {
+                                res.status(400);
+                                res.send(error);
+                              } else {
+                                res.send({ status: 'registered' });
+                              }
+                            });
+                          }
+                        });
                     } else {
-                      club.increaseClientsCounter();
-                      club.save(function (error) {
-                        if (error) {
-                          res.status(400);
-                          res.send(error);
-                        } else {
-                          res.send({ status: 'registered' });
-                        }
-                      });
+                      res.status(404);
+                      res.send(Errors.notFound);
                     }
                   });
                 }

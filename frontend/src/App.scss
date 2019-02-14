@@ -79,10 +79,9 @@ body {
 
   &_add {
     padding-left: 30px;
-    background: url('./images/icons/add.png');
+    background-image: url('./images/icons/add_white.png');
     background-repeat: no-repeat;
     background-position-y: center;
-    filter: brightness(10);
   }
 
   &_remove {
@@ -120,7 +119,7 @@ body {
   cursor: not-allowed;
 
   .button_add {
-    filter: brightness(1);
+    background-image: url('./images/icons/add.png');
   }
 }
 
