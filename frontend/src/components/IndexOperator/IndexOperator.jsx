@@ -116,6 +116,9 @@ class IndexOperator extends PureComponent {
       } else if (response.data.code === 2) {
         text = `Этой акции не существует`;
         type = 'error';
+      } else if (response.data.code === 10) {
+        text = `Неверный код подтверждения`;
+        type = 'error';
       }
       this.props.openPopup('alert', { type, title, text });
     }

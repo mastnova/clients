@@ -3,6 +3,7 @@ const Client = require('../schemas/client');
 const Club = require('../schemas/club');
 const Promotion = require('../schemas/promotion');
 const Errors = require('../errors');
+const SMS = require('../sms');
 
 const usersProjection = {
   login: true,
@@ -118,10 +119,10 @@ module.exports = function (app) {
                   }
                 } else {
                   Promotion.findById(promotion.id, function (err, promo) {
-                    if (promo.status === 'active') {
-                      if (code !== '3951') {
+                    if (!promo || promo.status === 'active') {
+                      if (!SMS.validateCode(code)) {
                         res.status(400);
-                        res.send({ status: 'error' });
+                        res.send(Errors.wrongVerificationCode);
                         return;
                       }
                       let promotions = [];
@@ -232,6 +233,7 @@ module.exports = function (app) {
           if (client) {
             res.send({ is_exist: true });
           } else {
+            SMS.createCode(phone);
             res.send({ is_exist: false });
           }
         });
