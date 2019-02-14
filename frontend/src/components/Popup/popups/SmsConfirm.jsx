@@ -6,7 +6,7 @@ class SmsConfirm extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      code: '3951',
+      code: '',
     };
   }
 
@@ -29,7 +29,7 @@ class SmsConfirm extends PureComponent {
           <div className="popup_confirm__phone">{phone}</div>
           <div className="popup_confirm__code">
             <span>Код подтверждения</span>
-            <input className="input" value={this.state.code} onChange={this.onChangeInput} />
+            <input className="input" maxLength="4" value={this.state.code} onChange={this.onChangeInput} />
           </div>
         </div>
         <div className="popup_confirm__buttons">

@@ -44,4 +44,9 @@ module.exports = {
     code: 9,
     message: "This account has been blocked",
   },
+  wrongVerificationCode: {
+    status: 'error',
+    code: 10,
+    message: "Verification code is invalid",
+  },
 };

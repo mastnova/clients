@@ -91,6 +91,14 @@ class IndexOperator extends PureComponent {
       } else {
         this.props.openPopup('alert', { type: 'success', text: `Клиент <b>${this.state.name}</b> успешно зарегистрирован` });
       }
+      this.setState({
+        promoName: 'Без акции',
+        promoId: '',
+        name: '',
+        nameIsValid: '',
+        phone: '',
+        phoneIsValid: '',
+      });
     } else {
       let text = 'Произошла ошибка';
       let title = 'Ошибка';
@@ -105,6 +113,12 @@ class IndexOperator extends PureComponent {
         title = 'Клиент участвовал сегодня в этой акции';
         text = `Название акции - <b>${name}</b><br/>Дата добавления - <b>${moment(date).format('DD.MM.YYYY HH:mm')}</b>`;
         type = 'info';
+      } else if (response.data.code === 2) {
+        text = `Этой акции не существует`;
+        type = 'error';
+      } else if (response.data.code === 10) {
+        text = `Неверный код подтверждения`;
+        type = 'error';
       }
       this.props.openPopup('alert', { type, title, text });
     }
