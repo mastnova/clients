@@ -5,6 +5,10 @@ const API = {
     method: 'GET',
     url: '/api/root',
   },
+  changeRoot: {
+    method: 'PUT',
+    url: '/api/root/update',
+  },
   createUser: {
     method: 'POST',
     url: '/api/user',
@@ -127,6 +131,12 @@ async function request(url, method = 'GET', data) {
 async function hasRoot() {
   const response = await request(API.hasRoot.url);
   return response.data;
+}
+
+async function changeRoot(login, password) {
+  const body = { login, password };
+  const response = await request(API.changeRoot.url, API.changeRoot.method, body);
+  return response;
 }
 
 async function createUser(user) {
@@ -320,6 +330,7 @@ async function changePromotion({id, name, description, status}) {
 
 export default {
   hasRoot,
+  changeRoot,
   createUser,
   login,
   getAgents,
