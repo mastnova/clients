@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import './Header.scss';
 
 import { setPageTitle } from '../../utils/url';
+import API from '../../API';
 
 class Header extends PureComponent {
 
@@ -12,6 +13,33 @@ class Header extends PureComponent {
     setPageTitle();
     this.props.history.listen((location) => {
       setPageTitle(location.pathname);
+    });
+  }
+
+  changeUser = () => {
+    this.props.openPopup('edit-user', {
+      title: 'Редактировать аккаунт',
+      login: this.props.name,
+      callback: async (login, password) => {
+        const response = await API.changeRoot(login, password);
+        if (response.isOk) {
+          this.props.openPopup('alert', {
+            type: 'success',
+            title: 'Аккаунт изменен',
+            text: 'Изменения успешно сохранены'
+          });
+        } else {
+          let error = 'Произошла ошибка';
+          if (response.data.code === 6) {
+            error = 'Такой логин уже зарегистрирован';
+          }
+          this.props.openPopup('alert', {
+            type: 'error',
+            title: 'Ошибка',
+            text: error,
+          });
+        }
+      }
     });
   }
 
@@ -34,7 +62,11 @@ class Header extends PureComponent {
             <div className="header__title">SlotAdmin<span>Система учета клиентов</span></div>
           </Link>
           <div className="header__user">
-            <span className="header__username">{this.props.name}</span>
+            {
+              role == 'root'
+                ? <span className="header__username as-link" onClick={this.changeUser}>{this.props.name}</span>
+                : <span className="header__username">{this.props.name}</span>
+            }
             <div className={avaClass}/>
             <div className="header__exit" onClick={this.props.onLogout}/>
           </div>

@@ -160,6 +160,7 @@ class App extends Component {
                 name={this.state.userName}
                 avatar={this.state.userAvatar}
                 onLogout={this.onLogout}
+                openPopup={this.openPopup}
               />
               {routesByRole}
               <Popup
