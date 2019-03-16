@@ -13,6 +13,8 @@
   src: url('./fonts/ProximaNova-Regular.woff');
 }
 
+$mobile: 699px;
+
 html, body, #root, .router {
   height: 100%;
 }
@@ -36,6 +38,7 @@ a {
 
 body {
   background-color: #f2f2f9;
+  min-width: 305px;
 }
 
 .textarea {
@@ -53,7 +56,7 @@ body {
 }
 
 .page-container {
-  width: 1170px;
+  max-width: 1170px;
   margin: 0 auto;
 }
 
@@ -63,6 +66,9 @@ body {
   padding-top: 30px;
   padding-bottom: 10px;
   margin-bottom: 30px;
+  @media screen and (max-width : $mobile) {
+    padding-top: 10px;
+  }
 }
 
 .button {
@@ -82,6 +88,7 @@ body {
     background-image: url('./images/icons/add_white.png');
     background-repeat: no-repeat;
     background-position-y: center;
+    white-space: nowrap;
   }
 
   &_remove {
@@ -155,6 +162,11 @@ body {
       background-image: url('./images/icons/edit-big-hover.png');
     }
   }
+
+  @media screen and (max-width : $mobile) {
+    background-image: url('./images/icons/edit-hover.png');
+    background-color: #c9ffd3;
+  }
 }
 
 .button-remove {
@@ -180,6 +192,11 @@ body {
       background-image: url('./images/icons/basket-big-hover.png');
     }
   }
+
+  @media screen and (max-width : $mobile) {
+    background-image: url('./images/icons/basket-hover.png');
+    background-color: #ffdede;
+  }
 }
 
 .button-lock {
@@ -202,6 +219,11 @@ body {
       background-image: url('./images/icons/lock-active.png');
     }
   }
+
+  @media screen and (max-width : $mobile) {
+    background-image: url('./images/icons/lock-hover.png');
+    background-color: #dee3ff;
+  }
 }
 
 .search-block {
@@ -209,12 +231,21 @@ body {
   align-items: center;
   padding: 0 30px 30px;
   height: 70px;
+  @media screen and (max-width : $mobile) {
+    padding: 0 20px 10px;
+    flex-wrap: wrap;
+    height: 150px;
+  }
 
   &__title {
     width: 270px;
     font-family: 'pn-semibold';
     font-size: 18px;
     color: #344178;
+    @media screen and (max-width : $mobile) {
+      text-align: center;
+      width: 100%;
+    }
 
     &_red {
       color: #ff6262;
@@ -224,8 +255,17 @@ body {
   &__input {
     width: 600px;
     margin-right: 30px;
+    @media screen and (max-width : $mobile) {
+      margin-right: 0;
+    }
     input.input {
       border: 1px solid #344178;
+    }
+  }
+
+  button {
+    @media screen and (max-width : $mobile) {
+      margin: 0 auto;
     }
   }
 }
@@ -245,6 +285,13 @@ body {
   line-height: 100px;
   padding-left: 140px;
 
+  @media screen and (max-width : $mobile) {
+    padding-left: 20px;
+    background: none !important;
+    line-height: 60px;
+    height: 135px;
+  }
+
   &_client {
     background: url('./images/icons/unit-client.png') no-repeat left;
   }
@@ -257,6 +304,12 @@ body {
     position: absolute;
     right: 30px;
     top: 0px;
+    @media screen and (max-width : $mobile) {
+      right: initial;
+      top: initial;
+      bottom: 0px;
+      left: 20px;
+    }
 
     .removed-text {
       color: #ff6262;
@@ -274,12 +327,23 @@ body {
   padding-top: 45px;
   box-shadow: inset 0px 35px 65px -35px rgba(0, 0, 0, 0.1);
   padding-bottom: 30px;
+  @media screen and (max-width : $mobile) {
+    flex-wrap: wrap;
+    padding: 0;
+  }
 
   &__label {
     padding: 50px 0 0 30px;
     width: 270px;
     height: 147px;
     color: #fff;
+    @media screen and (max-width : $mobile) {
+      width: 100%;
+      height: initial;
+      padding: 20px;
+      display: flex;
+      background: #333f79 !important;
+    }
     
     &_username {
       background: url('./images/bgs/label-username.png') no-repeat;
@@ -306,11 +370,20 @@ body {
     font-family: 'pn-semibold';
     font-size: 14px;
     margin-bottom: 25px;
+    @media screen and (max-width : $mobile) {
+      font-size: 16px;
+      margin-bottom: 0;
+    }
   }
 
   &__text {
     font-family: 'pn-bold';
     font-size: 20px;
+    @media screen and (max-width : $mobile) {
+      font-size: 16px;
+      text-align: right;
+      width: 100%
+    }
   }
 }
 

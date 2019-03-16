@@ -13,12 +13,31 @@ class TableWithPagination extends PureComponent {
   }
 
   state = {
+    isMobile: false,
     currentPage: 1,
     rowsPerPage: 10,
   };
 
+  componentWillMount() {
+    window.addEventListener("resize", this.onResize);
+    this.onResize();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+  }
+
   componentWillReceiveProps() {
     this.setState({currentPage: 1})
+  }
+
+  onResize = () => {
+    const width = window.innerWidth;
+    if (!this.state.isMobile && width < 700) {
+      this.setState({isMobile: true});
+    } else if (this.state.isMobile && width >= 700) {
+      this.setState({ isMobile: false });
+    }
   }
 
   onChangePage = (currentPage) => {
@@ -35,18 +54,34 @@ class TableWithPagination extends PureComponent {
     const filteredData = this.filterByPage(this.props.data);
     return (
       <div>
-        <Table className={this.props.className} idName={this.props.idName}>
-          <Table.Header>{this.props.header}</Table.Header>
-          <tbody>
-          {
-            filteredData.map((item, i) => (
-              <Table.Row key={item.key || item.id || i}>
-                {this.props.mappingFn(item, i)}
-              </Table.Row>
-            ))
-          }
-          </tbody>
-        </Table>
+        { this.state.isMobile ?
+          <div className="mtable">
+            {
+              filteredData.map((item, i) => (
+                <div className="mtable__row" key={item.key || item.id || i}>
+                  <div className="mtable__header">
+                    {this.props.header.map((item, i) => <div key={i}>{item}</div>)}
+                  </div>
+                  <div className="mtable__content">
+                    {this.props.mappingFn(item, i).map(cell => <div>{cell}</div>)}
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+          :<Table className={this.props.className} idName={this.props.idName}>
+            <Table.Header>{this.props.header}</Table.Header>
+            <tbody>
+            {
+              filteredData.map((item, i) => (
+                <Table.Row key={item.key || item.id || i}>
+                  {this.props.mappingFn(item, i)}
+                </Table.Row>
+              ))
+            }
+            </tbody>
+          </Table>
+        }
         {
           this.props.data.length > this.state.rowsPerPage &&
           <Pagination

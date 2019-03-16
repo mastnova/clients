@@ -1,3 +1,5 @@
+$mobile: 699px;
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -33,6 +35,54 @@
 
     &:hover {
       background-color: #f7f7fa;
+    }
+  }
+}
+
+.mtable {
+  &__row {
+    display: flex;
+    justify-content: center;
+    font-family: 'pn-semibold';
+    padding-top: 15px;
+
+    &:first-child {
+      box-shadow: inset 0px 35px 65px -35px rgba(0, 0, 0, 0.1);
+      padding-top: 30px;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid #f7f2f8;
+    }
+  }
+
+  &__header {
+    color: #b3b9d2;
+    margin-right: 35px;
+    & > div {
+      margin-bottom: 11px;
+      height: 22px;
+    }
+  }
+
+  &__content {
+    color: #7f8fa4;
+    & > div {
+      margin-bottom: 23px;
+      height: 22px;
+    }
+
+    .header__avatar_agent,
+    .header__avatar_operator,
+    .header__avatar_admin {
+      background: none;
+      padding-left: 0;
+    }
+  }
+  .long-text {
+    @media screen and (max-width : $mobile) {
+      width: initial;
+      max-width: 140px;
     }
   }
 }
