@@ -344,6 +344,7 @@ body {
       padding: 20px;
       display: flex;
       background: #333f79 !important;
+      justify-content: space-between;
     }
     
     &_username {
@@ -383,7 +384,8 @@ body {
     @media screen and (max-width : $mobile) {
       font-size: 16px;
       text-align: right;
-      width: 100%
+      width: 100%;
+      max-width: 210px;
     }
   }
 }
