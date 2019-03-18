@@ -80,8 +80,8 @@ class AddClub extends PureComponent {
               onChange={this.onChangeInput}
             />
           </label>
-          <br/>
-          <br/>
+          <br className="stub"/>
+          <br className="stub"/>
           <div className="popup-content__title">Создать оператора клуба</div>
           <label className="label">
             <div>Логин</div>

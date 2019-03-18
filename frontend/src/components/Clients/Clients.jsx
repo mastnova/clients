@@ -142,7 +142,7 @@ class Clients extends Component {
               value={this.state.search}
               onChange={this.onChangeInput} />
           </div>
-          <div>
+          <div className="downloads">
             <button className="button-file button-file__xls" onClick={this.downloadClients('xls')}></button>
             <button className="button-file button-file__csv" onClick={this.downloadClients('csv')}></button>
           </div>

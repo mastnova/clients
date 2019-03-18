@@ -20,4 +20,7 @@
     width: 240px;
     max-width: 240px;
   }
+  td:last-child > div {
+    width: 120px;
+  }
 }

@@ -1,5 +1,6 @@
-const accountSid = 'XXX';
-const authToken = 'XXX';
+const config = require('../config');
+const accountSid = config.get('sms-sid');
+const authToken = config.get('sms-token');
 const client = require('twilio')(accountSid, authToken);
 
 const d = [

@@ -1,9 +1,14 @@
+$mobile: 699px;
+
 .menu {
   height: 110px;
   background-color: #fff;
   border-radius: 10px;
-  padding: 25px 85px;
+  padding: 25px 6%;
   margin-top: -45px;
+  @media screen and (max-width : $mobile) {
+      height: initial;
+    }
 
   &__content {
     display: flex;
@@ -12,6 +17,11 @@
     background-color: #f2f2f8;
     border-radius: 10px;
     height: 60px;
+    @media screen and (max-width : $mobile) {
+      height: 250px;
+      flex-wrap: wrap;
+      padding: 10px 0;
+    }
   }
 
   .menu-tab {
@@ -20,7 +30,7 @@
     font-size: 16px;
     height: 42px;
     line-height: 42px;
-    text-align:center;
+    text-align: center;
     width: 280px;
     margin: 0 12px;
     background-color: #fff;
@@ -29,6 +39,11 @@
     text-decoration: none;
     transition: all .2s;
     cursor: pointer;
+    @media screen and (max-width : $mobile) {
+      text-align: left;
+      padding-left: 70px;
+      box-sizing: border-box;
+    }
 
     &:hover {
       border: 2px solid #334077;
@@ -36,6 +51,8 @@
 
     span {
       padding-left: 30px;
+      margin-left: 3px;
+      margin-right: 3px;
     }
 
     &_icon-club span {

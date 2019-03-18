@@ -1,3 +1,5 @@
+$mobile: 699px;
+
 .table.clubs {
   th:first-child,
   td:first-child {
@@ -48,5 +50,12 @@
   td:nth-child(4) {
     width: 240px;
     max-width: 240px;
+  }
+}
+
+.page_clubs .search-block a {
+  @media screen and (max-width : $mobile) {
+    display: block;
+    margin: 0 auto;
   }
 }
