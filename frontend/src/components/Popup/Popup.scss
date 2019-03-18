@@ -170,6 +170,17 @@ $mobile: 699px;
     max-width: 365px;
     width: 84vw;
   }
+  @media screen and (max-height : 630px) {
+    .popup-content__title {
+      margin-bottom: 10px;
+    }
+    .label {
+      margin-bottom: 15px;
+    }
+    .stub {
+      display: none;
+    }
+  }
 }
 
 .popup_alert {

@@ -1,3 +1,5 @@
+$mobile: 699px;
+
 .root-page {
   display: table;
   width: 100%;
@@ -9,19 +11,22 @@
     vertical-align: middle;
 
     .root-block {
-      width: 803px;
+      max-width: 803px;
       margin: 0 auto;
     }
 
     .root-panel {
       position: relative;
-      width: 570px;
+      max-width: 570px;
       height: 405px;
       background-color: #fff;
       border: 1px solid #344178;
       border-radius: 10px;
       margin: 0 auto;
       padding: 40px 100px;
+      @media screen and (max-width : $mobile) {
+        padding: 40px 20px;
+      }
 
       &__header {
         font-family: 'pn-bold';

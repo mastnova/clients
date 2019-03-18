@@ -1,3 +1,5 @@
+$mobile: 699px;
+
 .login-page {
   display: table;
   width: 100%;
@@ -9,11 +11,15 @@
     vertical-align: middle;
 
     .login-block {
-      width: 803px;
+      max-width: 803px;
       margin: 0 auto;
       background-image: url('../../images/bgs/login.png');
       background-repeat: no-repeat;
       background-position-y: 5px;
+      @media screen and (max-width : $mobile) {
+        width: initial;
+        background: none;
+      }
     }
 
     .login-panel {
@@ -25,11 +31,20 @@
       border-radius: 10px;
       margin: 0 auto;
       padding: 40px 100px;
+      @media screen and (max-width : $mobile) {
+        width: initial;
+        max-width: 380px;
+        padding: 40px 15px;
+      }
 
       .header-block {
         position: absolute;
         top: -110px;
         left: 146px;
+        @media screen and (max-width : $mobile) {
+          left: 50%;
+          margin-left: -140px;
+        }
 
         &__logo {
           display: inline-block;

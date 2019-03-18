@@ -330,6 +330,7 @@ body {
   @media screen and (max-width : $mobile) {
     flex-wrap: wrap;
     padding: 0;
+    background: #333f79;
   }
 
   &__label {

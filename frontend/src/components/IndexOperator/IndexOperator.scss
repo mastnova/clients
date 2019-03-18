@@ -1,4 +1,11 @@
+$mobile: 699px;
+
 .operator-index {
+  .menu__content {
+    @media screen and (max-width : $mobile) {
+      height: 60px;
+    }
+  }
   &__title {
     font-family: 'pn-bold';
     color: #344178;
@@ -12,14 +19,19 @@
     background-color: #fff;
     padding: 40px;
     border-radius: 10px;
+    display: flex;
+    justify-content: space-evenly;
+    @media screen and (max-width : $mobile) {
+      padding: 20px;
+    }
 
     .pic {
-      display: inline-block;
-      width: 249px;
+      width: 280px;
       height: 388px;
-      margin-left: 160px;
-      margin-right: 130px;
       background: url('../../images/bgs/operator.png') no-repeat;
+      @media screen and (max-width : $mobile) {
+        display: none;
+      }
     }
   }
   
