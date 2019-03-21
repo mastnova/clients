@@ -22,6 +22,9 @@ $mobile: 699px;
     width: 220px;
     max-width: 220px;
   }
+  td:last-child > div {
+    width: 120px;
+  }
 }
 
 .table.clubsall {
@@ -50,6 +53,9 @@ $mobile: 699px;
   td:nth-child(4) {
     width: 240px;
     max-width: 240px;
+  }
+  td:last-child > div {
+    width: 120px;
   }
 }
 

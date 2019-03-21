@@ -27,9 +27,13 @@ $mobile: 699px;
     width: 180px;
     max-width: 180px;
   }
+  td:last-child > div {
+    width: 120px;
+  }
 }
 
 .page_clients .downloads {
+  display: flex;
   @media screen and (max-width : $mobile) {
     display: none;
   }
