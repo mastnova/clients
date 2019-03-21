@@ -70,13 +70,18 @@ function createCode (phone) {
 
   const matches = phone.match(/\d+/g);
   const phoneNumber = '+' + matches.join('');
-  client.messages
-    .create({
-      body: `Verification code: ${code}`,
-      from: '+16502765742',
-      to: phoneNumber,
-    })
-    .done();
+  try {
+    client.messages
+      .create({
+        body: `Verification code: ${code}`,
+        from: '+16502765742',
+        to: phoneNumber,
+      })
+      .done();
+  } catch (error) {
+    console.error(error);
+  }
+  
 }
 
 module.exports = {

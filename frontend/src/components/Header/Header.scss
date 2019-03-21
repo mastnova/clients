@@ -7,6 +7,7 @@ $mobile: 699px;
   height: 180px;
 
   &__content {
+    max-width: 1170px;
     display: flex;
     justify-content: space-between;
     margin: 0 auto;

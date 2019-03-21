@@ -43,6 +43,7 @@ $mobile: 699px;
         left: 146px;
         @media screen and (max-width : $mobile) {
           left: 50%;
+          top: -75px;
           margin-left: -140px;
         }
 

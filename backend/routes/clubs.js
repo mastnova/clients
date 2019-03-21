@@ -18,7 +18,7 @@ module.exports = function (app) {
     User.findOne({ token }, function (err, user) {
       if (err) next(err);
       if (user) {
-        Club.find({ owner: user.id, status: 'active' }, clubsProjection, function (err, clubs) {
+        Club.find({ owner: user.id, status: {$not: {$eq: 'removed'}}}, clubsProjection, function (err, clubs) {
           if (err) next(err);
           res.send(clubs);
         })
