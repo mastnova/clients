@@ -77,6 +77,7 @@ function createCode (phone) {
         from: '+16502765742',
         to: phoneNumber,
       })
+      .catch(e => console.error(e.code, e.message))
       .done();
   } catch (error) {
     console.error(error);
