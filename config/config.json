@@ -4,5 +4,7 @@
   "db-host": "localhost:27017",
   "db-name": "clients",
   "db-login": "admin",
-  "db-password": "12345"
+  "db-password": "12345",
+  "sms-sid": "xxx",
+  "sms-token": "xxx"
 }
